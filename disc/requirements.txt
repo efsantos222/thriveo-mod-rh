@@ -1,0 +1,28 @@
+# DISC Assessment System - Requirements
+#
+# Requisitos mínimos:
+# - Python 3.7 ou superior
+#
+# ============================================
+# Modo CLI (Linha de Comando)
+# ============================================
+# O modo CLI não requer dependências externas!
+# Usa apenas a biblioteca padrão do Python.
+
+# ============================================
+# Modo Web (Opcional)
+# ============================================
+# Para executar a aplicação web (web_app.py):
+flask>=2.0.0           # Framework web
+
+# Para produção (recomendado):
+gunicorn>=20.0.0       # Servidor WSGI para produção
+
+# ============================================
+# Desenvolvimento (Opcional)
+# ============================================
+# Para desenvolvimento e testes:
+# pytest>=7.0.0        # Para testes unitários
+# black>=22.0.0        # Para formatação de código
+# flake8>=4.0.0        # Para linting
+# mypy>=0.950          # Para type checking
