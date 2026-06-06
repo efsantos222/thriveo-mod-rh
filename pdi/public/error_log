@@ -1,0 +1,69 @@
+[20-Mar-2025 13:35:30 America/Fortaleza] PHP Warning:  require_once(/home4/efsantos/public_html/pdi/public/../templates/home.php): Failed to open stream: No such file or directory in /home4/efsantos/public_html/pdi/public/index.php on line 21
+[20-Mar-2025 13:35:30 America/Fortaleza] PHP Fatal error:  Uncaught Error: Failed opening required '/home4/efsantos/public_html/pdi/public/../templates/home.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home4/efsantos/public_html/pdi/public/index.php:21
+Stack trace:
+#0 {main}
+  thrown in /home4/efsantos/public_html/pdi/public/index.php on line 21
+[20-Mar-2025 13:37:49 America/Fortaleza] PHP Warning:  require_once(/home4/efsantos/public_html/pdi/public/../templates/home.php): Failed to open stream: No such file or directory in /home4/efsantos/public_html/pdi/public/index.php on line 21
+[20-Mar-2025 13:37:49 America/Fortaleza] PHP Fatal error:  Uncaught Error: Failed opening required '/home4/efsantos/public_html/pdi/public/../templates/home.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home4/efsantos/public_html/pdi/public/index.php:21
+Stack trace:
+#0 {main}
+  thrown in /home4/efsantos/public_html/pdi/public/index.php on line 21
+[20-Mar-2025 13:40:57 America/Fortaleza] PHP Warning:  require_once(/home4/efsantos/public_html/pdi/templates/footer.php): Failed to open stream: No such file or directory in /home4/efsantos/public_html/pdi/templates/home.php on line 61
+[20-Mar-2025 13:40:57 America/Fortaleza] PHP Fatal error:  Uncaught Error: Failed opening required '/home4/efsantos/public_html/pdi/templates/footer.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home4/efsantos/public_html/pdi/templates/home.php:61
+Stack trace:
+#0 /home4/efsantos/public_html/pdi/public/index.php(28): require_once()
+#1 {main}
+  thrown in /home4/efsantos/public_html/pdi/templates/home.php on line 61
+[20-Mar-2025 13:44:13 America/Fortaleza] PHP Parse error:  syntax error, unexpected string content "", expecting "-" or identifier or variable or number in /home4/efsantos/public_html/pdi/templates/pdi/index.php on line 33
+[20-Mar-2025 13:44:23 America/Fortaleza] Template not found: /home4/efsantos/public_html/pdi/templates/coaching/index.php
+[20-Mar-2025 13:44:23 America/Fortaleza] PHP Warning:  require_once(/home4/efsantos/public_html/pdi/templates/404.php): Failed to open stream: No such file or directory in /home4/efsantos/public_html/pdi/public/index.php on line 32
+[20-Mar-2025 13:44:23 America/Fortaleza] PHP Fatal error:  Uncaught Error: Failed opening required '/home4/efsantos/public_html/pdi/templates/404.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home4/efsantos/public_html/pdi/public/index.php:32
+Stack trace:
+#0 {main}
+  thrown in /home4/efsantos/public_html/pdi/public/index.php on line 32
+[20-Mar-2025 13:44:28 America/Fortaleza] PHP Parse error:  syntax error, unexpected string content "", expecting "-" or identifier or variable or number in /home4/efsantos/public_html/pdi/templates/courses/index.php on line 12
+[20-Mar-2025 13:44:38 America/Fortaleza] PHP Parse error:  syntax error, unexpected string content "", expecting "-" or identifier or variable or number in /home4/efsantos/public_html/pdi/templates/pdi/index.php on line 33
+[20-Mar-2025 13:54:05 America/Fortaleza] PHP Parse error:  syntax error, unexpected string content "", expecting "-" or identifier or variable or number in /home4/efsantos/public_html/pdi/templates/pdi/index.php on line 33
+[20-Mar-2025 13:59:26 America/Fortaleza] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home4/efsantos/public_html/pdi/templates/base.php:1) in /home4/efsantos/public_html/pdi/templates/pdi/index.php on line 7
+[20-Mar-2025 13:59:34 America/Fortaleza] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home4/efsantos/public_html/pdi/templates/base.php:1) in /home4/efsantos/public_html/pdi/templates/pdi/index.php on line 7
+[20-Mar-2025 14:12:06 America/Fortaleza] PHP Fatal error:  Uncaught Error: Class "PDI\Auth\AuthHandler" not found in /home4/efsantos/public_html/pdi/templates/auth/login.php:10
+Stack trace:
+#0 /home4/efsantos/public_html/pdi/public/index.php(37): require_once()
+#1 {main}
+  thrown in /home4/efsantos/public_html/pdi/templates/auth/login.php on line 10
+[20-Mar-2025 14:16:24 America/Fortaleza] PHP Warning:  Trying to access array offset on value of type bool in /home4/efsantos/public_html/pdi/src/bootstrap.php on line 36
+[20-Mar-2025 14:16:24 America/Fortaleza] PHP Warning:  Trying to access array offset on value of type bool in /home4/efsantos/public_html/pdi/src/bootstrap.php on line 36
+[20-Mar-2025 14:16:24 America/Fortaleza] PHP Warning:  Trying to access array offset on value of type bool in /home4/efsantos/public_html/pdi/src/bootstrap.php on line 36
+[20-Mar-2025 14:16:24 America/Fortaleza] PHP Warning:  Trying to access array offset on value of type bool in /home4/efsantos/public_html/pdi/src/bootstrap.php on line 37
+[20-Mar-2025 14:16:24 America/Fortaleza] PHP Warning:  Trying to access array offset on value of type bool in /home4/efsantos/public_html/pdi/src/bootstrap.php on line 37
+[20-Mar-2025 14:16:26 America/Fortaleza] PHP Warning:  Trying to access array offset on value of type bool in /home4/efsantos/public_html/pdi/src/bootstrap.php on line 36
+[20-Mar-2025 14:16:26 America/Fortaleza] PHP Warning:  Trying to access array offset on value of type bool in /home4/efsantos/public_html/pdi/src/bootstrap.php on line 36
+[20-Mar-2025 14:16:26 America/Fortaleza] PHP Warning:  Trying to access array offset on value of type bool in /home4/efsantos/public_html/pdi/src/bootstrap.php on line 36
+[20-Mar-2025 14:16:26 America/Fortaleza] PHP Warning:  Trying to access array offset on value of type bool in /home4/efsantos/public_html/pdi/src/bootstrap.php on line 37
+[20-Mar-2025 14:16:26 America/Fortaleza] PHP Warning:  Trying to access array offset on value of type bool in /home4/efsantos/public_html/pdi/src/bootstrap.php on line 37
+[20-Mar-2025 14:16:28 America/Fortaleza] PHP Warning:  Trying to access array offset on value of type bool in /home4/efsantos/public_html/pdi/src/bootstrap.php on line 36
+[20-Mar-2025 14:16:28 America/Fortaleza] PHP Warning:  Trying to access array offset on value of type bool in /home4/efsantos/public_html/pdi/src/bootstrap.php on line 36
+[20-Mar-2025 14:16:28 America/Fortaleza] PHP Warning:  Trying to access array offset on value of type bool in /home4/efsantos/public_html/pdi/src/bootstrap.php on line 36
+[20-Mar-2025 14:16:28 America/Fortaleza] PHP Warning:  Trying to access array offset on value of type bool in /home4/efsantos/public_html/pdi/src/bootstrap.php on line 37
+[20-Mar-2025 14:16:28 America/Fortaleza] PHP Warning:  Trying to access array offset on value of type bool in /home4/efsantos/public_html/pdi/src/bootstrap.php on line 37
+[20-Mar-2025 14:16:38 America/Fortaleza] PHP Warning:  Trying to access array offset on value of type bool in /home4/efsantos/public_html/pdi/src/bootstrap.php on line 36
+[20-Mar-2025 14:16:38 America/Fortaleza] PHP Warning:  Trying to access array offset on value of type bool in /home4/efsantos/public_html/pdi/src/bootstrap.php on line 36
+[20-Mar-2025 14:16:38 America/Fortaleza] PHP Warning:  Trying to access array offset on value of type bool in /home4/efsantos/public_html/pdi/src/bootstrap.php on line 36
+[20-Mar-2025 14:16:38 America/Fortaleza] PHP Warning:  Trying to access array offset on value of type bool in /home4/efsantos/public_html/pdi/src/bootstrap.php on line 37
+[20-Mar-2025 14:16:38 America/Fortaleza] PHP Warning:  Trying to access array offset on value of type bool in /home4/efsantos/public_html/pdi/src/bootstrap.php on line 37
+[20-Mar-2025 14:21:37 America/Fortaleza] Template not found: /home4/efsantos/public_html/pdi/templates/auth/register.php
+[20-Mar-2025 14:21:37 America/Fortaleza] PHP Warning:  require_once(/home4/efsantos/public_html/pdi/templates/404.php): Failed to open stream: No such file or directory in /home4/efsantos/public_html/pdi/public/index.php on line 41
+[20-Mar-2025 14:21:37 America/Fortaleza] PHP Fatal error:  Uncaught Error: Failed opening required '/home4/efsantos/public_html/pdi/templates/404.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home4/efsantos/public_html/pdi/public/index.php:41
+Stack trace:
+#0 {main}
+  thrown in /home4/efsantos/public_html/pdi/public/index.php on line 41
+[20-Mar-2025 14:25:56 America/Fortaleza] Erro ao criar admin: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'admin@proftest.com.br' for key 'email'
+[20-Mar-2025 14:25:56 America/Fortaleza] Falha no login para o email: admin@proftest.com.br
+[20-Mar-2025 14:26:42 America/Fortaleza] Erro ao criar admin: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'admin@proftest.com.br' for key 'email'
+[20-Mar-2025 14:26:42 America/Fortaleza] Falha no login para o email: admin@proftest.com.br
+[20-Mar-2025 14:26:59 America/Fortaleza] Template not found: /home4/efsantos/public_html/pdi/templates/auth/register.php
+[20-Mar-2025 14:26:59 America/Fortaleza] PHP Warning:  require_once(/home4/efsantos/public_html/pdi/templates/404.php): Failed to open stream: No such file or directory in /home4/efsantos/public_html/pdi/public/index.php on line 41
+[20-Mar-2025 14:26:59 America/Fortaleza] PHP Fatal error:  Uncaught Error: Failed opening required '/home4/efsantos/public_html/pdi/templates/404.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home4/efsantos/public_html/pdi/public/index.php:41
+Stack trace:
+#0 {main}
+  thrown in /home4/efsantos/public_html/pdi/public/index.php on line 41
