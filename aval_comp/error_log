@@ -1,0 +1,10 @@
+[18-Mar-2024 17:37:16 America/Fortaleza] PHP Parse error:  Unclosed '{' on line 40 in /home4/efsantos/public_html/aval_comp/calculo.php on line 41
+[18-Mar-2024 17:37:19 America/Fortaleza] PHP Parse error:  Unclosed '{' on line 40 in /home4/efsantos/public_html/aval_comp/calculo.php on line 41
+[18-Mar-2024 17:37:38 America/Fortaleza] PHP Parse error:  Unclosed '{' on line 40 in /home4/efsantos/public_html/aval_comp/calculo.php on line 41
+[18-Mar-2024 18:02:04 America/Fortaleza] PHP Parse error:  syntax error, unexpected token "echo" in /home4/efsantos/public_html/aval_comp/resultado.php on line 40
+[18-Mar-2024 18:02:07 America/Fortaleza] PHP Parse error:  syntax error, unexpected token "echo" in /home4/efsantos/public_html/aval_comp/resultado.php on line 40
+[18-Mar-2024 18:02:37 America/Fortaleza] PHP Parse error:  syntax error, unexpected fully qualified name "\r", expecting "," or ";" in /home4/efsantos/public_html/aval_comp/resultado.php on line 39
+[18-Mar-2024 18:02:38 America/Fortaleza] PHP Parse error:  syntax error, unexpected fully qualified name "\r", expecting "," or ";" in /home4/efsantos/public_html/aval_comp/resultado.php on line 39
+[18-Mar-2024 18:13:25 America/Fortaleza] PHP Parse error:  syntax error, unexpected identifier "em" in /home4/efsantos/public_html/aval_comp/resultado.php on line 46
+[18-Mar-2024 18:14:14 America/Fortaleza] PHP Parse error:  syntax error, unexpected identifier "em" in /home4/efsantos/public_html/aval_comp/resultado.php on line 42
+[18-Mar-2024 18:14:15 America/Fortaleza] PHP Parse error:  syntax error, unexpected identifier "em" in /home4/efsantos/public_html/aval_comp/resultado.php on line 42
