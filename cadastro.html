@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thriveo — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════
+   TOKENS
+════════════════════════════════════════════════ */
+:root {
+  --white:  #FFFFFF;
+  --off:    #F5F4F1;
+  --paper:  #FAFAF8;
+  --black:  #08080A;
+  --navy:   #0C1A3A;
+  --navy2:  #162B5E;
+  --navy3:  #1E3A7A;
+  --red:    #C4102B;
+  --red2:   #E0142F;
+  --red3:   rgba(196,16,43,.07);
+  --g1:     #ECEAE5;
+  --g2:     #D8D6D0;
+  --g3:     #A8A6A0;
+  --g4:     #6A6864;
+  --text:   #17150F;
+  --sh:     0 1px 3px rgba(8,8,10,.05), 0 4px 16px rgba(8,8,10,.05);
+  --sh2:    0 4px 12px rgba(8,8,10,.08), 0 16px 48px rgba(8,8,10,.09);
+  --sh3:    0 20px 60px rgba(8,8,10,.18);
+  --r:      10px;
+  --r2:     14px;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; font-size:15px; }
+body {
+background: var(–off);
+color: var(–text);
+font-family: ‘Barlow’, sans-serif;
+font-weight: 400;
+line-height: 1.6;
+min-height: 100vh;
+-webkit-font-smoothing: antialiased;
+}
+button { font-family: inherit; cursor: pointer; }
+a { text-decoration: none; }
+textarea, input, select { font-family: inherit; }
+
+/* ════════════════════════════════════════════════
+TOPBAR
+════════════════════════════════════════════════ */
+.topbar {
+background: var(–white);
+border-bottom: 1px solid var(–g1);
+position: sticky; top:0; z-index:200;
+height: 58px;
+display: flex; align-items: center; gap: 0;
+padding: 0 28px;
+box-shadow: 0 1px 0 var(–g1), var(–sh);
+}
+
+.logo {
+font-family: ‘Playfair Display’, serif;
+font-size: 22px; font-weight: 900;
+color: var(–navy);
+letter-spacing: -.03em;
+margin-right: 32px;
+flex-shrink: 0;
+}
+.logo em { color: var(–red); font-style: normal; }
+
+.top-nav {
+display: flex; gap: 2px; flex:1;
+}
+.tnav {
+display: flex; align-items: center; gap: 6px;
+padding: 7px 14px; border-radius: 6px; border: none;
+background: none; font-size: 13px; font-weight: 500;
+color: var(–g4); transition: all .15s; white-space: nowrap;
+}
+.tnav:hover { background: var(–off); color: var(–navy); }
+.tnav.on { color: var(–navy); font-weight: 600; background: var(–off); }
+.tnav-icon { font-size: 15px; }
+
+.topbar-right {
+display: flex; align-items: center; gap: 10px; flex-shrink:0;
+}
+
+.share-btn {
+display: flex; align-items: center; gap: 7px;
+padding: 8px 18px; border: none; border-radius: 6px;
+background: var(–red); color: #fff;
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 13px; font-weight: 700;
+letter-spacing: .05em; text-transform: uppercase;
+transition: background .15s, transform .1s;
+}
+.share-btn:hover { background: var(–red2); transform: translateY(-1px); }
+.share-btn:active { transform: translateY(0); }
+
+.user-pill {
+display: flex; align-items: center; gap: 8px;
+padding: 4px 12px 4px 4px;
+border: 1px solid var(–g1); border-radius: 24px;
+background: var(–off); cursor: pointer;
+transition: border-color .15s;
+}
+.user-pill:hover { border-color: var(–g2); }
+.up-av {
+width: 28px; height: 28px; border-radius: 50%;
+background: var(–navy); display: grid; place-items: center;
+font-family: ‘Playfair Display’, serif;
+font-size: 13px; font-weight: 900; color: #fff;
+}
+.up-name { font-size: 13px; font-weight: 600; color: var(–navy); }
+
+/* ════════════════════════════════════════════════
+PAGE LAYOUT
+════════════════════════════════════════════════ */
+.page {
+max-width: 1300px; margin: 0 auto;
+padding: 28px 28px 60px;
+display: grid;
+grid-template-columns: 288px 1fr 272px;
+gap: 22px;
+align-items: start;
+}
+
+/* ════════════════════════════════════════════════
+SIDEBAR — PERFIL
+════════════════════════════════════════════════ */
+.side-l { position: sticky; top: 74px; display: flex; flex-direction: column; gap: 16px; }
+
+.profile-card {
+background: var(–white);
+border: 1px solid var(–g1);
+border-radius: var(–r2);
+overflow: hidden;
+box-shadow: var(–sh);
+}
+
+.pc-banner {
+height: 78px;
+background: linear-gradient(130deg, var(–navy) 0%, var(–navy2) 55%, var(–red) 130%);
+position: relative;
+}
+.pc-banner-pattern {
+position: absolute; inset: 0;
+background-image: repeating-linear-gradient(
+45deg, rgba(255,255,255,.03) 0, rgba(255,255,255,.03) 1px,
+transparent 0, transparent 50%
+);
+background-size: 12px 12px;
+}
+
+.pc-av-wrap {
+position: absolute; bottom: -26px; left: 18px;
+}
+.pc-av {
+width: 52px; height: 52px; border-radius: 50%;
+border: 3px solid var(–white);
+background: var(–navy);
+display: grid; place-items: center;
+font-family: ‘Playfair Display’, serif;
+font-size: 20px; font-weight: 900; color: #fff;
+overflow: hidden;
+}
+.pc-av img { width: 100%; height: 100%; object-fit: cover; }
+
+.pc-body { padding: 36px 18px 18px; }
+.pc-name {
+font-family: ‘Playfair Display’, serif;
+font-size: 17px; font-weight: 800; color: var(–navy);
+margin-bottom: 2px;
+}
+.pc-role { font-size: 12px; color: var(–g4); line-height: 1.4; margin-bottom: 10px; }
+
+.avail {
+display: inline-flex; align-items: center; gap: 5px;
+background: rgba(16,185,129,.08); border: 1px solid rgba(16,185,129,.2);
+color: #059669; font-size: 10px; font-weight: 700;
+letter-spacing: .06em; text-transform: uppercase;
+padding: 3px 9px; border-radius: 20px; margin-bottom: 14px;
+}
+.avail-dot {
+width: 5px; height: 5px; border-radius: 50%; background: #10b981;
+animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+.pc-stats {
+display: grid; grid-template-columns: repeat(3,1fr);
+gap: 6px; padding: 12px 0;
+border-top: 1px solid var(–g1);
+border-bottom: 1px solid var(–g1);
+margin-bottom: 14px;
+}
+.pcs { text-align: center; }
+.pcs-n {
+display: block;
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 22px; font-weight: 800; color: var(–navy);
+}
+.pcs-l { font-size: 10px; color: var(–g3); text-transform: uppercase; letter-spacing: .08em; }
+
+.pc-links { display: flex; flex-direction: column; gap: 7px; }
+.pc-link {
+display: flex; align-items: center; gap: 7px;
+font-size: 12px; color: var(–g4);
+transition: color .15s;
+}
+.pc-link:hover { color: var(–navy); }
+.pc-link svg { flex-shrink:0; }
+
+.pc-edit {
+display: block; width: 100%; margin-top: 14px;
+padding: 8px; border: 1px solid var(–g1);
+border-radius: 6px; background: none;
+font-size: 13px; font-weight: 500; color: var(–navy);
+transition: background .15s, border-color .15s;
+}
+.pc-edit:hover { background: var(–off); border-color: var(–g2); }
+
+/* Skills card */
+.scard {
+background: var(–white); border: 1px solid var(–g1);
+border-radius: var(–r2); padding: 18px;
+box-shadow: var(–sh);
+}
+.scard-hd {
+display: flex; align-items: center; justify-content: space-between;
+margin-bottom: 14px;
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 12px; font-weight: 700;
+letter-spacing: .12em; text-transform: uppercase; color: var(–g4);
+}
+.scard-add {
+width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(–g2);
+background: none; color: var(–navy); font-size: 16px; line-height: 1;
+display: grid; place-items: center;
+transition: background .15s, border-color .15s, transform .15s;
+}
+.scard-add:hover { background: var(–navy); color: #fff; border-color: var(–navy); transform: rotate(90deg); }
+
+.skill-wrap { display: flex; flex-wrap: wrap; gap: 5px; }
+.sk-pill {
+display: inline-flex; align-items: center; gap: 5px;
+padding: 4px 9px; border-radius: 4px;
+background: var(–off); border: 1px solid var(–g1);
+font-size: 11px; font-weight: 500; color: var(–navy);
+cursor: pointer; transition: all .15s;
+}
+.sk-pill:hover { background: var(–red3); border-color: rgba(196,16,43,.2); }
+.sk-dots { display: flex; gap: 2px; }
+.sk-d { width: 5px; height: 5px; border-radius: 50%; background: var(–g2); }
+.sk-d.on { background: var(–navy2); }
+
+/* Completeness */
+.prog-pct {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 26px; font-weight: 800; color: var(–navy);
+}
+.prog-bar {
+height: 5px; background: var(–g1); border-radius: 3px;
+margin: 8px 0; overflow: hidden;
+}
+.prog-fill {
+height: 100%; border-radius: 3px;
+background: linear-gradient(90deg, var(–navy) 0%, var(–red) 100%);
+transition: width .7s cubic-bezier(.22,1,.36,1);
+}
+.prog-msg { font-size: 12px; color: var(–g4); line-height: 1.55; margin-bottom: 12px; }
+.prog-items { display: flex; flex-direction: column; gap: 7px; }
+.pi {
+display: flex; align-items: center; gap: 8px;
+font-size: 12px; color: var(–g4);
+}
+.pi-ic {
+width: 16px; height: 16px; border-radius: 50%; flex-shrink:0;
+display: grid; place-items: center; font-size: 8px;
+}
+.pi-ic.yes { background: rgba(16,185,129,.12); color: #059669; }
+.pi-ic.no  { background: var(–g1); color: var(–g3); }
+.pi.done span { text-decoration: line-through; opacity: .45; }
+
+/* ════════════════════════════════════════════════
+MAIN
+════════════════════════════════════════════════ */
+.main { min-width: 0; }
+
+/* Hero banner */
+.hero {
+border-radius: var(–r2); overflow: hidden;
+background: var(–navy);
+padding: 28px 32px;
+margin-bottom: 22px;
+display: flex; align-items: center; justify-content: space-between; gap: 20px;
+position: relative;
+}
+.hero::before {
+content:’’; position:absolute; inset:0;
+background:
+radial-gradient(ellipse 60% 80% at 100% 50%, rgba(196,16,43,.25) 0%, transparent 60%),
+repeating-linear-gradient(
+-55deg, rgba(255,255,255,.018) 0, rgba(255,255,255,.018) 1px,
+transparent 0, transparent 30px
+);
+pointer-events: none;
+}
+.hero-txt { position:relative; z-index:1; }
+.hero-eyebrow {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 10px; color: rgba(255,255,255,.45);
+letter-spacing: .2em; text-transform: uppercase; margin-bottom: 8px;
+}
+.hero-h {
+font-family: ‘Playfair Display’, serif;
+font-size: 26px; font-weight: 900; color: #fff;
+line-height: 1.15; margin-bottom: 6px;
+}
+.hero-sub { font-size: 13px; color: rgba(255,255,255,.6); max-width: 380px; }
+.hero-cta { position:relative;z-index:1; display:flex; gap:10px; flex-shrink:0; }
+
+.btn-wh {
+padding: 10px 22px; border: none; border-radius: 6px;
+background: #fff; color: var(–navy);
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 13px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+transition: background .15s, transform .1s;
+}
+.btn-wh:hover { background: var(–off); transform: translateY(-1px); }
+
+.btn-ghost {
+padding: 10px 20px; border: 1px solid rgba(255,255,255,.25); border-radius: 6px;
+background: transparent; color: #fff;
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 13px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+transition: border-color .15s, background .15s;
+}
+.btn-ghost:hover { border-color: rgba(255,255,255,.55); background: rgba(255,255,255,.06); }
+
+/* Tabs */
+.tabs {
+display: flex; gap: 3px;
+background: var(–white);
+border: 1px solid var(–g1); border-radius: 8px;
+padding: 4px; margin-bottom: 22px;
+box-shadow: var(–sh);
+overflow-x: auto;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+flex: 0 0 auto; padding: 8px 16px; border: none; border-radius: 5px;
+background: none;
+font-size: 13px; font-weight: 500; color: var(–g4);
+transition: all .15s; white-space: nowrap;
+}
+.tab:hover { color: var(–navy); background: var(–off); }
+.tab.on { background: var(–navy); color: #fff; font-weight: 600; }
+
+/* ────── FEED ────── */
+.composer {
+background: var(–white); border: 1px solid var(–g1);
+border-radius: var(–r2); padding: 16px;
+margin-bottom: 14px; box-shadow: var(–sh);
+}
+.comp-row { display: flex; gap: 12px; align-items: flex-start; }
+.comp-av {
+width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+background: var(–navy); display: grid; place-items: center;
+font-family: ‘Playfair Display’, serif;
+font-size: 15px; font-weight: 900; color: #fff;
+}
+.comp-ta {
+flex: 1; border: 1px solid var(–g1); border-radius: 8px;
+padding: 10px 13px;
+font-size: 14px; color: var(–text); background: var(–off);
+resize: none; outline: none; min-height: 42px;
+transition: border-color .15s, background .15s, min-height .2s;
+}
+.comp-ta:focus { border-color: var(–navy); background: var(–white); min-height: 80px; }
+.comp-foot {
+display: flex; align-items: center; justify-content: space-between;
+margin-top: 10px;
+}
+.type-row { display: flex; gap: 5px; }
+.type-p {
+padding: 4px 10px; border-radius: 20px;
+border: 1px solid var(–g1); background: none;
+font-size: 11px; font-weight: 600; color: var(–g4);
+transition: all .15s;
+}
+.type-p:hover,.type-p.on { background: var(–navy); color: #fff; border-color: var(–navy); }
+.pub-btn {
+padding: 8px 20px; border: none; border-radius: 6px;
+background: var(–navy); color: #fff;
+font-size: 13px; font-weight: 600;
+transition: background .15s;
+}
+.pub-btn:hover { background: var(–navy2); }
+
+.feed-card {
+background: var(–white); border: 1px solid var(–g1);
+border-radius: var(–r2); padding: 18px 20px;
+margin-bottom: 12px; box-shadow: var(–sh);
+animation: up .35s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes up { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+
+.fc-author { display: flex; align-items: center; gap: 10px; margin-bottom: 13px; }
+.fc-av {
+width: 36px; height: 36px; border-radius: 50%; flex-shrink:0;
+display: grid; place-items: center;
+font-family: ‘Playfair Display’, serif;
+font-size: 14px; font-weight: 900; color: #fff;
+}
+.fc-name { font-size: 14px; font-weight: 600; color: var(–navy); }
+.fc-meta { font-size: 11px; color: var(–g3); }
+.fc-badge {
+margin-left: auto; padding: 2px 8px; border-radius: 3px;
+font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+}
+.b-up   { background: rgba(12,26,58,.07); color: var(–navy); }
+.b-win  { background: rgba(196,16,43,.07); color: var(–red); }
+.b-q    { background: rgba(217,119,6,.09); color: #92400e; }
+.fc-txt { font-size: 14px; color: var(–text); line-height: 1.65; margin-bottom: 13px; }
+.fc-acts {
+display: flex; gap: 14px;
+padding-top: 11px; border-top: 1px solid var(–g1);
+}
+.fc-act {
+display: flex; align-items: center; gap: 5px;
+background: none; border: none;
+font-size: 12px; font-weight: 500; color: var(–g4);
+padding: 4px 0; transition: color .15s;
+}
+.fc-act:hover { color: var(–navy); }
+.fc-act.liked { color: var(–red); }
+
+/* ────── BLOG ────── */
+.sec-hd {
+display: flex; align-items: center; justify-content: space-between;
+margin-bottom: 16px;
+}
+.sec-title {
+font-family: ‘Playfair Display’, serif;
+font-size: 22px; font-weight: 900; color: var(–navy);
+letter-spacing: -.025em;
+}
+.sec-title em { color: var(–red); font-style: normal; }
+
+.btn-red {
+padding: 8px 18px; border: none; border-radius: 6px;
+background: var(–red); color: #fff;
+font-family: ‘Barlow Condensed’, sans-serif;
+font-size: 13px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+transition: background .15s, transform .1s;
+}
+.btn-red:hover { background: var(–red2); transform: translateY(-1px); }
+
+.blog-g { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.bc {
+background: var(–white); border: 1px solid var(–g1);
+border-radius: var(–r2); overflow: hidden;
+box-shadow: var(–sh); cursor: pointer;
+transition: transform .2s, box-shadow .2s;
+animation: up .4s ease both;
+}
+.bc:hover { transform: translateY(-3px); box-shadow: var(–sh2); }
+.bc-img {
+height: 128px; overflow: hidden; position: relative;
+background: var(–navy);
+}
+.bc-img-inner {
+width:100%; height:100%; display:grid; place-items:center;
+font-size: 42px;
+background: linear-gradient(130deg, var(–navy) 0%, var(–navy2) 50%, #1a116a 100%);
+}
+.bc-body { padding: 14px; }
+.bc-tags { display:flex; gap:5px; flex-wrap:wrap; margin-bottom:7px; }
+.bc-tag {
+font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+color: var(–red); background: var(–red3); padding: 2px 7px; border-radius: 2px;
+}
+.bc-title {
+font-family: ‘Playfair Display’, serif;
+font-size: 15px; font-weight: 800; color: var(–navy);
+line-height: 1.25; margin-bottom: 8px;
+}
+.bc-meta { font-size: 11px; color: var(–g3); display:flex; gap:10px; align-items:center; }
+
+/* ────── PODCAST ────── */
+.ep-list { display: flex; flex-direction: column; gap: 11px; }
+.ep {
+background: var(–white); border: 1px solid var(–g1);
+border-radius: var(–r2); padding: 14px 16px;
+display: flex; align-items: center; gap: 14px;
+box-shadow: var(–sh); cursor: pointer;
+transition: transform .15s, box-shadow .15s;
+animation: up .35s ease both;
+}
+.ep:hover { transform: translateY(-2px); box-shadow: var(–sh2); }
+.ep-cover {
+width: 60px; height: 60px; border-radius: 8px; flex-shrink:0;
+display: grid; place-items: center; font-size: 26px; overflow: hidden;
+}
+.ep-body { flex:1; min-width:0; }
+.ep-num { font-family:‘JetBrains Mono’,monospace; font-size:10px; color:var(–g3); margin-bottom:3px; }
+.ep-title {
+font-family: ‘Playfair Display’, serif;
+font-size: 15px; font-weight: 800; color: var(–navy);
+white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:3px;
+}
+.ep-desc { font-size:12px; color:var(–g4); line-height:1.4; }
+.ep-meta { display:flex; gap:10px; margin-top:7px; font-size:11px; color:var(–g3); }
+.ep-play {
+width:38px; height:38px; border-radius:50%; flex-shrink:0;
+background:var(–navy); color:#fff; border:none;
+display:grid; place-items:center; font-size:13px;
+transition:background .15s, transform .1s;
+}
+.ep-play:hover { background:var(–red); transform:scale(1.1); }
+
+/* ────── TRAININGS ────── */
+.tr-g { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.trc {
+background:var(–white); border:1px solid var(–g1);
+border-radius:var(–r2); overflow:hidden;
+box-shadow:var(–sh); cursor:pointer;
+transition:transform .2s, box-shadow .2s;
+animation:up .4s ease both;
+}
+.trc:hover { transform:translateY(-3px); box-shadow:var(–sh2); }
+.trc-top {
+height: 96px; position:relative;
+display:grid; place-items:center; font-size:36px;
+background: linear-gradient(130deg, var(–navy) 0%, var(–red) 140%);
+}
+.trc-top img { position:absolute;inset:0;width:100%;height:100%;object-fit:cover; }
+.trc-lv {
+position:absolute; top:8px; right:8px;
+font-family:‘JetBrains Mono’,monospace;
+font-size:9px; font-weight:500; letter-spacing:.1em; text-transform:uppercase;
+padding:3px 7px; border-radius:2px;
+}
+.lv-b { background:rgba(16,185,129,.18); color:#065f46; }
+.lv-i { background:rgba(217,119,6,.18);  color:#92400e; }
+.lv-a { background:rgba(196,16,43,.18);  color:var(–red); }
+.trc-body { padding:13px; }
+.trc-cat {
+font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+color:var(–red); margin-bottom:5px;
+}
+.trc-title {
+font-family:‘Playfair Display’,serif;
+font-size:14px; font-weight:800; color:var(–navy);
+line-height:1.25; margin-bottom:8px;
+}
+.trc-row {
+display:flex; align-items:center; justify-content:space-between;
+font-size:12px; color:var(–g3); margin-bottom:10px;
+}
+.trc-price {
+font-family:‘Barlow Condensed’,sans-serif;
+font-size:18px; font-weight:800; color:var(–navy);
+}
+.trc-price.free { color:#059669; }
+.enroll {
+display:block; width:100%; padding:9px;
+background:var(–navy); color:#fff; border:none; border-radius:6px;
+font-size:13px; font-weight:600; transition:background .15s;
+}
+.enroll:hover { background:var(–navy2); }
+.enroll.done { background:rgba(16,185,129,.1); color:#059669; }
+
+/* ────── PROFILE EDIT ────── */
+.pf-form {
+background:var(–white); border:1px solid var(–g1);
+border-radius:var(–r2); padding:28px; box-shadow:var(–sh);
+}
+.fl { margin-bottom:14px; }
+.fl label {
+display:block; font-size:11px; font-weight:700;
+letter-spacing:.08em; text-transform:uppercase;
+color:var(–g4); margin-bottom:5px;
+}
+.fi, .ft, .fs {
+width:100%; padding:10px 12px;
+border:1px solid var(–g1); border-radius:6px;
+font-size:14px; color:var(–text); background:var(–white);
+outline:none; transition:border-color .15s, box-shadow .15s;
+}
+.fi:focus,.ft:focus,.fs:focus {
+border-color:var(–navy);
+box-shadow:0 0 0 3px rgba(12,26,58,.07);
+}
+.ft { resize:vertical; min-height:96px; }
+.f2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.fcheck {
+display:flex; align-items:center; gap:8px;
+font-size:13px; color:var(–g4); cursor:pointer; margin-top:4px;
+}
+.fcheck input { width:15px; height:15px; accent-color:var(–navy); cursor:pointer; }
+.f-acts { display:flex; gap:8px; justify-content:flex-end; margin-top:20px; }
+
+.btn-nav {
+padding:9px 22px; border:none; border-radius:6px;
+background:var(–navy); color:#fff;
+font-size:13px; font-weight:600; transition:background .15s;
+}
+.btn-nav:hover { background:var(–navy2); }
+.btn-sec {
+padding:9px 18px; border:1px solid var(–g1); border-radius:6px;
+background:none; font-size:13px; font-weight:500; color:var(–g4);
+transition:background .15s, border-color .15s;
+}
+.btn-sec:hover { background:var(–off); border-color:var(–g2); }
+
+/* inline form */
+.ifrm {
+background:var(–off); border:1px solid var(–g1);
+border-radius:var(–r); padding:20px; margin-bottom:18px;
+display:none;
+}
+.ifrm.open { display:block; animation:up .3s ease both; }
+
+/* empty */
+.empty {
+text-align:center; padding:48px 20px;
+color:var(–g3); grid-column:1/-1;
+}
+.empty-i { font-size:44px; margin-bottom:12px; }
+.empty-t { font-size:14px; line-height:1.6; }
+
+/* ════════════════════════════════════════════════
+SIDEBAR RIGHT
+════════════════════════════════════════════════ */
+.side-r { position:sticky; top:74px; display:flex; flex-direction:column; gap:16px; }
+
+.widget {
+background:var(–white); border:1px solid var(–g1);
+border-radius:var(–r2); padding:18px; box-shadow:var(–sh);
+}
+.wt {
+font-family:‘Barlow Condensed’,sans-serif;
+font-size:12px; font-weight:700; letter-spacing:.12em;
+text-transform:uppercase; color:var(–g4); margin-bottom:14px;
+}
+
+.tag-cloud { display:flex; flex-wrap:wrap; gap:5px; }
+.tc {
+font-size:12px; font-weight:500; padding:4px 9px;
+border:1px solid var(–g1); border-radius:4px; color:var(–navy);
+cursor:pointer; transition:all .15s;
+}
+.tc:hover { background:var(–navy); color:#fff; border-color:var(–navy); }
+
+.job-item {
+padding:9px 10px; border:1px solid var(–g1); border-radius:6px;
+margin-bottom:8px; transition:border-color .15s, background .15s; cursor:pointer;
+}
+.job-item:hover { border-color:var(–g2); background:var(–off); }
+.job-title { font-size:13px; font-weight:600; color:var(–navy); margin-bottom:2px; }
+.job-meta  { font-size:11px; color:var(–g4); }
+.job-sal   { font-size:11px; color:var(–red); font-weight:600; }
+
+.res-link {
+display:block; font-size:13px; color:var(–navy);
+padding:7px 0; border-bottom:1px solid var(–g1);
+transition:color .15s, padding-left .15s;
+}
+.res-link:hover { color:var(–red); padding-left:4px; }
+.res-link:last-child { border-bottom:none; }
+
+/* ════════════════════════════════════════════════
+MODAL COMPARTILHAR
+════════════════════════════════════════════════ */
+.overlay {
+position:fixed; inset:0; z-index:500;
+background:rgba(8,8,10,.55); backdrop-filter:blur(5px);
+display:none; place-items:center;
+}
+.overlay.open { display:grid; }
+.modal {
+background:var(–white); border-radius:16px; padding:36px;
+max-width:460px; width:92%; box-shadow:var(–sh3);
+animation:up .35s cubic-bezier(.22,1,.36,1) both;
+}
+.modal-icon { font-size:52px; text-align:center; margin-bottom:14px; }
+.modal-h {
+font-family:‘Playfair Display’,serif;
+font-size:24px; font-weight:900; color:var(–navy);
+text-align:center; margin-bottom:6px;
+}
+.modal-sub { font-size:13px; color:var(–g4); text-align:center; line-height:1.65; margin-bottom:24px; }
+.url-box {
+display:flex; gap:8px; align-items:center;
+background:var(–off); border:1px solid var(–g1);
+border-radius:8px; padding:10px 14px; margin-bottom:18px;
+}
+.url-txt {
+flex:1; font-family:‘JetBrains Mono’,monospace;
+font-size:12px; color:var(–navy);
+white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.copy-b {
+padding:5px 13px; background:var(–navy); color:#fff;
+border:none; border-radius:4px; font-size:12px; font-weight:700;
+flex-shrink:0; transition:background .15s;
+}
+.copy-b:hover { background:var(–red); }
+.soc-row { display:flex; gap:8px; justify-content:center; margin-bottom:18px; }
+.soc {
+display:flex; align-items:center; gap:7px;
+padding:9px 16px; border:none; border-radius:7px;
+font-size:13px; font-weight:600; transition:transform .1s;
+}
+.soc:hover { transform:translateY(-2px); }
+.soc-li { background:#0A66C2; color:#fff; }
+.soc-wa { background:#25D366; color:#fff; }
+.soc-x  { background:#000; color:#fff; }
+.modal-cl {
+display:block; width:100%; padding:10px;
+background:none; border:1px solid var(–g1); border-radius:7px;
+font-size:13px; color:var(–g4); transition:background .15s;
+}
+.modal-cl:hover { background:var(–off); }
+
+/* ════════════════════════════════════════════════
+SKILL FORM INLINE
+════════════════════════════════════════════════ */
+.sk-ifrm { margin-bottom:12px; display:none; animation:up .2s ease both; }
+.sk-ifrm.open { display:block; }
+
+/* ════════════════════════════════════════════════
+TOAST
+════════════════════════════════════════════════ */
+.toast {
+position:fixed; bottom:24px; right:24px;
+padding:12px 20px; border-radius:8px;
+font-size:13px; font-weight:600; color:#fff;
+background:var(–navy); box-shadow:var(–sh2);
+transform:translateY(80px); opacity:0;
+transition:all .3s cubic-bezier(.22,1,.36,1); z-index:999;
+}
+.toast.show { transform:translateY(0); opacity:1; }
+.toast.ok   { background:#059669; }
+
+/* ════════════════════════════════════════════════
+RESPONSIVE
+════════════════════════════════════════════════ */
+@media(max-width:1080px){
+.page { grid-template-columns:260px 1fr; }
+.side-r { display:none; }
+}
+@media(max-width:720px){
+.page { grid-template-columns:1fr; padding:14px; }
+.side-l { position:static; }
+.blog-g,.tr-g { grid-template-columns:1fr; }
+.hero { flex-direction:column; align-items:flex-start; }
+.top-nav { display:none; }
+.f2 { grid-template-columns:1fr; }
+}
+</style>
+
+</head>
+<body>
+
+<!-- ════ TOPBAR ════ -->
+
+<nav class="topbar">
+  <span class="logo">thriveo<em>.</em></span>
+
+  <div class="top-nav">
+    <button class="tnav on" onclick="go('feed')"><span class="tnav-icon">🏠</span> Feed</button>
+    <button class="tnav"    onclick="go('blog')"><span class="tnav-icon">✍️</span> Blog</button>
+    <button class="tnav"    onclick="go('podcast')"><span class="tnav-icon">🎙️</span> Podcast</button>
+    <button class="tnav"    onclick="go('tr')"><span class="tnav-icon">🎓</span> Treinamentos</button>
+    <button class="tnav"    onclick="go('profile')"><span class="tnav-icon">👤</span> Perfil</button>
+  </div>
+
+  <div class="topbar-right">
+    <button class="share-btn" onclick="openShare()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+      Compartilhar Perfil
+    </button>
+    <div class="user-pill" onclick="go('profile')">
+      <div class="up-av" id="topAv">C</div>
+      <span class="up-name" id="topNm">Carla Souza</span>
+    </div>
+  </div>
+</nav>
+
+<!-- ════ PAGE ════ -->
+
+<div class="page">
+
+<!-- ── SIDEBAR ESQUERDA ── -->
+
+<aside class="side-l">
+
+  <!-- Perfil -->
+
+  <div class="profile-card">
+    <div class="pc-banner">
+      <div class="pc-banner-pattern"></div>
+      <div class="pc-av-wrap">
+        <div class="pc-av" id="sideAv">C</div>
+      </div>
+    </div>
+    <div class="pc-body">
+      <div class="pc-name" id="sideNm">Carla Souza</div>
+      <div class="pc-role" id="sideRole">AI Engineer · LLMs · RAG · Python</div>
+      <div class="avail"><div class="avail-dot"></div>Disponível para projetos</div>
+      <div class="pc-stats">
+        <div class="pcs"><span class="pcs-n" id="sNp">4</span><span class="pcs-l">Posts</span></div>
+        <div class="pcs"><span class="pcs-n" id="sNe">3</span><span class="pcs-l">Eps.</span></div>
+        <div class="pcs"><span class="pcs-n" id="sNv">1.2k</span><span class="pcs-l">Views</span></div>
+      </div>
+      <div class="pc-links">
+        <span class="pc-link">📍 São Paulo, SP</span>
+        <span class="pc-link">🏢 Freelancer · IA Generativa</span>
+        <a href="https://linkedin.com" target="_blank" class="pc-link">
+          <svg width="12" height="12" fill="#0A66C2" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+        <a href="https://github.com" target="_blank" class="pc-link">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+      <button class="pc-edit" onclick="go('profile')">✏️ Editar perfil</button>
+    </div>
+  </div>
+
+  <!-- Skills -->
+
+  <div class="scard">
+    <div class="scard-hd">
+      Habilidades IA
+      <button class="scard-add" onclick="toggleSkFrm()" title="Adicionar">+</button>
+    </div>
+    <div class="sk-ifrm" id="skFrm">
+      <input type="text" id="skNm" class="fi" placeholder="Ex: Prompt Engineering" style="margin-bottom:6px">
+      <select id="skLv" class="fs" style="margin-bottom:6px">
+        <option value="1">⭐ Básico</option>
+        <option value="2">⭐⭐ Iniciante</option>
+        <option value="3" selected>⭐⭐⭐ Intermediário</option>
+        <option value="4">⭐⭐⭐⭐ Avançado</option>
+        <option value="5">⭐⭐⭐⭐⭐ Expert</option>
+      </select>
+      <button onclick="addSkill()" class="btn-nav" style="width:100%;padding:7px 0">Adicionar</button>
+    </div>
+    <div class="skill-wrap" id="skillsEl"></div>
+  </div>
+
+  <!-- Completeness -->
+
+  <div class="scard">
+    <div class="scard-hd">Completar Perfil</div>
+    <div class="prog-pct" id="pctEl">78%</div>
+    <div class="prog-bar"><div class="prog-fill" id="fillEl" style="width:78%"></div></div>
+    <div class="prog-msg">Perfis completos recebem <strong>3× mais contatos</strong> de recrutadores.</div>
+    <div class="prog-items" id="progItems"></div>
+  </div>
+
+</aside>
+
+<!-- ── MAIN ── -->
+
+<main class="main">
+
+  <!-- Hero -->
+
+  <div class="hero">
+    <div class="hero-txt">
+      <div class="hero-eyebrow">// seu perfil público na plataforma</div>
+      <div class="hero-h">Mostre sua expertise<br>em IA para o mercado</div>
+      <div class="hero-sub">Seja encontrado pelas melhores empresas de tecnologia do Brasil. 180+ recrutadores buscam talentos na Thriveo.</div>
+    </div>
+    <div class="hero-cta">
+      <button class="btn-wh" onclick="openShare()">🔗 Gerar link</button>
+      <button class="btn-ghost" onclick="go('profile')">✏️ Completar</button>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+
+  <div class="tabs">
+    <button class="tab on"  id="tab-feed"    onclick="go('feed')">🏠 Feed</button>
+    <button class="tab"     id="tab-blog"    onclick="go('blog')">✍️ Meu Blog</button>
+    <button class="tab"     id="tab-podcast" onclick="go('podcast')">🎙️ Podcast</button>
+    <button class="tab"     id="tab-tr"      onclick="go('tr')">🎓 Treinamentos</button>
+    <button class="tab"     id="tab-profile" onclick="go('profile')">👤 Perfil</button>
+  </div>
+
+  <!-- ── FEED ── -->
+
+  <section id="s-feed">
+    <div class="composer">
+      <div class="comp-row">
+        <div class="comp-av" id="compAv">C</div>
+        <textarea class="comp-ta" id="feedTa" placeholder="Compartilhe um insight, conquista ou dúvida sobre IA..."></textarea>
+      </div>
+      <div class="comp-foot">
+        <div class="type-row">
+          <button class="type-p on" onclick="setPt(this,'update')">💬 Update</button>
+          <button class="type-p"    onclick="setPt(this,'win')">🏆 Conquista</button>
+          <button class="type-p"    onclick="setPt(this,'q')">❓ Dúvida</button>
+        </div>
+        <button class="pub-btn" onclick="postFeed()">Publicar</button>
+      </div>
+    </div>
+    <div id="feedEl"></div>
+  </section>
+
+  <!-- ── BLOG ── -->
+
+  <section id="s-blog" style="display:none">
+    <div class="sec-hd">
+      <h2 class="sec-title">Meu <em>Blog</em></h2>
+      <button class="btn-red" onclick="tg('blogFrm')">+ Novo Post</button>
+    </div>
+    <div class="ifrm" id="blogFrm">
+      <div class="fl"><label>Título</label><input type="text" id="bTitle" class="fi" placeholder="Ex: Como construir um agente RAG com LangChain"></div>
+      <div class="fl"><label>Conteúdo</label><textarea id="bBody" class="ft" style="min-height:140px" placeholder="Escreva seu artigo aqui..."></textarea></div>
+      <div class="f2">
+        <div class="fl"><label>Tags</label><input type="text" id="bTags" class="fi" placeholder="RAG, LangChain, Python"></div>
+        <div class="fl"><label>URL da Capa</label><input type="text" id="bCover" class="fi" placeholder="https://..."></div>
+      </div>
+      <div class="f-acts">
+        <button class="btn-sec" onclick="tg('blogFrm')">Cancelar</button>
+        <button class="btn-nav" onclick="addPost()">Publicar</button>
+      </div>
+    </div>
+    <div class="blog-g" id="blogEl"></div>
+  </section>
+
+  <!-- ── PODCAST ── -->
+
+  <section id="s-podcast" style="display:none">
+    <div class="sec-hd">
+      <h2 class="sec-title">Meu <em>Podcast</em></h2>
+      <button class="btn-red" onclick="tg('epFrm')">+ Novo Episódio</button>
+    </div>
+    <div class="ifrm" id="epFrm">
+      <div class="fl"><label>Título</label><input type="text" id="epTitle" class="fi" placeholder="Ex: Ep. 04 — O Futuro dos AI Agents"></div>
+      <div class="fl"><label>Descrição</label><textarea id="epDesc" class="ft" style="min-height:70px" placeholder="Sobre o episódio..."></textarea></div>
+      <div class="f2">
+        <div class="fl"><label>Duração</label><input type="text" id="epDur" class="fi" placeholder="Ex: 42min"></div>
+        <div class="fl"><label>Link Spotify</label><input type="text" id="epSp" class="fi" placeholder="https://open.spotify.com/..."></div>
+      </div>
+      <div class="f-acts">
+        <button class="btn-sec" onclick="tg('epFrm')">Cancelar</button>
+        <button class="btn-nav" onclick="addEp()">Publicar</button>
+      </div>
+    </div>
+    <div class="ep-list" id="epEl"></div>
+  </section>
+
+  <!-- ── TREINAMENTOS ── -->
+
+  <section id="s-tr" style="display:none">
+    <div class="sec-hd">
+      <h2 class="sec-title">Treinamentos <em>IA</em></h2>
+      <button class="btn-red" onclick="tg('trFrm')">+ Criar Curso</button>
+    </div>
+    <div class="ifrm" id="trFrm">
+      <div class="fl"><label>Título do Curso</label><input type="text" id="trTitle" class="fi" placeholder="Ex: LLMs na Prática: do Prompt ao Deploy"></div>
+      <div class="fl"><label>Descrição</label><textarea id="trDesc" class="ft" style="min-height:70px" placeholder="O que o aluno vai aprender..."></textarea></div>
+      <div class="f2">
+        <div class="fl"><label>Categoria</label>
+          <select id="trCat" class="fs">
+            <option>IA Generativa</option><option>Machine Learning</option>
+            <option>Prompt Engineering</option><option>MLOps</option>
+            <option>RAG & Vector DB</option><option>Agentes de IA</option>
+          </select>
+        </div>
+        <div class="fl"><label>Nível</label>
+          <select id="trLv" class="fs">
+            <option value="b">Iniciante</option>
+            <option value="i">Intermediário</option>
+            <option value="a">Avançado</option>
+          </select>
+        </div>
+      </div>
+      <div class="f2">
+        <div class="fl"><label>Preço (R$) — 0 para gratuito</label><input type="number" id="trPrice" class="fi" value="0" min="0"></div>
+        <div class="fl"><label>Carga horária</label><input type="text" id="trDur" class="fi" placeholder="Ex: 8h"></div>
+      </div>
+      <div class="f-acts">
+        <button class="btn-sec" onclick="tg('trFrm')">Cancelar</button>
+        <button class="btn-nav" onclick="addTr()">Publicar</button>
+      </div>
+    </div>
+    <div class="tr-g" id="trEl"></div>
+  </section>
+
+  <!-- ── PERFIL EDIT ── -->
+
+  <section id="s-profile" style="display:none">
+    <div class="sec-hd">
+      <h2 class="sec-title">Editar <em>Perfil</em></h2>
+      <button class="btn-nav" onclick="saveProfile()">💾 Salvar</button>
+    </div>
+    <div class="pf-form">
+      <div class="fl"><label>Nome completo</label><input type="text" id="pfName" class="fi" value="Carla Souza"></div>
+      <div class="fl"><label>Headline</label><input type="text" id="pfHeadline" class="fi" value="AI Engineer · LLMs · RAG · Python"></div>
+      <div class="fl"><label>Bio</label><textarea id="pfBio" class="ft">Especialista em IA Generativa com 4 anos de experiência. Construo aplicações com LLMs, RAG e Agentes de IA. Apaixonada por NLP e Open Source.</textarea></div>
+      <div class="f2">
+        <div class="fl"><label>Localização</label><input type="text" id="pfLoc" class="fi" value="São Paulo, SP"></div>
+        <div class="fl"><label>Empresa</label><input type="text" id="pfCo" class="fi" value="Freelancer · IA Generativa"></div>
+      </div>
+      <div class="f2">
+        <div class="fl"><label>Anos de experiência em IA</label><input type="number" id="pfYrs" class="fi" value="4" min="0"></div>
+        <div class="fl"><label>Especialidades (vírgulas)</label><input type="text" id="pfSpec" class="fi" value="LLM, RAG, Fine-tuning, Agents, NLP"></div>
+      </div>
+      <div class="f2">
+        <div class="fl"><label>LinkedIn</label><input type="text" id="pfLi" class="fi" placeholder="https://linkedin.com/in/..."></div>
+        <div class="fl"><label>GitHub</label><input type="text" id="pfGh" class="fi" placeholder="https://github.com/..."></div>
+      </div>
+      <label class="fcheck"><input type="checkbox" id="pfAvail" checked> Disponível para novas oportunidades</label>
+      <label class="fcheck" style="margin-top:8px"><input type="checkbox" id="pfPublic" checked> Perfil público (visível para empresas)</label>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── SIDEBAR DIREITA ── -->
+
+<aside class="side-r">
+
+  <div class="widget">
+    <div class="wt">🔥 Trending em IA</div>
+    <div class="tag-cloud">
+      <span class="tc">GPT-4o</span><span class="tc">RAG</span>
+      <span class="tc">LangChain</span><span class="tc">Claude API</span>
+      <span class="tc">Fine-tuning</span><span class="tc">Agents</span>
+      <span class="tc">Vector DB</span><span class="tc">MLOps</span>
+      <span class="tc">Gemini</span><span class="tc">Ollama</span>
+      <span class="tc">Whisper</span><span class="tc">Mistral</span>
+    </div>
+  </div>
+
+  <div class="widget">
+    <div class="wt">🎯 Vagas em IA</div>
+    <div class="job-item">
+      <div class="job-title">AI Engineer Sênior</div>
+      <div class="job-meta">Nubank · Remoto</div>
+      <div class="job-sal">R$ 22k – 28k/mês</div>
+    </div>
+    <div class="job-item">
+      <div class="job-title">ML Engineer</div>
+      <div class="job-meta">iFood · Híbrido SP</div>
+      <div class="job-sal">R$ 18k – 24k/mês</div>
+    </div>
+    <div class="job-item">
+      <div class="job-title">Prompt Engineer</div>
+      <div class="job-meta">Itaú · Remoto</div>
+      <div class="job-sal">R$ 12k – 16k/mês</div>
+    </div>
+    <div class="job-item">
+      <div class="job-title">LLM Research Scientist</div>
+      <div class="job-meta">Totvs · SP</div>
+      <div class="job-sal">R$ 24k – 32k/mês</div>
+    </div>
+  </div>
+
+  <div class="widget">
+    <div class="wt">📚 Recursos IA</div>
+    <a href="https://platform.openai.com/docs" target="_blank" class="res-link">📖 OpenAI Docs</a>
+    <a href="https://docs.anthropic.com" target="_blank" class="res-link">🤖 Claude API</a>
+    <a href="https://huggingface.co" target="_blank" class="res-link">🤗 Hugging Face</a>
+    <a href="https://python.langchain.com" target="_blank" class="res-link">⛓️ LangChain Docs</a>
+    <a href="https://arxiv.org/list/cs.AI/recent" target="_blank" class="res-link">📄 arXiv IA Papers</a>
+    <a href="https://llm.datasette.io" target="_blank" class="res-link">🗄️ LLM CLI Tool</a>
+  </div>
+
+</aside>
+</div>
+
+<!-- ════ MODAL COMPARTILHAR ════ -->
+
+<div class="overlay" id="shareOv" onclick="closeShare(event)">
+  <div class="modal">
+    <div class="modal-icon">🚀</div>
+    <h3 class="modal-h">Perfil no ar!</h3>
+    <p class="modal-sub">Compartilhe o link com recrutadores e em comunidades de IA. <strong>180+ empresas</strong> estão buscando talentos agora.</p>
+    <div class="url-box">
+      <span class="url-txt" id="shareUrlEl">https://thriveo.com.br/p/carla-souza-a7f3d2</span>
+      <button class="copy-b" onclick="copyUrl()">Copiar</button>
+    </div>
+    <div class="soc-row">
+      <button class="soc soc-li" onclick="soc('li')">
+        <svg width="13" height="13" fill="#fff" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </button>
+      <button class="soc soc-wa" onclick="soc('wa')">
+        <svg width="13" height="13" fill="#fff" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </button>
+      <button class="soc soc-x" onclick="soc('x')">
+        <svg width="13" height="13" fill="#fff" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        X / Twitter
+      </button>
+    </div>
+    <button class="modal-cl" onclick="closeShare()">Fechar</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════
+//  ESTADO MOCK
+// ══════════════════════════════════════════════
+const USER = {
+  name: 'Carla Souza', initial: 'C',
+  role: 'AI Engineer · LLMs · RAG · Python',
+  location: 'São Paulo, SP', company: 'Freelancer · IA Generativa',
+  available: true, public: true,
+  posts: 4, eps: 3, views: '1.2k'
+};
+
+const SKILLS = [
+  {id:1,name:'LLM Fine-tuning',lv:5},{id:2,name:'RAG',lv:4},
+  {id:3,name:'LangChain',lv:4},{id:4,name:'Python',lv:5},
+  {id:5,name:'Prompt Eng.',lv:4},{id:6,name:'MLOps',lv:3},
+];
+
+const FEED = [
+  {id:1,author:'Carla Souza',color:'#0C1A3A',initial:'C',role:'AI Engineer',type:'win',
+   text:'Acabei de fazer meu primeiro fine-tuning de LLaMA 3 com dados próprios e os resultados são incríveis! Redução de 40% nas alucinações em domínio específico. 🎉 Compartilhando o notebook em breve.',
+   time:'2h atrás',likes:24,liked:false},
+  {id:2,author:'Rafael Torres',color:'#162B5E',initial:'R',role:'ML Engineer @ iFood',type:'update',
+   text:'Pessoal, alguém tem experiência com Qdrant vs Pinecone para produção? Estamos migrando nosso pipeline RAG e gostaria de opiniões de quem já fez isso em escala.',
+   time:'4h atrás',likes:18,liked:false},
+  {id:3,author:'Ana Beatriz',color:'#C4102B',initial:'A',role:'Data Scientist',type:'q',
+   text:'Dúvida: qual é a melhor estratégia para chunk splitting em documentos PDF com muitas tabelas? Estou perdendo muita informação estrutural com os splitters padrão.',
+   time:'6h atrás',likes:31,liked:false},
+  {id:4,author:'Marcos Lima',color:'#1a116a',initial:'M',role:'AI Product Manager',type:'update',
+   text:'Acabei de publicar um post detalhado sobre como avaliamos LLMs antes de colocar em produção no Nubank. 8 critérios não óbvios que descobrimos na prática. Link nos comentários.',
+   time:'1d atrás',likes:87,liked:false},
+];
+
+const POSTS = [
+  {id:1,title:'RAG na Prática: chunking, embeddings e retrieval para apps de produção',tags:['RAG','LLM','Python'],cover:'',views:432,time:'3d atrás',emoji:'🔍'},
+  {id:2,title:'Fine-tuning LLaMA 3 com dados próprios: guia passo a passo',tags:['Fine-tuning','LLaMA','GPU'],cover:'',views:891,time:'1sem atrás',emoji:'🦙'},
+  {id:3,title:'Agentes de IA com LangGraph: além do simples chatbot',tags:['Agents','LangGraph'],cover:'',views:267,time:'2sem atrás',emoji:'🕵️'},
+  {id:4,title:'Como avaliar LLMs antes de colocar em produção',tags:['Eval','MLOps','LLM'],cover:'',views:154,time:'3sem atrás',emoji:'📊'},
+];
+
+const EPS = [
+  {id:1,title:'O Futuro dos AI Agents: autonomia, ferramentas e riscos',desc:'Discutimos a evolução dos agentes de IA, desde simples chatbots até sistemas autônomos com ferramentas reais.',dur:'48min',sp:'https://spotify.com',yt:'',time:'5d atrás',emoji:'🤖'},
+  {id:2,title:'RAG vs Fine-tuning: quando usar cada abordagem?',desc:'Uma análise técnica e prática sobre as diferenças entre RAG e fine-tuning, com casos de uso reais.',dur:'35min',sp:'',yt:'https://youtube.com',time:'2sem atrás',emoji:'🧠'},
+  {id:3,title:'Open Source vs Proprietário: a batalha dos LLMs em 2025',desc:'Comparamos Llama, Mistral, Claude, GPT-4o e Gemini em tarefas do mundo real.',dur:'52min',sp:'https://spotify.com',yt:'https://youtube.com',time:'1mes atrás',emoji:'⚖️'},
+];
+
+const TRAININGS = [
+  {id:1,title:'LLMs na Prática: do Prompt ao Deploy',cat:'IA Generativa',lv:'a',price:297,dur:'16h',alunos:324,emoji:'🤖'},
+  {id:2,title:'RAG do Zero: Vector Databases e Retrieval',cat:'RAG & Vector DB',lv:'i',price:197,dur:'10h',alunos:218,emoji:'🔍'},
+  {id:3,title:'Prompt Engineering Avançado',cat:'Prompt Engineering',lv:'i',price:0,dur:'6h',alunos:891,emoji:'💬'},
+  {id:4,title:'MLOps para Modelos de Linguagem',cat:'MLOps',lv:'a',price:397,dur:'20h',alunos:142,emoji:'⚙️'},
+  {id:5,title:'Agentes de IA com LangGraph',cat:'Agentes de IA',lv:'a',price:247,dur:'12h',alunos:276,emoji:'🕵️'},
+  {id:6,title:'Python para IA Generativa',cat:'Machine Learning',lv:'b',price:0,dur:'8h',alunos:1204,emoji:'🐍'},
+];
+
+const PROGRESS = [
+  {label:'Foto de perfil',       done:true},
+  {label:'Headline definida',    done:true},
+  {label:'Bio preenchida',       done:true},
+  {label:'Localização',          done:true},
+  {label:'LinkedIn conectado',   done:false},
+  {label:'Habilidade adicionada',done:true},
+  {label:'1 post publicado',     done:true},
+  {label:'Perfil público',       done:true},
+  {label:'Primeiro episódio',    done:false},
+];
+
+let curType = 'update';
+let enrolledIds = new Set();
+
+// ══════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', () => {
+  renderSidebar();
+  renderSkills();
+  renderProgress();
+  renderFeed();
+  renderPosts();
+  renderEps();
+  renderTrainings();
+});
+
+// ══════════════════════════════════════════════
+//  SIDEBAR
+// ══════════════════════════════════════════════
+function renderSidebar() {
+  document.getElementById('topNm').textContent  = USER.name.split(' ')[0];
+  document.getElementById('sideNm').textContent = USER.name;
+  document.getElementById('sideRole').textContent = USER.role;
+  document.getElementById('sNp').textContent = USER.posts;
+  document.getElementById('sNe').textContent = USER.eps;
+  document.getElementById('sNv').textContent = USER.views;
+}
+
+// ══════════════════════════════════════════════
+//  SKILLS
+// ══════════════════════════════════════════════
+function renderSkills() {
+  const el = document.getElementById('skillsEl');
+  if (!SKILLS.length) { el.innerHTML='<span style="font-size:12px;color:var(--g3)">Nenhuma skill ainda.</span>'; return; }
+  el.innerHTML = SKILLS.map(s => `
+    <span class="sk-pill" onclick="rmSkill(${s.id})" title="Clique para remover">
+      ${esc(s.name)}
+      <span class="sk-dots">${[1,2,3,4,5].map(i=>`<span class="sk-d${i<=s.lv?' on':''}"></span>`).join('')}</span>
+    </span>
+  `).join('');
+}
+
+function toggleSkFrm() {
+  const f = document.getElementById('skFrm');
+  f.classList.toggle('open');
+}
+
+function addSkill() {
+  const nm = document.getElementById('skNm').value.trim();
+  const lv = parseInt(document.getElementById('skLv').value);
+  if (!nm) { toast('Digite o nome da habilidade'); return; }
+  const id = Date.now();
+  SKILLS.push({id, name:nm, lv});
+  document.getElementById('skNm').value = '';
+  renderSkills();
+  renderProgress();
+  toast('Habilidade adicionada! ✓', true);
+}
+
+function rmSkill(id) {
+  const i = SKILLS.findIndex(s=>s.id===id);
+  if (i>-1) SKILLS.splice(i,1);
+  renderSkills();
+  renderProgress();
+}
+
+// ══════════════════════════════════════════════
+//  PROGRESS
+// ══════════════════════════════════════════════
+function renderProgress() {
+  // update skills item
+  PROGRESS[5].done = SKILLS.length > 0;
+  PROGRESS[6].done = POSTS.length > 0;
+  const done = PROGRESS.filter(p=>p.done).length;
+  const pct  = Math.round(done/PROGRESS.length*100);
+  document.getElementById('pctEl').textContent  = pct+'%';
+  document.getElementById('fillEl').style.width = pct+'%';
+  document.getElementById('progItems').innerHTML = PROGRESS.map(p=>`
+    <div class="pi ${p.done?'done':''}">
+      <div class="pi-ic ${p.done?'yes':'no'}">${p.done?'✓':'○'}</div>
+      <span>${p.label}</span>
+    </div>
+  `).join('');
+}
+
+// ══════════════════════════════════════════════
+//  TABS / NAV
+// ══════════════════════════════════════════════
+function go(tab) {
+  // sections
+  ['feed','blog','podcast','tr','profile'].forEach(t => {
+    document.getElementById('s-'+t).style.display = t===tab?'block':'none';
+  });
+  // tabs bar
+  document.querySelectorAll('.tab').forEach(b => {
+    b.classList.toggle('on', b.id==='tab-'+tab);
+  });
+  // topbar nav
+  document.querySelectorAll('.tnav').forEach(b => {
+    b.classList.toggle('on', b.getAttribute('onclick')?.includes("'"+tab+"'"));
+  });
+}
+
+// ══════════════════════════════════════════════
+//  FEED
+// ══════════════════════════════════════════════
+function renderFeed() {
+  document.getElementById('feedEl').innerHTML = FEED.map((p,i) => feedCard(p,i)).join('');
+}
+
+function feedCard(p, i) {
+  const labels = {update:'💬 Update', win:'🏆 Conquista', q:'❓ Dúvida'};
+  const bclass = {update:'b-up', win:'b-win', q:'b-q'};
+  return `
+    <div class="feed-card" style="animation-delay:${i*55}ms">
+      <div class="fc-author">
+        <div class="fc-av" style="background:${p.color}">${p.initial}</div>
+        <div>
+          <div class="fc-name">${esc(p.author)}</div>
+          <div class="fc-meta">${esc(p.role)} · ${p.time}</div>
+        </div>
+        <span class="fc-badge ${bclass[p.type]||'b-up'}">${labels[p.type]||'Update'}</span>
+      </div>
+      <div class="fc-txt">${esc(p.text)}</div>
+      <div class="fc-acts">
+        <button class="fc-act ${p.liked?'liked':''}" id="like-${p.id}" onclick="like(${p.id})">
+          ♥ <span id="lc-${p.id}">${p.likes}</span>
+        </button>
+        <button class="fc-act">💬 Comentar</button>
+        <button class="fc-act" onclick="toast('Link copiado! 📋',true)">↗ Compartilhar</button>
+      </div>
+    </div>
+  `;
+}
+
+function setPt(btn, type) {
+  curType = type;
+  document.querySelectorAll('.type-p').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+function postFeed() {
+  const txt = document.getElementById('feedTa').value.trim();
+  if (!txt) { toast('Escreva algo antes de publicar.'); return; }
+  const labels = {update:'💬 Update', win:'🏆 Conquista', q:'❓ Dúvida'};
+  const colors  = ['#0C1A3A','#162B5E','#1E3A7A'];
+  FEED.unshift({
+    id: Date.now(), author: USER.name, color: colors[0],
+    initial: USER.initial, role: USER.role,
+    type: curType, text: txt, time: 'agora', likes: 0, liked: false
+  });
+  document.getElementById('feedTa').value = '';
+  USER.posts++;
+  document.getElementById('sNp').textContent = USER.posts;
+  renderFeed();
+  renderProgress();
+  toast('Publicado no feed! 🎉', true);
+}
+
+function like(id) {
+  const p = FEED.find(f=>f.id===id);
+  if (!p) return;
+  p.liked = !p.liked;
+  p.likes += p.liked ? 1 : -1;
+  const btn = document.getElementById(`like-${id}`);
+  const cnt = document.getElementById(`lc-${id}`);
+  if (btn) btn.classList.toggle('liked', p.liked);
+  if (cnt) cnt.textContent = p.likes;
+}
+
+// ══════════════════════════════════════════════
+//  BLOG
+// ══════════════════════════════════════════════
+function renderPosts() {
+  const el = document.getElementById('blogEl');
+  if (!POSTS.length) {
+    el.innerHTML = `<div class="empty" style="grid-column:1/-1"><div class="empty-i">✍️</div><div class="empty-t">Nenhum post ainda.<br>Compartilhe seu conhecimento!</div></div>`;
+    return;
+  }
+  el.innerHTML = POSTS.map((p,i) => `
+    <div class="bc" style="animation-delay:${i*70}ms">
+      <div class="bc-img"><div class="bc-img-inner">${p.emoji}</div></div>
+      <div class="bc-body">
+        <div class="bc-tags">${p.tags.map(t=>`<span class="bc-tag">${esc(t)}</span>`).join('')}</div>
+        <div class="bc-title">${esc(p.title)}</div>
+        <div class="bc-meta"><span>${p.time}</span><span>👁 ${p.views}</span></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addPost() {
+  const t = document.getElementById('bTitle').value.trim();
+  const b = document.getElementById('bBody').value.trim();
+  if (!t || !b) { toast('Preencha título e conteúdo.'); return; }
+  const tags = document.getElementById('bTags').value.split(',').map(s=>s.trim()).filter(Boolean);
+  POSTS.unshift({id:Date.now(), title:t, tags, views:0, time:'agora', emoji:'✨'});
+  ['bTitle','bBody','bTags','bCover'].forEach(id=>document.getElementById(id).value='');
+  tg('blogFrm');
+  USER.posts++;
+  document.getElementById('sNp').textContent = USER.posts;
+  renderPosts();
+  renderProgress();
+  toast('Post publicado! 🎉', true);
+}
+
+// ══════════════════════════════════════════════
+//  PODCAST
+// ══════════════════════════════════════════════
+function renderEps() {
+  const el = document.getElementById('epEl');
+  if (!EPS.length) {
+    el.innerHTML = `<div class="empty"><div class="empty-i">🎙️</div><div class="empty-t">Nenhum episódio ainda.</div></div>`;
+    return;
+  }
+  const covers = ['#0C1A3A','#C4102B','#162B5E'];
+  el.innerHTML = EPS.map((e,i) => `
+    <div class="ep" style="animation-delay:${i*55}ms">
+      <div class="ep-cover" style="background:linear-gradient(135deg,${covers[i%covers.length]},${covers[(i+1)%covers.length]})">${e.emoji}</div>
+      <div class="ep-body">
+        <div class="ep-num">EP. ${String(i+1).padStart(2,'0')} · ${e.time}</div>
+        <div class="ep-title">${esc(e.title)}</div>
+        <div class="ep-desc">${esc(e.desc.slice(0,90))}...</div>
+        <div class="ep-meta">
+          ${e.dur?`<span>⏱ ${esc(e.dur)}</span>`:''}
+          ${e.sp?`<a href="${e.sp}" target="_blank" style="color:var(--red);font-size:11px">🎵 Spotify</a>`:''}
+          ${e.yt?`<a href="${e.yt}" target="_blank" style="color:var(--red);font-size:11px">▶ YouTube</a>`:''}
+        </div>
+      </div>
+      <button class="ep-play" onclick="toast('▶ Reproduzindo: ${esc(e.title).slice(0,30)}...', true)">▶</button>
+    </div>
+  `).join('');
+}
+
+function addEp() {
+  const t = document.getElementById('epTitle').value.trim();
+  if (!t) { toast('Informe o título do episódio.'); return; }
+  EPS.unshift({
+    id: Date.now(), title:t,
+    desc: document.getElementById('epDesc').value || 'Novo episódio',
+    dur:  document.getElementById('epDur').value,
+    sp:   document.getElementById('epSp').value,
+    yt:   '',
+    time: 'agora', emoji:'🎙️'
+  });
+  ['epTitle','epDesc','epDur','epSp'].forEach(id=>document.getElementById(id).value='');
+  tg('epFrm');
+  USER.eps++;
+  document.getElementById('sNe').textContent = USER.eps;
+  renderEps();
+  toast('Episódio publicado! 🎙️', true);
+}
+
+// ══════════════════════════════════════════════
+//  TRAININGS
+// ══════════════════════════════════════════════
+function renderTrainings() {
+  const el = document.getElementById('trEl');
+  const lvMap = {b:['Iniciante','lv-b'], i:['Intermediário','lv-i'], a:['Avançado','lv-a']};
+  el.innerHTML = TRAININGS.map((t,i) => {
+    const [lvLbl, lvCls] = lvMap[t.lv]||['',''];
+    const enrolled = enrolledIds.has(t.id);
+    return `
+      <div class="trc" style="animation-delay:${i*70}ms">
+        <div class="trc-top">
+          <span style="position:relative;z-index:1">${t.emoji}</span>
+          <div class="trc-lv ${lvCls}">${lvLbl}</div>
+        </div>
+        <div class="trc-body">
+          <div class="trc-cat">${esc(t.cat)}</div>
+          <div class="trc-title">${esc(t.title)}</div>
+          <div class="trc-row">
+            <span>👥 ${t.alunos} alunos${t.dur?' · ⏱ '+t.dur:''}</span>
+            <span class="trc-price ${t.price===0?'free':''}">${t.price===0?'Gratuito':'R$ '+t.price.toFixed(2)}</span>
+          </div>
+          <button class="enroll ${enrolled?'done':''}" onclick="enroll(${t.id},this)">
+            ${enrolled?'✓ Inscrito':'Inscrever-se'}
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function enroll(id, btn) {
+  if (enrolledIds.has(id)) return;
+  enrolledIds.add(id);
+  btn.textContent = '✓ Inscrito';
+  btn.classList.add('done');
+  const tr = TRAININGS.find(t=>t.id===id);
+  if (tr) tr.alunos++;
+  toast('Inscrição realizada! 🎉', true);
+}
+
+function addTr() {
+  const t = document.getElementById('trTitle').value.trim();
+  const d = document.getElementById('trDesc').value.trim();
+  if (!t || !d) { toast('Preencha título e descrição.'); return; }
+  TRAININGS.unshift({
+    id: Date.now(), title:t,
+    cat: document.getElementById('trCat').value,
+    lv:  document.getElementById('trLv').value,
+    price: parseFloat(document.getElementById('trPrice').value)||0,
+    dur: document.getElementById('trDur').value,
+    alunos: 0, emoji:'🎓'
+  });
+  ['trTitle','trDesc'].forEach(id=>document.getElementById(id).value='');
+  tg('trFrm');
+  renderTrainings();
+  toast('Treinamento publicado! 🎓', true);
+}
+
+// ══════════════════════════════════════════════
+//  PROFILE SAVE (mock)
+// ══════════════════════════════════════════════
+function saveProfile() {
+  const nm = document.getElementById('pfName').value.trim();
+  const hl = document.getElementById('pfHeadline').value.trim();
+  if (nm) {
+    USER.name = nm;
+    USER.initial = nm[0].toUpperCase();
+    document.getElementById('topNm').textContent  = nm.split(' ')[0];
+    document.getElementById('sideNm').textContent = nm;
+    document.getElementById('topAv').textContent  = USER.initial;
+    document.getElementById('sideAv').textContent = USER.initial;
+    document.getElementById('compAv').textContent = USER.initial;
+  }
+  if (hl) { USER.role = hl; document.getElementById('sideRole').textContent = hl; }
+  toast('Perfil salvo com sucesso! ✅', true);
+}
+
+// ══════════════════════════════════════════════
+//  COMPARTILHAR
+// ══════════════════════════════════════════════
+function openShare() {
+  const slug = USER.name.toLowerCase().replace(/\s+/g,'-') + '-' + Math.random().toString(36).slice(2,8);
+  document.getElementById('shareUrlEl').textContent = 'https://thriveo.com.br/p/' + slug;
+  document.getElementById('shareOv').classList.add('open');
+}
+function closeShare(e) {
+  if (!e || e.target===document.getElementById('shareOv'))
+    document.getElementById('shareOv').classList.remove('open');
+}
+function copyUrl() {
+  const url = document.getElementById('shareUrlEl').textContent;
+  navigator.clipboard.writeText(url).catch(()=>{});
+  toast('Link copiado! 📋', true);
+}
+function soc(pl) {
+  const url = encodeURIComponent(document.getElementById('shareUrlEl').textContent);
+  const txt = encodeURIComponent('Conheça meu perfil de especialista em IA na Thriveo!');
+  const urls = {
+    li:`https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
+    wa:`https://wa.me/?text=${txt}%20${url}`,
+    x:`https://twitter.com/intent/tweet?text=${txt}&url=${url}`
+  };
+  window.open(urls[pl],'_blank');
+}
+
+// ══════════════════════════════════════════════
+//  UTILS
+// ══════════════════════════════════════════════
+function tg(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+function toast(msg, ok=false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className   = 'toast show' + (ok?' ok':'');
+  setTimeout(() => t.className='toast', 3000);
+}
+function esc(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Thriveo — Plataforma de IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --blue:#0052cc;
+  --blue-dark:#003d99;
+  --blue-light:#e8f0fe;
+  --blue-mid:#4c84ff;
+  --red:#cc3366;
+  --green:#00c896;
+  --amber:#f59e0b;
+  --ink:#0f172a;
+  --muted:#64748b;
+  --border:#e2e8f0;
+  --surface:#f8fafc;
+  --white:#fff;
+  --font:'Plus Jakarta Sans',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --radius:12px;
+  --radius-lg:20px;
+  --shadow:0 4px 24px rgba(0,82,204,0.08);
+  --shadow-lg:0 12px 48px rgba(0,82,204,0.14);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--font);background:var(--white);color:var(--ink);overflow-x:hidden;line-height:1.6}
+
+/* ── NAV ──────────────────────────────── */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 2.5rem;height:68px;
+  background:rgba(255,255,255,0.92);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+}
+.nav-brand{display:flex;align-items:center;gap:.6rem;text-decoration:none}
+.nav-brand img{height:36px}
+.nav-brand span{font-weight:800;font-size:1.25rem;color:var(--blue);letter-spacing:-.02em}
+.nav-links{display:flex;gap:.25rem;list-style:none}
+.nav-links a{
+  padding:.4rem .85rem;border-radius:8px;font-size:.85rem;font-weight:500;
+  color:var(--muted);text-decoration:none;transition:all .2s
+}
+.nav-links a:hover,.nav-links a.active{color:var(--blue);background:var(--blue-light)}
+.nav-cta{
+  padding:.5rem 1.25rem;background:var(--blue);color:var(--white);
+  border:none;border-radius:8px;font-size:.85rem;font-weight:600;cursor:pointer;
+  font-family:var(--font);transition:all .2s
+}
+.nav-cta:hover{background:var(--blue-dark);transform:translateY(-1px)}
+
+/* ── TABS ─────────────────────────────── */
+.page{display:none;padding-top:68px;min-height:100vh}
+.page.active{display:block}
+
+/* ── HERO ─────────────────────────────── */
+.hero{
+  position:relative;padding:5rem 2.5rem 4rem;text-align:center;
+  background:radial-gradient(70% 50% at 20% 30%,rgba(0,82,204,.05) 0%,transparent 60%),
+             radial-gradient(50% 60% at 80% 80%,rgba(220,38,38,.04) 0%,transparent 50%),
+             linear-gradient(rgba(0,82,204,.04) 1px,transparent 1px) 0 0/40px 40px,
+             linear-gradient(90deg,rgba(0,82,204,.04) 1px,transparent 1px) 0 0/40px 40px;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:.4rem;
+  background:var(--blue-light);color:var(--blue);
+  padding:.3rem .9rem;border-radius:50px;font-size:.78rem;font-weight:600;
+  margin-bottom:1.5rem;border:1px solid rgba(0,82,204,.15)
+}
+.hero h1{font-size:clamp(2rem,4vw,3.2rem);font-weight:800;line-height:1.15;letter-spacing:-.03em;margin-bottom:1rem}
+.hero h1 em{color:var(--blue);font-style:normal}
+.hero p{font-size:1.1rem;color:var(--muted);max-width:580px;margin:0 auto 2rem}
+.hero-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+
+/* ── BUTTONS ──────────────────────────── */
+.btn{
+  padding:.65rem 1.5rem;border-radius:8px;font-size:.9rem;font-weight:600;
+  cursor:pointer;border:none;font-family:var(--font);transition:all .2s;text-decoration:none;
+  display:inline-flex;align-items:center;gap:.4rem
+}
+.btn-primary{background:var(--blue);color:var(--white)}
+.btn-primary:hover{background:var(--blue-dark);transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,82,204,.3)}
+.btn-outline{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}
+.btn-outline:hover{background:var(--blue-light)}
+.btn-ghost{background:transparent;color:var(--muted);border:1.5px solid var(--border)}
+.btn-ghost:hover{background:var(--surface);color:var(--ink)}
+.btn-green{background:var(--green);color:var(--white)}
+.btn-green:hover{background:#00a87e;transform:translateY(-1px)}
+.btn-sm{padding:.4rem 1rem;font-size:.8rem}
+.btn-lg{padding:.85rem 2rem;font-size:1rem}
+
+/* ── SECTION ──────────────────────────── */
+.section{padding:4rem 2.5rem}
+.section-alt{background:var(--surface)}
+.container{max-width:1100px;margin:0 auto}
+.section-header{text-align:center;margin-bottom:3rem}
+.section-header h2{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;letter-spacing:-.025em;margin-bottom:.6rem}
+.section-header p{color:var(--muted);font-size:1rem;max-width:520px;margin:0 auto}
+.tag{display:inline-block;background:var(--blue-light);color:var(--blue);padding:.2rem .7rem;border-radius:50px;font-size:.75rem;font-weight:600;margin-bottom:.75rem}
+
+/* ── CARDS ────────────────────────────── */
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:1.5rem}
+.card{
+  background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);
+  padding:1.75rem;box-shadow:var(--shadow);transition:all .25s
+}
+.card:hover{border-color:rgba(0,82,204,.25);box-shadow:var(--shadow-lg);transform:translateY(-3px)}
+.card-icon{
+  width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;margin-bottom:1.1rem
+}
+.icon-blue{background:var(--blue-light)}
+.icon-green{background:rgba(0,200,150,.1)}
+.icon-amber{background:rgba(245,158,11,.1)}
+.icon-red{background:rgba(204,51,102,.08)}
+.card h3{font-size:1.05rem;font-weight:700;margin-bottom:.5rem;letter-spacing:-.01em}
+.card p{color:var(--muted);font-size:.88rem;line-height:1.6}
+.card-badge{
+  display:inline-block;padding:.15rem .55rem;border-radius:4px;font-size:.72rem;font-weight:600;
+  font-family:var(--mono);margin-bottom:.6rem
+}
+.badge-new{background:#dcfce7;color:#166534}
+.badge-pro{background:#fef3c7;color:#92400e}
+.badge-free{background:var(--blue-light);color:var(--blue)}
+
+/* ── MODULES OVERVIEW ─────────────────── */
+.modules-list{display:flex;flex-direction:column;gap:1.5rem}
+.module-row{
+  display:grid;grid-template-columns:56px 1fr auto;align-items:center;gap:1.25rem;
+  background:var(--white);border:1px solid var(--border);border-radius:var(--radius);
+  padding:1.25rem 1.5rem;transition:all .2s;cursor:pointer
+}
+.module-row:hover{border-color:rgba(0,82,204,.3);background:rgba(0,82,204,.02)}
+.module-num{
+  width:44px;height:44px;border-radius:10px;background:var(--blue);color:var(--white);
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;
+  font-family:var(--mono);flex-shrink:0
+}
+.module-row h3{font-size:.95rem;font-weight:700;margin-bottom:.2rem}
+.module-row p{color:var(--muted);font-size:.82rem}
+.module-status{font-size:.75rem;font-weight:600;padding:.25rem .7rem;border-radius:50px}
+.status-available{background:#dcfce7;color:#166534}
+.status-pro{background:#fef3c7;color:#92400e}
+
+/* ── TRILHAS (M1) ─────────────────────── */
+.trail-card{
+  background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);
+  overflow:hidden;box-shadow:var(--shadow);transition:all .25s
+}
+.trail-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.trail-header{
+  padding:1.5rem;background:linear-gradient(135deg,var(--blue),var(--blue-mid));
+  color:var(--white)
+}
+.trail-header .tag{background:rgba(255,255,255,.2);color:var(--white)}
+.trail-header h3{font-size:1.1rem;font-weight:700;margin:0}
+.trail-body{padding:1.5rem}
+.trail-steps{list-style:none;margin:1rem 0}
+.trail-steps li{
+  display:flex;align-items:center;gap:.75rem;padding:.6rem 0;
+  border-bottom:1px solid var(--border);font-size:.85rem
+}
+.trail-steps li:last-child{border-bottom:none}
+.step-dot{
+  width:20px;height:20px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700
+}
+.dot-done{background:var(--green);color:var(--white)}
+.dot-active{background:var(--blue);color:var(--white);animation:pulse 2s infinite}
+.dot-locked{background:var(--border);color:var(--muted)}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,82,204,.4)}50%{box-shadow:0 0 0 6px rgba(0,82,204,0)}}
+.trail-progress{margin-top:1rem}
+.progress-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--blue-mid));border-radius:3px;transition:width .5s}
+.progress-label{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted);margin-top:.35rem}
+
+/* ── ASSESSMENT (M2) ─────────────────── */
+.assessment-card{
+  background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);
+  overflow:hidden;box-shadow:var(--shadow)
+}
+.assessment-header{
+  padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between
+}
+.assessment-header h3{font-size:.95rem;font-weight:700}
+.difficulty{font-size:.75rem;font-weight:600;padding:.2rem .6rem;border-radius:50px}
+.diff-easy{background:#dcfce7;color:#166534}
+.diff-medium{background:#fef3c7;color:#92400e}
+.diff-hard{background:#fee2e2;color:#991b1b}
+.assessment-body{padding:1.5rem}
+.assessment-meta{display:flex;gap:1.5rem;margin-bottom:1.25rem}
+.meta-item{display:flex;align-items:center;gap:.4rem;font-size:.8rem;color:var(--muted)}
+.question-preview{
+  background:var(--surface);border-radius:var(--radius);padding:1rem 1.25rem;
+  font-size:.85rem;border-left:3px solid var(--blue)
+}
+.question-options{margin-top:.75rem;display:flex;flex-direction:column;gap:.4rem}
+.q-option{
+  padding:.5rem .75rem;border-radius:6px;font-size:.8rem;cursor:pointer;
+  border:1px solid var(--border);transition:all .15s
+}
+.q-option:hover{border-color:var(--blue);background:var(--blue-light)}
+.q-option.correct{background:#dcfce7;border-color:#16a34a;color:#166534}
+.q-option.selected{background:var(--blue-light);border-color:var(--blue);color:var(--blue)}
+
+/* ── MATCHING (M3) ────────────────────── */
+.match-card{
+  background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);
+  padding:1.5rem;box-shadow:var(--shadow);transition:all .2s
+}
+.match-card:hover{border-color:rgba(0,82,204,.25);transform:translateY(-2px)}
+.match-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1rem}
+.match-score{
+  display:flex;align-items:center;gap:.3rem;
+  background:var(--green);color:var(--white);
+  padding:.25rem .65rem;border-radius:50px;font-size:.78rem;font-weight:700
+}
+.match-title{font-size:.95rem;font-weight:700;margin-bottom:.2rem}
+.match-company{font-size:.82rem;color:var(--muted)}
+.match-tags{display:flex;gap:.4rem;flex-wrap:wrap;margin:1rem 0}
+.match-tag{
+  background:var(--blue-light);color:var(--blue);
+  padding:.2rem .55rem;border-radius:4px;font-size:.72rem;font-weight:500
+}
+.match-detail{
+  display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:1rem;
+  padding-top:1rem;border-top:1px solid var(--border);font-size:.8rem
+}
+.match-detail-item{display:flex;flex-direction:column;gap:.1rem}
+.match-detail-item strong{font-size:.9rem}
+.match-detail-item span{color:var(--muted);font-size:.75rem}
+.score-ring{
+  position:relative;width:60px;height:60px;flex-shrink:0
+}
+.score-ring svg{transform:rotate(-90deg)}
+.score-ring .score-text{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:.75rem;font-weight:800;color:var(--blue)
+}
+
+/* ── INTERVIEW (M4) ───────────────────── */
+.chat-window{
+  background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);
+  overflow:hidden;box-shadow:var(--shadow)
+}
+.chat-header{
+  padding:1rem 1.5rem;background:var(--blue);color:var(--white);
+  display:flex;align-items:center;gap:.75rem
+}
+.chat-avatar{
+  width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.25);
+  display:flex;align-items:center;justify-content:center;font-size:1.2rem
+}
+.chat-info{flex:1}
+.chat-info strong{font-size:.9rem;font-weight:700;display:block}
+.chat-info span{font-size:.75rem;opacity:.8}
+.chat-status{display:flex;align-items:center;gap:.3rem;font-size:.75rem}
+.status-dot{width:8px;height:8px;background:#4ade80;border-radius:50%;animation:pulse 2s infinite}
+.chat-body{padding:1.25rem;height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:.75rem}
+.msg{max-width:80%}
+.msg-ai{align-self:flex-start}
+.msg-user{align-self:flex-end}
+.msg-bubble{
+  padding:.7rem 1rem;border-radius:12px;font-size:.85rem;line-height:1.5
+}
+.msg-ai .msg-bubble{background:var(--surface);border:1px solid var(--border);border-bottom-left-radius:3px}
+.msg-user .msg-bubble{background:var(--blue);color:var(--white);border-bottom-right-radius:3px}
+.msg-meta{font-size:.7rem;color:var(--muted);margin-top:.25rem;padding:0 .25rem}
+.msg-user .msg-meta{text-align:right}
+.chat-input-area{
+  padding:1rem 1.25rem;border-top:1px solid var(--border);display:flex;gap:.75rem;align-items:center
+}
+.chat-input{
+  flex:1;padding:.6rem 1rem;border:1px solid var(--border);border-radius:8px;
+  font-size:.85rem;font-family:var(--font);outline:none;transition:border-color .2s
+}
+.chat-input:focus{border-color:var(--blue)}
+.typing-indicator{display:flex;align-items:center;gap:.3rem;padding:.4rem .75rem}
+.typing-dot{width:6px;height:6px;background:var(--muted);border-radius:50%;animation:typing .8s infinite}
+.typing-dot:nth-child(2){animation-delay:.15s}
+.typing-dot:nth-child(3){animation-delay:.3s}
+@keyframes typing{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.interview-score-bar{
+  background:var(--surface);border-radius:var(--radius);padding:1rem 1.25rem;margin-top:1rem
+}
+.score-items{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:.75rem}
+.score-item label{font-size:.78rem;color:var(--muted);display:block;margin-bottom:.3rem}
+.score-item .bar{height:5px;background:var(--border);border-radius:3px}
+.score-item .bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--blue),var(--blue-mid))}
+
+/* ── PRICING ──────────────────────────── */
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;align-items:start}
+.pricing-card{
+  background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);
+  padding:2rem;box-shadow:var(--shadow);transition:all .25s;position:relative;overflow:hidden
+}
+.pricing-card.featured{border-color:var(--blue);box-shadow:0 8px 40px rgba(0,82,204,.2)}
+.pricing-card.featured::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--blue),var(--blue-mid))
+}
+.pricing-popular{
+  position:absolute;top:1rem;right:1rem;
+  background:var(--blue);color:var(--white);
+  padding:.2rem .65rem;border-radius:50px;font-size:.72rem;font-weight:700
+}
+.pricing-plan{font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.5rem}
+.pricing-price{margin:1rem 0}
+.pricing-price .amount{font-size:2.5rem;font-weight:800;letter-spacing:-.04em;color:var(--ink)}
+.pricing-price .period{font-size:.85rem;color:var(--muted)}
+.pricing-desc{font-size:.85rem;color:var(--muted);margin-bottom:1.5rem;line-height:1.5}
+.pricing-features{list-style:none;margin-bottom:1.75rem}
+.pricing-features li{
+  display:flex;align-items:flex-start;gap:.6rem;font-size:.85rem;
+  padding:.45rem 0;border-bottom:1px solid var(--border)
+}
+.pricing-features li:last-child{border-bottom:none}
+.feature-check{color:var(--green);font-size:.9rem;flex-shrink:0;margin-top:.05rem}
+.feature-lock{color:var(--muted);font-size:.9rem;flex-shrink:0;margin-top:.05rem}
+
+/* ── STATS ────────────────────────────── */
+.stats-bar{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:0;
+  background:var(--blue);border-radius:var(--radius-lg);overflow:hidden;margin:3rem 0
+}
+.stat-item{
+  padding:1.75rem;text-align:center;color:var(--white);
+  border-right:1px solid rgba(255,255,255,.15)
+}
+.stat-item:last-child{border-right:none}
+.stat-item .num{font-size:2rem;font-weight:800;letter-spacing:-.04em;display:block;font-family:var(--mono)}
+.stat-item .label{font-size:.8rem;opacity:.75;margin-top:.2rem}
+
+/* ── INTEGRATIONS ─────────────────────── */
+.integration-pill{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:var(--white);border:1px solid var(--border);
+  border-radius:50px;padding:.4rem 1rem;font-size:.82rem;font-weight:500;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);margin:.3rem
+}
+.integration-pill img,.integration-pill .icon{width:18px;height:18px}
+
+/* ── MODAL ────────────────────────────── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;background:rgba(15,23,42,.5);
+  z-index:300;align-items:center;justify-content:center;backdrop-filter:blur(4px)
+}
+.modal-overlay.open{display:flex}
+.modal{
+  background:var(--white);border-radius:var(--radius-lg);padding:2rem;
+  width:90%;max-width:480px;box-shadow:0 24px 80px rgba(0,0,0,.2)
+}
+.modal h3{font-size:1.2rem;font-weight:700;margin-bottom:.5rem}
+.modal p{color:var(--muted);font-size:.88rem;margin-bottom:1.5rem}
+.modal-actions{display:flex;gap:.75rem;justify-content:flex-end}
+
+/* ── RESPONSIVE ───────────────────────── */
+@media(max-width:768px){
+  .nav-links{display:none}
+  .grid-2{grid-template-columns:1fr}
+  .stats-bar{grid-template-columns:1fr 1fr}
+}
+
+/* ── UTILITY ──────────────────────────── */
+.flex{display:flex;align-items:center}.gap-sm{gap:.5rem}.gap-md{gap:1rem}
+.text-muted{color:var(--muted)}.text-small{font-size:.82rem}
+.mt-sm{margin-top:.5rem}.mt-md{margin-top:1rem}.mt-lg{margin-top:1.5rem}
+.fw-700{font-weight:700}
+hr.divider{border:none;border-top:1px solid var(--border);margin:2rem 0}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-brand" href="#" onclick="showPage('home')">
+    <img src="https://thriveo.com.br/wp-content/uploads/2026/01/cropped-logo_thriveo_75.png" alt="Thriveo" onerror="this.style.display='none'"/>
+    <span>Thriveo</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#" onclick="showPage('home')" id="nav-home" class="active">Início</a></li>
+    <li><a href="#" onclick="showPage('m1')" id="nav-m1">Trilhas IA</a></li>
+    <li><a href="#" onclick="showPage('m2')" id="nav-m2">Avaliação Técnica</a></li>
+    <li><a href="#" onclick="showPage('m3')" id="nav-m3">Matching</a></li>
+    <li><a href="#" onclick="showPage('m4')" id="nav-m4">Entrevista IA</a></li>
+    <li><a href="#" onclick="showPage('pricing')" id="nav-pricing">Planos</a></li>
+  </ul>
+  <button class="nav-cta" onclick="openModal()">Acesso Gratuito</button>
+</nav>
+
+<!-- ════════════════════════════════════ HOME ══ -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="container">
+      <div class="hero-badge">🚀 Novos Módulos Disponíveis</div>
+      <h1>A plataforma completa de<br/><em>desenvolvimento em IA</em></h1>
+      <p>Treinamento, avaliação técnica, matching inteligente e simulação de entrevistas — tudo integrado para profissionais e empresas de IA.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary btn-lg" onclick="showPage('m1')">Explorar Módulos →</button>
+        <button class="btn btn-ghost btn-lg" onclick="showPage('pricing')">Ver Planos</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="container">
+      <div class="stats-bar">
+        <div class="stat-item"><span class="num">4</span><div class="label">Módulos ativos</div></div>
+        <div class="stat-item"><span class="num">12+</span><div class="label">Trilhas de aprendizagem</div></div>
+        <div class="stat-item"><span class="num">200+</span><div class="label">Questões técnicas</div></div>
+        <div class="stat-item"><span class="num">98%</span><div class="label">Match de precisão por IA</div></div>
+      </div>
+
+      <div class="section-header">
+        <h2>Módulos da plataforma</h2>
+        <p>Clique em qualquer módulo para explorar e testar o MVP</p>
+      </div>
+      <div class="modules-list">
+        <div class="module-row" onclick="showPage('m1')">
+          <div class="module-num">01</div>
+          <div>
+            <h3>Trilhas de Aprendizagem em IA</h3>
+            <p>Cursos estruturados por nível com badges, certificações e progresso gamificado</p>
+          </div>
+          <span class="module-status status-available">Disponível</span>
+        </div>
+        <div class="module-row" onclick="showPage('m2')">
+          <div class="module-num">02</div>
+          <div>
+            <h3>Avaliação Técnica para Vagas de IA</h3>
+            <p>Testes gerados por IA, específicos por cargo, com análise automática de portfólio GitHub</p>
+          </div>
+          <span class="module-status status-available">Disponível</span>
+        </div>
+        <div class="module-row" onclick="showPage('m3')">
+          <div class="module-num">03</div>
+          <div>
+            <h3>Matching Inteligente</h3>
+            <p>Score de compatibilidade entre profissionais e vagas baseado em IA</p>
+          </div>
+          <span class="module-status status-pro">Pro</span>
+        </div>
+        <div class="module-row" onclick="showPage('m4')">
+          <div class="module-num">04</div>
+          <div>
+            <h3>Entrevista com IA</h3>
+            <p>Simulação de entrevistas técnicas com feedback em tempo real e análise comportamental</p>
+          </div>
+          <span class="module-status status-pro">Pro</span>
+        </div>
+      </div>
+
+      <hr class="divider"/>
+
+      <div class="section-header">
+        <h2>Integrações disponíveis</h2>
+        <p>Login social e análise automática de portfólio</p>
+      </div>
+      <div style="text-align:center">
+        <div class="integration-pill">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#333"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </div>
+        <div class="integration-pill">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#0077b5"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </div>
+        <div class="integration-pill">
+          <span style="font-size:1rem">🤖</span>
+          Claude API
+        </div>
+        <div class="integration-pill">
+          <span style="font-size:1rem">📊</span>
+          Diagnóstico MAIA
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════ M1: TRILHAS ══ -->
+<div class="page" id="page-m1">
+  <div class="hero">
+    <div class="container">
+      <div class="hero-badge">Módulo 01 — Trilhas de Aprendizagem</div>
+      <h1>Aprenda IA no seu<br/><em>próprio ritmo</em></h1>
+      <p>Trilhas estruturadas do básico ao avançado, com certificação ao concluir cada nível. Badges que aparecem no seu perfil Thriveo.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary btn-lg">Começar trilha gratuita</button>
+        <button class="btn btn-ghost btn-lg" onclick="showPage('pricing')">Ver planos completos</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Trilhas disponíveis</h2>
+        <p>Escolha por nível ou área de especialização</p>
+      </div>
+      <div class="grid-3">
+
+        <div class="trail-card">
+          <div class="trail-header">
+            <div class="tag">Gratuito · Iniciante</div>
+            <h3>🧠 Fundamentos de IA Generativa</h3>
+            <p style="font-size:.82rem;opacity:.85;margin-top:.4rem">Do zero ao primeiro prompt profissional</p>
+          </div>
+          <div class="trail-body">
+            <ul class="trail-steps">
+              <li><div class="step-dot dot-done">✓</div>O que é IA Generativa — 15 min</li>
+              <li><div class="step-dot dot-done">✓</div>Prompt Engineering básico — 20 min</li>
+              <li><div class="step-dot dot-active">▶</div>LLMs: Claude, GPT, Gemini — 25 min</li>
+              <li><div class="step-dot dot-locked">🔒</div>Casos de uso empresariais — 30 min</li>
+              <li><div class="step-dot dot-locked">🔒</div>Quiz final + Certificado — 10 min</li>
+            </ul>
+            <div class="trail-progress">
+              <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
+              <div class="progress-label"><span>40% concluído</span><span>2 de 5 módulos</span></div>
+            </div>
+            <button class="btn btn-primary mt-md" style="width:100%">Continuar trilha →</button>
+          </div>
+        </div>
+
+        <div class="trail-card">
+          <div class="trail-header" style="background:linear-gradient(135deg,#7c3aed,#a855f7)">
+            <div class="tag" style="background:rgba(255,255,255,.2);color:#fff">Pro · Intermediário</div>
+            <h3>⚙️ Engenharia de Prompts Avançada</h3>
+            <p style="font-size:.82rem;opacity:.85;margin-top:.4rem">Chain-of-thought, RAG e prompts para produção</p>
+          </div>
+          <div class="trail-body">
+            <ul class="trail-steps">
+              <li><div class="step-dot dot-locked">🔒</div>Técnicas avançadas de prompting — 40 min</li>
+              <li><div class="step-dot dot-locked">🔒</div>RAG — Retrieval Augmented Generation — 45 min</li>
+              <li><div class="step-dot dot-locked">🔒</div>Agentes de IA com ferramentas — 50 min</li>
+              <li><div class="step-dot dot-locked">🔒</div>Avaliação e métricas de LLMs — 35 min</li>
+              <li><div class="step-dot dot-locked">🔒</div>Projeto final + Certificado Pro — 20 min</li>
+            </ul>
+            <div class="trail-progress">
+              <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+              <div class="progress-label"><span>Bloqueado — plano Pro</span><span>0 de 5</span></div>
+            </div>
+            <button class="btn btn-outline mt-md" style="width:100%" onclick="showPage('pricing')">🔓 Desbloquear com Pro</button>
+          </div>
+        </div>
+
+        <div class="trail-card">
+          <div class="trail-header" style="background:linear-gradient(135deg,var(--green),#00a87e)">
+            <div class="tag" style="background:rgba(255,255,255,.2);color:#fff">Pro · Especialização</div>
+            <h3>🏢 IA para Gestão e RH</h3>
+            <p style="font-size:.82rem;opacity:.85;margin-top:.4rem">Transformação digital com foco em pessoas</p>
+          </div>
+          <div class="trail-body">
+            <ul class="trail-steps">
+              <li><div class="step-dot dot-locked">🔒</div>IA no recrutamento inteligente — 35 min</li>
+              <li><div class="step-dot dot-locked">🔒</div>Diagnóstico MAIA na prática — 45 min</li>
+              <li><div class="step-dot dot-locked">🔒</div>Automação de PDI com IA — 40 min</li>
+              <li><div class="step-dot dot-locked">🔒</div>Análise preditiva de turnover — 50 min</li>
+              <li><div class="step-dot dot-locked">🔒</div>Case + Certificado Especialista — 20 min</li>
+            </ul>
+            <div class="trail-progress">
+              <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+              <div class="progress-label"><span>Bloqueado — plano Pro</span><span>0 de 5</span></div>
+            </div>
+            <button class="btn btn-outline mt-md" style="width:100%" onclick="showPage('pricing')">🔓 Desbloquear com Pro</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-alt" style="border-radius:var(--radius-lg);padding:2rem;margin-top:2rem">
+        <div class="flex gap-md" style="justify-content:space-between;flex-wrap:wrap;align-items:center">
+          <div>
+            <h3 class="fw-700">🏅 Seus badges e certificados</h3>
+            <p class="text-muted text-small mt-sm">Conquistas que aparecem no seu perfil público Thriveo e no LinkedIn</p>
+          </div>
+          <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+            <div style="text-align:center;opacity:.4">
+              <div style="width:56px;height:56px;background:var(--blue-light);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto">🧠</div>
+              <div class="text-small mt-sm">IA Básica</div>
+            </div>
+            <div style="text-align:center;opacity:.25">
+              <div style="width:56px;height:56px;background:#ede9fe;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto">⚙️</div>
+              <div class="text-small mt-sm">Eng. Prompts</div>
+            </div>
+            <div style="text-align:center;opacity:.25">
+              <div style="width:56px;height:56px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto">🏢</div>
+              <div class="text-small mt-sm">IA & RH</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════ M2: ASSESSMENT ══ -->
+<div class="page" id="page-m2">
+  <div class="hero">
+    <div class="container">
+      <div class="hero-badge">Módulo 02 — Avaliação Técnica</div>
+      <h1>Testes técnicos gerados<br/><em>por IA para cada vaga</em></h1>
+      <p>Questões específicas por cargo, análise automática do seu portfólio GitHub e score transparente para recrutadores.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary btn-lg">Fazer avaliação gratuita</button>
+        <button class="btn btn-ghost btn-lg">Ver meu score atual</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Avaliações disponíveis</h2>
+        <p>Cada teste é gerado dinamicamente conforme o cargo-alvo</p>
+      </div>
+      <div class="grid-3">
+        <div class="assessment-card">
+          <div class="assessment-header">
+            <div>
+              <div class="card-badge badge-free">Gratuito</div>
+              <h3>Engenheiro de Prompt</h3>
+            </div>
+            <span class="difficulty diff-medium">Médio</span>
+          </div>
+          <div class="assessment-body">
+            <div class="assessment-meta">
+              <div class="meta-item">⏱ 25 minutos</div>
+              <div class="meta-item">❓ 15 questões</div>
+              <div class="meta-item">🏅 Certificado</div>
+            </div>
+            <div class="question-preview">
+              <strong style="font-size:.8rem;color:var(--blue)">Amostra de questão:</strong><br/>
+              <p style="margin-top:.4rem">Qual técnica de prompting é mais eficaz para raciocínio em múltiplos passos?</p>
+              <div class="question-options" id="q1">
+                <div class="q-option" onclick="selectOption(this,'q1')">A) Zero-shot prompting</div>
+                <div class="q-option" onclick="selectOption(this,'q1')">B) Chain-of-thought (CoT)</div>
+                <div class="q-option" onclick="selectOption(this,'q1')">C) One-shot prompting</div>
+                <div class="q-option" onclick="selectOption(this,'q1')">D) Role prompting simples</div>
+              </div>
+            </div>
+            <button class="btn btn-primary mt-md" style="width:100%">Iniciar avaliação completa →</button>
+          </div>
+        </div>
+
+        <div class="assessment-card">
+          <div class="assessment-header">
+            <div>
+              <div class="card-badge badge-free">Gratuito</div>
+              <h3>Analista de IA / ML</h3>
+            </div>
+            <span class="difficulty diff-hard">Avançado</span>
+          </div>
+          <div class="assessment-body">
+            <div class="assessment-meta">
+              <div class="meta-item">⏱ 40 minutos</div>
+              <div class="meta-item">❓ 20 questões</div>
+              <div class="meta-item">🏅 Certificado</div>
+            </div>
+            <div class="question-preview">
+              <strong style="font-size:.8rem;color:var(--blue)">Amostra de questão:</strong><br/>
+              <p style="margin-top:.4rem">Em RAG, qual etapa impacta mais a qualidade das respostas geradas?</p>
+              <div class="question-options" id="q2">
+                <div class="q-option" onclick="selectOption(this,'q2')">A) Tamanho do contexto</div>
+                <div class="q-option" onclick="selectOption(this,'q2')">B) Qualidade do chunking e embeddings</div>
+                <div class="q-option" onclick="selectOption(this,'q2')">C) Temperatura do LLM</div>
+                <div class="q-option" onclick="selectOption(this,'q2')">D) Número de tokens</div>
+              </div>
+            </div>
+            <button class="btn btn-primary mt-md" style="width:100%">Iniciar avaliação completa →</button>
+          </div>
+        </div>
+
+        <div class="assessment-card">
+          <div class="assessment-header">
+            <div>
+              <div class="card-badge badge-pro">Pro</div>
+              <h3>Gestor de IA &amp; Transformação</h3>
+            </div>
+            <span class="difficulty diff-easy">Gestão</span>
+          </div>
+          <div class="assessment-body">
+            <div class="assessment-meta">
+              <div class="meta-item">⏱ 30 minutos</div>
+              <div class="meta-item">❓ 18 questões</div>
+              <div class="meta-item">📊 MAIA Score</div>
+            </div>
+            <div class="question-preview" style="opacity:.5">
+              <strong style="font-size:.8rem">🔒 Bloqueado</strong><br/>
+              <p style="margin-top:.4rem;font-size:.82rem">Questões sobre maturidade MAIA, ROI de IA e gestão de equipes multidisciplinares. Disponível no plano Pro.</p>
+            </div>
+            <button class="btn btn-outline mt-md" style="width:100%" onclick="showPage('pricing')">🔓 Desbloquear com Pro</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-alt" style="border-radius:var(--radius-lg);padding:2rem;margin-top:2rem">
+        <div class="flex gap-md" style="justify-content:space-between;flex-wrap:wrap;align-items:flex-start">
+          <div style="flex:1;min-width:200px">
+            <h3 class="fw-700">📦 Análise de portfólio GitHub</h3>
+            <p class="text-muted text-small mt-sm">Conecte seu GitHub e a IA analisa automaticamente seus repositórios de IA, qualidade de código e contribuições relevantes.</p>
+            <button class="btn btn-outline mt-md" style="display:inline-flex;gap:.4rem;align-items:center">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+              Conectar GitHub
+            </button>
+          </div>
+          <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.25rem;min-width:240px">
+            <div class="text-small text-muted">Análise automática detecta:</div>
+            <div style="margin-top:.75rem;display:flex;flex-direction:column;gap:.4rem;font-size:.82rem">
+              <div class="flex gap-sm">✅ <span>Repositórios de IA/ML</span></div>
+              <div class="flex gap-sm">✅ <span>Qualidade e consistência do código</span></div>
+              <div class="flex gap-sm">✅ <span>Uso de frameworks (LangChain, HF, etc.)</span></div>
+              <div class="flex gap-sm">✅ <span>Contribuições em projetos open source</span></div>
+              <div class="flex gap-sm">🔒 <span style="color:var(--muted)">Score de senioridade (Pro)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════ M3: MATCHING ══ -->
+<div class="page" id="page-m3">
+  <div class="hero">
+    <div class="container">
+      <div class="hero-badge">Módulo 03 — Matching Inteligente · Pro</div>
+      <h1>A IA que encontra<br/><em>o fit perfeito</em></h1>
+      <p>Score de compatibilidade calculado em tempo real entre profissionais e vagas. Baseado em certificações, avaliações técnicas e perfil comportamental.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary btn-lg" onclick="showPage('pricing')">Ativar Matching Pro →</button>
+        <button class="btn btn-ghost btn-lg">Ver demo de vagas</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Vagas recomendadas para você</h2>
+        <p>Score calculado com base no seu perfil, certificações e avaliações técnicas</p>
+      </div>
+      <div class="grid-2">
+
+        <div class="match-card">
+          <div class="match-header">
+            <div>
+              <div class="match-title">Engenheiro de IA Sênior</div>
+              <div class="match-company">🏢 TechCorp Brasil · São Paulo, SP (Remoto)</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:.75rem">
+              <div class="score-ring">
+                <svg width="60" height="60" viewBox="0 0 60 60">
+                  <circle cx="30" cy="30" r="24" fill="none" stroke="#e2e8f0" stroke-width="5"/>
+                  <circle cx="30" cy="30" r="24" fill="none" stroke="#0052cc" stroke-width="5"
+                    stroke-dasharray="150.8" stroke-dashoffset="22.6" stroke-linecap="round"/>
+                </svg>
+                <div class="score-text">85%</div>
+              </div>
+            </div>
+          </div>
+          <div class="match-tags">
+            <span class="match-tag">LLMs</span>
+            <span class="match-tag">RAG</span>
+            <span class="match-tag">Python</span>
+            <span class="match-tag">LangChain</span>
+            <span class="match-tag">AWS Bedrock</span>
+          </div>
+          <div class="match-detail">
+            <div class="match-detail-item"><strong>R$ 18–25k</strong><span>Faixa salarial/mês</span></div>
+            <div class="match-detail-item"><strong>PJ / CLT</strong><span>Regime de contratação</span></div>
+            <div class="match-detail-item"><strong>Sênior</strong><span>Nível de experiência</span></div>
+            <div class="match-detail-item"><strong>5+ anos</strong><span>Experiência mínima</span></div>
+          </div>
+          <div class="flex gap-sm mt-md">
+            <button class="btn btn-primary btn-sm">Candidatar-se</button>
+            <button class="btn btn-ghost btn-sm">Ver detalhes</button>
+            <button class="btn btn-ghost btn-sm">💾 Salvar</button>
+          </div>
+        </div>
+
+        <div class="match-card">
+          <div class="match-header">
+            <div>
+              <div class="match-title">Consultor de IA &amp; Transformação Digital</div>
+              <div class="match-company">🏢 Consultoria XYZ · ABC Paulista (Híbrido)</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:.75rem">
+              <div class="score-ring">
+                <svg width="60" height="60" viewBox="0 0 60 60">
+                  <circle cx="30" cy="30" r="24" fill="none" stroke="#e2e8f0" stroke-width="5"/>
+                  <circle cx="30" cy="30" r="24" fill="none" stroke="#00c896" stroke-width="5"
+                    stroke-dasharray="150.8" stroke-dashoffset="15.1" stroke-linecap="round"/>
+                </svg>
+                <div class="score-text" style="color:var(--green)">90%</div>
+              </div>
+            </div>
+          </div>
+          <div class="match-tags">
+            <span class="match-tag">MAIA</span>
+            <span class="match-tag">Diagnóstico</span>
+            <span class="match-tag">Workshop</span>
+            <span class="match-tag">Roadmap IA</span>
+            <span class="match-tag">Gestão</span>
+          </div>
+          <div class="match-detail">
+            <div class="match-detail-item"><strong>R$ 25–40k</strong><span>Faixa salarial/mês</span></div>
+            <div class="match-detail-item"><strong>PJ</strong><span>Regime de contratação</span></div>
+            <div class="match-detail-item"><strong>Especialista</strong><span>Nível de experiência</span></div>
+            <div class="match-detail-item"><strong>10+ anos</strong><span>Experiência mínima</span></div>
+          </div>
+          <div class="flex gap-sm mt-md">
+            <button class="btn btn-green btn-sm">✨ Match perfeito!</button>
+            <button class="btn btn-ghost btn-sm">Ver detalhes</button>
+            <button class="btn btn-ghost btn-sm">💾 Salvar</button>
+          </div>
+        </div>
+
+        <div class="match-card" style="opacity:.7">
+          <div class="match-header">
+            <div>
+              <div class="match-title">Analista de Machine Learning</div>
+              <div class="match-company">🏢 FinTech Inovação · Remoto</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:.75rem">
+              <div class="score-ring">
+                <svg width="60" height="60" viewBox="0 0 60 60">
+                  <circle cx="30" cy="30" r="24" fill="none" stroke="#e2e8f0" stroke-width="5"/>
+                  <circle cx="30" cy="30" r="24" fill="none" stroke="#f59e0b" stroke-width="5"
+                    stroke-dasharray="150.8" stroke-dashoffset="60.3" stroke-linecap="round"/>
+                </svg>
+                <div class="score-text" style="color:var(--amber)">60%</div>
+              </div>
+            </div>
+          </div>
+          <div class="match-tags">
+            <span class="match-tag">TensorFlow</span>
+            <span class="match-tag">PyTorch</span>
+            <span class="match-tag">MLOps</span>
+            <span class="match-tag">Kubernetes</span>
+          </div>
+          <div style="background:#fef3c7;border-radius:8px;padding:.75rem;font-size:.8rem;color:#92400e;margin-top:.75rem">
+            💡 <strong>Sugestão IA:</strong> Complete a trilha "Analista de ML" para aumentar seu score para 85%.
+          </div>
+          <div class="flex gap-sm mt-md">
+            <button class="btn btn-outline btn-sm" onclick="showPage('m1')">Melhorar score →</button>
+            <button class="btn btn-ghost btn-sm">Ver detalhes</button>
+          </div>
+        </div>
+
+        <div class="match-card" style="background:var(--surface);border-style:dashed">
+          <div style="text-align:center;padding:1.5rem 0">
+            <div style="font-size:2.5rem;margin-bottom:.75rem">🔍</div>
+            <h3 class="fw-700">Matching para empresas</h3>
+            <p class="text-muted text-small mt-sm">Encontre os profissionais de IA com o maior score de compatibilidade para suas vagas abertas. Triagem automática em segundos.</p>
+            <button class="btn btn-primary mt-md" onclick="showPage('pricing')">Contratar plano Empresa →</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════ M4: ENTREVISTA ══ -->
+<div class="page" id="page-m4">
+  <div class="hero">
+    <div class="container">
+      <div class="hero-badge">Módulo 04 — Entrevista com IA · Pro</div>
+      <h1>Simule entrevistas técnicas<br/><em>com feedback real</em></h1>
+      <p>Prepare-se com um interviewer de IA especializado em vagas de IA. Feedback em tempo real sobre conteúdo, clareza e postura profissional.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary btn-lg" onclick="startInterview()">Iniciar simulação →</button>
+        <button class="btn btn-ghost btn-lg" onclick="showPage('pricing')">Ver planos Pro</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="container">
+      <div class="grid-2" style="align-items:start">
+
+        <div>
+          <div class="section-header" style="text-align:left;margin-bottom:1.5rem">
+            <h2>Simulação de entrevista</h2>
+            <p>Interviewer IA especializado em vagas de IA/ML</p>
+          </div>
+
+          <div class="chat-window">
+            <div class="chat-header">
+              <div class="chat-avatar">🤖</div>
+              <div class="chat-info">
+                <strong>Thriveo IA Interviewer</strong>
+                <span>Especialista em recrutamento de IA</span>
+              </div>
+              <div class="chat-status">
+                <div class="status-dot"></div>
+                Online
+              </div>
+            </div>
+            <div class="chat-body" id="chatBody">
+              <div class="msg msg-ai">
+                <div class="msg-bubble">Olá! Sou o entrevistador de IA da Thriveo. Vamos simular uma entrevista para a vaga de <strong>Engenheiro de Prompts Sênior</strong>. Pronto para começar?</div>
+                <div class="msg-meta">Thriveo IA · agora</div>
+              </div>
+              <div class="msg msg-user">
+                <div class="msg-bubble">Sim, estou pronto!</div>
+                <div class="msg-meta">Você · agora</div>
+              </div>
+              <div class="msg msg-ai">
+                <div class="msg-bubble">Ótimo! Primeira pergunta:<br/><br/><strong>Descreva em detalhes como você implementaria uma solução RAG para um chatbot empresarial. Quais são os principais desafios e como você os mitigaria?</strong></div>
+                <div class="msg-meta">Thriveo IA · agora</div>
+              </div>
+            </div>
+            <div class="chat-input-area">
+              <input class="chat-input" id="chatInput" type="text" placeholder="Digite sua resposta..." onkeydown="if(event.key==='Enter')sendMsg()"/>
+              <button class="btn btn-primary btn-sm" onclick="sendMsg()">Enviar</button>
+            </div>
+          </div>
+
+          <div class="interview-score-bar mt-md">
+            <div class="fw-700 text-small">📊 Análise em tempo real</div>
+            <div class="score-items">
+              <div class="score-item">
+                <label>Precisão técnica</label>
+                <div class="bar"><div class="bar-fill" style="width:72%"></div></div>
+              </div>
+              <div class="score-item">
+                <label>Clareza de comunicação</label>
+                <div class="bar"><div class="bar-fill" style="width:85%"></div></div>
+              </div>
+              <div class="score-item">
+                <label>Profundidade da resposta</label>
+                <div class="bar"><div class="bar-fill" style="width:60%"></div></div>
+              </div>
+              <div class="score-item">
+                <label>Alinhamento ao cargo</label>
+                <div class="bar"><div class="bar-fill" style="width:78%"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-header" style="text-align:left;margin-bottom:1.5rem">
+            <h2>Tipos de entrevista disponíveis</h2>
+            <p>Personalizadas por cargo e nível de senioridade</p>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:1rem">
+            <div class="card" style="cursor:pointer" onclick="startInterview()">
+              <div class="flex gap-md">
+                <div class="card-icon icon-blue">🧪</div>
+                <div style="flex:1">
+                  <div class="card-badge badge-free">Gratuito</div>
+                  <h3>Entrevista Técnica Básica</h3>
+                  <p>Perguntas fundamentais de IA, prompting e conceitos gerais. Ideal para Junior.</p>
+                  <div class="flex gap-sm mt-sm text-small text-muted">⏱ 20 min · 8 perguntas</div>
+                </div>
+              </div>
+            </div>
+            <div class="card" style="cursor:pointer" onclick="showPage('pricing')">
+              <div class="flex gap-md">
+                <div class="card-icon" style="background:#ede9fe">🔬</div>
+                <div style="flex:1">
+                  <div class="card-badge badge-pro">Pro</div>
+                  <h3>Entrevista Técnica Avançada</h3>
+                  <p>Arquitetura de sistemas de IA, RAG, agentes, MLOps. Para Pleno/Sênior.</p>
+                  <div class="flex gap-sm mt-sm text-small text-muted">⏱ 40 min · 15 perguntas</div>
+                </div>
+              </div>
+            </div>
+            <div class="card" style="cursor:pointer" onclick="showPage('pricing')">
+              <div class="flex gap-md">
+                <div class="card-icon icon-green">🎯</div>
+                <div style="flex:1">
+                  <div class="card-badge badge-pro">Pro</div>
+                  <h3>Entrevista Comportamental + STAR</h3>
+                  <p>Soft skills, liderança, gestão de projetos de IA. Método STAR com análise.</p>
+                  <div class="flex gap-sm mt-sm text-small text-muted">⏱ 30 min · 10 perguntas</div>
+                </div>
+              </div>
+            </div>
+            <div class="card" style="cursor:pointer" onclick="showPage('pricing')">
+              <div class="flex gap-md">
+                <div class="card-icon icon-amber">📋</div>
+                <div style="flex:1">
+                  <div class="card-badge badge-pro">Pro</div>
+                  <h3>Mock Interview Completo</h3>
+                  <p>Simulação realista com relatório detalhado, pontuação MAIA e recomendações personalizadas.</p>
+                  <div class="flex gap-sm mt-sm text-small text-muted">⏱ 60 min · Relatório PDF</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════ PRICING ══ -->
+<div class="page" id="page-pricing">
+  <div class="hero">
+    <div class="container">
+      <div class="hero-badge">Planos e Preços</div>
+      <h1>Invista no seu<br/><em>futuro em IA</em></h1>
+      <p>Planos para profissionais em evolução e para empresas que buscam os melhores talentos. Sem cartão de crédito para começar.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="container">
+
+      <div class="section-header">
+        <h2>Planos para Profissionais</h2>
+        <p>Desenvolva suas habilidades em IA e destaque-se no mercado</p>
+      </div>
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <div class="pricing-plan">Gratuito</div>
+          <h3 style="font-size:1.1rem;font-weight:700">Starter</h3>
+          <div class="pricing-price"><span class="amount">R$ 0</span><span class="period"> / mês</span></div>
+          <p class="pricing-desc">Para começar sua jornada em IA e descobrir a plataforma.</p>
+          <ul class="pricing-features">
+            <li><span class="feature-check">✓</span>1 trilha gratuita (Fundamentos de IA)</li>
+            <li><span class="feature-check">✓</span>2 avaliações técnicas gratuitas</li>
+            <li><span class="feature-check">✓</span>Perfil público Thriveo</li>
+            <li><span class="feature-check">✓</span>Login GitHub + LinkedIn</li>
+            <li><span class="feature-check">✓</span>1 entrevista IA básica/mês</li>
+            <li><span class="feature-lock">🔒</span>Matching inteligente</li>
+            <li><span class="feature-lock">🔒</span>Trilhas avançadas e especializadas</li>
+            <li><span class="feature-lock">🔒</span>Relatório MAIA pessoal</li>
+          </ul>
+          <button class="btn btn-outline" style="width:100%" onclick="openModal()">Criar conta gratuita</button>
+        </div>
+
+        <div class="pricing-card featured">
+          <span class="pricing-popular">⭐ Mais popular</span>
+          <div class="pricing-plan">Pro</div>
+          <h3 style="font-size:1.1rem;font-weight:700">Professional</h3>
+          <div class="pricing-price"><span class="amount">R$ 79</span><span class="period"> / mês</span></div>
+          <p class="pricing-desc">Para profissionais sérios que querem se destacar e ser encontrados.</p>
+          <ul class="pricing-features">
+            <li><span class="feature-check">✓</span>Todas as trilhas (12+ módulos)</li>
+            <li><span class="feature-check">✓</span>Avaliações técnicas ilimitadas</li>
+            <li><span class="feature-check">✓</span>Matching inteligente com vagas</li>
+            <li><span class="feature-check">✓</span>Análise automática GitHub completa</li>
+            <li><span class="feature-check">✓</span>Entrevistas IA ilimitadas</li>
+            <li><span class="feature-check">✓</span>Relatório MAIA pessoal (score 0–100)</li>
+            <li><span class="feature-check">✓</span>Certificados verificáveis + badges</li>
+            <li><span class="feature-check">✓</span>Perfil destacado para recrutadores</li>
+          </ul>
+          <button class="btn btn-primary" style="width:100%" onclick="openModal()">Começar 14 dias grátis</button>
+          <p style="text-align:center;font-size:.75rem;color:var(--muted);margin-top:.75rem">Sem cartão de crédito · Cancele quando quiser</p>
+        </div>
+
+        <div class="pricing-card">
+          <div class="pricing-plan">Anual</div>
+          <h3 style="font-size:1.1rem;font-weight:700">Professional Anual</h3>
+          <div class="pricing-price">
+            <span class="amount">R$ 59</span><span class="period"> / mês</span>
+            <div style="font-size:.78rem;color:var(--green);font-weight:600;margin-top:.2rem">💚 Economize R$ 240/ano</div>
+          </div>
+          <p class="pricing-desc">Tudo do plano Pro com desconto de 25% no pagamento anual.</p>
+          <ul class="pricing-features">
+            <li><span class="feature-check">✓</span>Tudo do plano Pro</li>
+            <li><span class="feature-check">✓</span>1 mentoria individual por trimestre</li>
+            <li><span class="feature-check">✓</span>Acesso antecipado a novos módulos</li>
+            <li><span class="feature-check">✓</span>1 workshop in-company online gratuito</li>
+          </ul>
+          <button class="btn btn-outline" style="width:100%" onclick="openModal()">Assinar plano anual</button>
+        </div>
+      </div>
+
+      <hr class="divider"/>
+
+      <div class="section-header" style="margin-top:3rem">
+        <h2>Planos para Empresas</h2>
+        <p>Encontre, avalie e contrate os melhores profissionais de IA</p>
+      </div>
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <div class="pricing-plan">Empresa Básico</div>
+          <h3 style="font-size:1.1rem;font-weight:700">Starter B2B</h3>
+          <div class="pricing-price"><span class="amount">R$ 499</span><span class="period"> / mês</span></div>
+          <p class="pricing-desc">Para empresas que publicam até 5 vagas/mês e buscam candidatos qualificados.</p>
+          <ul class="pricing-features">
+            <li><span class="feature-check">✓</span>Até 5 vagas ativas/mês</li>
+            <li><span class="feature-check">✓</span>Acesso ao banco de talentos IA</li>
+            <li><span class="feature-check">✓</span>Score de compatibilidade dos candidatos</li>
+            <li><span class="feature-check">✓</span>Avaliações técnicas pré-configuradas</li>
+            <li><span class="feature-lock">🔒</span>Avaliações técnicas customizadas</li>
+            <li><span class="feature-lock">🔒</span>Análise GitHub dos candidatos</li>
+          </ul>
+          <button class="btn btn-outline" style="width:100%" onclick="openModal()">Começar trial 14 dias</button>
+        </div>
+
+        <div class="pricing-card featured">
+          <span class="pricing-popular">🏆 Recomendado</span>
+          <div class="pricing-plan">Empresa Pro</div>
+          <h3 style="font-size:1.1rem;font-weight:700">Professional B2B</h3>
+          <div class="pricing-price"><span class="amount">R$ 999</span><span class="period"> / mês</span></div>
+          <p class="pricing-desc">Para times de RH tech que recrutam com frequência e exigem precisão técnica.</p>
+          <ul class="pricing-features">
+            <li><span class="feature-check">✓</span>Vagas ilimitadas</li>
+            <li><span class="feature-check">✓</span>Matching IA automático</li>
+            <li><span class="feature-check">✓</span>Avaliações técnicas customizadas por cargo</li>
+            <li><span class="feature-check">✓</span>Análise de portfólio GitHub dos candidatos</li>
+            <li><span class="feature-check">✓</span>Ranking automático de candidatos</li>
+            <li><span class="feature-check">✓</span>Relatório MAIA dos candidatos</li>
+            <li><span class="feature-check">✓</span>Integração com ATS via API</li>
+          </ul>
+          <button class="btn btn-primary" style="width:100%" onclick="openModal()">Começar trial 14 dias</button>
+        </div>
+
+        <div class="pricing-card">
+          <div class="pricing-plan">Enterprise</div>
+          <h3 style="font-size:1.1rem;font-weight:700">Enterprise</h3>
+          <div class="pricing-price"><span class="amount" style="font-size:1.8rem">Sob consulta</span></div>
+          <p class="pricing-desc">Para grandes empresas com volume alto de contratações e necessidades customizadas.</p>
+          <ul class="pricing-features">
+            <li><span class="feature-check">✓</span>Tudo do plano Pro</li>
+            <li><span class="feature-check">✓</span>SLA e suporte dedicado</li>
+            <li><span class="feature-check">✓</span>White-label da plataforma</li>
+            <li><span class="feature-check">✓</span>Integração com sistemas internos</li>
+            <li><span class="feature-check">✓</span>Trilhas de treinamento corporativas</li>
+            <li><span class="feature-check">✓</span>Diagnóstico MAIA para toda a empresa</li>
+          </ul>
+          <button class="btn btn-outline" style="width:100%" onclick="openModal()">Falar com especialista</button>
+        </div>
+      </div>
+
+      <div style="background:linear-gradient(135deg,var(--blue),var(--blue-mid));border-radius:var(--radius-lg);padding:2.5rem;text-align:center;margin-top:3rem;color:var(--white)">
+        <h3 style="font-size:1.4rem;font-weight:800;margin-bottom:.5rem">💡 Success Fee disponível</h3>
+        <p style="opacity:.85;margin-bottom:1.5rem;max-width:500px;margin-left:auto;margin-right:auto">Prefere pagar só quando contratar? Oferecemos modelo de taxa de sucesso de 15% sobre o salário anual do candidato contratado pela plataforma.</p>
+        <button class="btn" style="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.4)" onclick="openModal()">Solicitar proposta de Success Fee</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <h3>🚀 Criar sua conta Thriveo</h3>
+    <p>Acesse gratuitamente. Nenhum cartão de crédito necessário.</p>
+    <div style="display:flex;flex-direction:column;gap:.75rem">
+      <button class="btn btn-outline" style="justify-content:center;gap:.6rem">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#333"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        Continuar com GitHub
+      </button>
+      <button class="btn btn-outline" style="justify-content:center;gap:.6rem">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#0077b5"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        Continuar com LinkedIn
+      </button>
+    </div>
+    <div style="text-align:center;font-size:.75rem;color:var(--muted);margin-top:1rem">
+      Ao criar conta você concorda com os <a href="#" style="color:var(--blue)">Termos de Uso</a> e <a href="#" style="color:var(--blue)">Política de Privacidade</a>
+    </div>
+    <div class="modal-actions" style="margin-top:1rem">
+      <button class="btn btn-ghost btn-sm" onclick="closeModal()">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  const nav=document.getElementById('nav-'+id);
+  if(nav)nav.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function openModal(){
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+}
+
+function selectOption(el, groupId){
+  document.querySelectorAll('#'+groupId+' .q-option').forEach(o=>o.classList.remove('selected','correct'));
+  el.classList.add('selected');
+  // Simular resposta correta (opção B é sempre correta no demo)
+  setTimeout(()=>{
+    const opts=document.querySelectorAll('#'+groupId+' .q-option');
+    opts[1].classList.add('correct');
+  },800);
+}
+
+const aiResponses=[
+  'Ótima resposta! Você demonstrou conhecimento sólido sobre RAG. Agora me fale sobre os desafios de latência em sistemas de IA em produção.',
+  'Interessante perspectiva! Sua pontuação técnica está em 78%. Qual a diferença entre fine-tuning e prompt engineering na sua visão?',
+  'Excelente! Você está se saindo muito bem. Última pergunta: como você mediria o ROI de uma implementação de IA em uma empresa?'
+];
+let aiIndex=0;
+
+function sendMsg(){
+  const input=document.getElementById('chatInput');
+  const msg=input.value.trim();
+  if(!msg)return;
+  const body=document.getElementById('chatBody');
+  
+  // Add user message
+  const userDiv=document.createElement('div');
+  userDiv.className='msg msg-user';
+  userDiv.innerHTML=`<div class="msg-bubble">${msg}</div><div class="msg-meta">Você · agora</div>`;
+  body.appendChild(userDiv);
+  input.value='';
+  
+  // Typing indicator
+  const typing=document.createElement('div');
+  typing.className='msg msg-ai';
+  typing.innerHTML='<div class="msg-bubble"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>';
+  body.appendChild(typing);
+  body.scrollTop=body.scrollHeight;
+  
+  setTimeout(()=>{
+    body.removeChild(typing);
+    const aiDiv=document.createElement('div');
+    aiDiv.className='msg msg-ai';
+    const resp=aiResponses[aiIndex%aiResponses.length];
+    aiIndex++;
+    aiDiv.innerHTML=`<div class="msg-bubble">${resp}</div><div class="msg-meta">Thriveo IA · agora</div>`;
+    body.appendChild(aiDiv);
+    body.scrollTop=body.scrollHeight;
+  },1500);
+}
+
+function startInterview(){
+  showPage('m4');
+  const input=document.getElementById('chatInput');
+  if(input)input.focus();
+}
+</script>
+</body>
+</html>
