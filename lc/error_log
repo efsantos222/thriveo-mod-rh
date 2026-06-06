@@ -1,0 +1,51 @@
+[10-Apr-2025 15:51:11 America/Fortaleza] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'efsantos_promo.solicitações' doesn't exist in /home4/efsantos/public_html/lc/index.php:120
+Stack trace:
+#0 /home4/efsantos/public_html/lc/index.php(120): PDOStatement->execute()
+#1 {main}
+  thrown in /home4/efsantos/public_html/lc/index.php on line 120
+[10-Apr-2025 15:51:39 America/Fortaleza] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'efsantos_promo.solicitações' doesn't exist in /home4/efsantos/public_html/lc/index.php:120
+Stack trace:
+#0 /home4/efsantos/public_html/lc/index.php(120): PDOStatement->execute()
+#1 {main}
+  thrown in /home4/efsantos/public_html/lc/index.php on line 120
+[10-Apr-2025 15:51:42 America/Fortaleza] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'efsantos_promo.solicitações' doesn't exist in /home4/efsantos/public_html/lc/index.php:120
+Stack trace:
+#0 /home4/efsantos/public_html/lc/index.php(120): PDOStatement->execute()
+#1 {main}
+  thrown in /home4/efsantos/public_html/lc/index.php on line 120
+[10-Apr-2025 15:51:46 America/Fortaleza] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'efsantos_promo.solicitações' doesn't exist in /home4/efsantos/public_html/lc/index.php:120
+Stack trace:
+#0 /home4/efsantos/public_html/lc/index.php(120): PDOStatement->execute()
+#1 {main}
+  thrown in /home4/efsantos/public_html/lc/index.php on line 120
+[10-Apr-2025 15:52:59 America/Fortaleza] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'efsantos_promo.solicitações' doesn't exist in /home4/efsantos/public_html/lc/index2.php:122
+Stack trace:
+#0 /home4/efsantos/public_html/lc/index2.php(122): PDOStatement->execute()
+#1 {main}
+  thrown in /home4/efsantos/public_html/lc/index2.php on line 122
+[10-Apr-2025 15:53:05 America/Fortaleza] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'efsantos_promo.solicitações' doesn't exist in /home4/efsantos/public_html/lc/index2.php:122
+Stack trace:
+#0 /home4/efsantos/public_html/lc/index2.php(122): PDOStatement->execute()
+#1 {main}
+  thrown in /home4/efsantos/public_html/lc/index2.php on line 122
+[10-Apr-2025 15:53:30 America/Fortaleza] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'efsantos_promo.solicitações' doesn't exist in /home4/efsantos/public_html/lc/index2.php:122
+Stack trace:
+#0 /home4/efsantos/public_html/lc/index2.php(122): PDOStatement->execute()
+#1 {main}
+  thrown in /home4/efsantos/public_html/lc/index2.php on line 122
+[10-Apr-2025 15:54:39 America/Fortaleza] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'efsantos_promo.solicitações' doesn't exist in /home4/efsantos/public_html/lc/index3.php:120
+Stack trace:
+#0 /home4/efsantos/public_html/lc/index3.php(120): PDOStatement->execute()
+#1 {main}
+  thrown in /home4/efsantos/public_html/lc/index3.php on line 120
+[10-Apr-2025 16:12:04 America/Fortaleza] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'efsantos_promo.solicitações' doesn't exist in /home4/efsantos/public_html/lc/index3.php:120
+Stack trace:
+#0 /home4/efsantos/public_html/lc/index3.php(120): PDOStatement->execute()
+#1 {main}
+  thrown in /home4/efsantos/public_html/lc/index3.php on line 120
+[10-Apr-2025 16:12:13 America/Fortaleza] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'efsantos_promo.solicitações' doesn't exist in /home4/efsantos/public_html/lc/index3.php:120
+Stack trace:
+#0 /home4/efsantos/public_html/lc/index3.php(120): PDOStatement->execute()
+#1 {main}
+  thrown in /home4/efsantos/public_html/lc/index3.php on line 120
+[10-Apr-2025 16:31:02 America/Fortaleza] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home4/efsantos/public_html/lc/index3.php:223) in /home4/efsantos/public_html/lc/index3.php on line 582
