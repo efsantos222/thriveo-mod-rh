@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>talent.ai — Análise de Currículos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --surface2: #1a1a24;
+      --border: #2a2a3a;
+      --accent: #6c63ff;
+      --accent2: #ff6584;
+      --accent3: #43e97b;
+      --text: #e8e8f0;
+      --muted: #666680;
+      --card-bg: rgba(255, 255, 255, 0.03);
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .app {
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(108, 99, 255, 0.15) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 110%, rgba(255, 101, 132, 0.1) 0%, transparent 60%),
+        var(--bg);
+    }
+
+    /* Header */
+    header {
+      padding: 1.5rem 3rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(20px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.4rem;
+      background: linear-gradient(135deg, #6c63ff, #ff6584);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.02em;
+    }
+
+    .logo-dot {
+      color: var(--accent3);
+      -webkit-text-fill-color: var(--accent3);
+    }
+
+    .badge {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: rgba(108, 99, 255, 0.15);
+      border: 1px solid rgba(108, 99, 255, 0.3);
+      color: var(--accent);
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      margin-bottom: 3.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.1s forwards;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, #6c63ff 30%, #ff6584 70%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* Upload grid */
+    .upload-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.2s forwards;
+    }
+
+    @media (max-width: 650px) {
+      .upload-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .upload-card {
+      background: var(--card-bg);
+      border: 1.5px dashed var(--border);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .upload-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.3s;
+      border-radius: 20px;
+    }
+
+    .upload-card.spec::before {
+      background: radial-gradient(ellipse at top, rgba(108, 99, 255, 0.12), transparent 70%);
+    }
+
+    .upload-card.resume::before {
+      background: radial-gradient(ellipse at top, rgba(255, 101, 132, 0.12), transparent 70%);
+    }
+
+    .upload-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .upload-card:hover::before {
+      opacity: 1;
+    }
+
+    .upload-card.has-file {
+      border-style: solid;
+      border-color: var(--accent3);
+      background: rgba(67, 233, 123, 0.04);
+    }
+
+    .upload-card.drag-over {
+      border-color: var(--accent);
+      background: rgba(108, 99, 255, 0.08);
+      transform: scale(1.01);
+    }
+
+    .upload-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.2rem;
+      font-size: 1.5rem;
+    }
+
+    .upload-card.spec .upload-icon {
+      background: rgba(108, 99, 255, 0.15);
+    }
+
+    .upload-card.resume .upload-icon {
+      background: rgba(255, 101, 132, 0.15);
+    }
+
+    .upload-card.has-file .upload-icon {
+      background: rgba(67, 233, 123, 0.15);
+    }
+
+    .upload-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+
+    .upload-card p {
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    .file-name {
+      margin-top: 0.8rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--accent3);
+      padding: 0.3rem 0.8rem;
+      background: rgba(67, 233, 123, 0.1);
+      border-radius: 20px;
+      display: inline-block;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    input[type=file] {
+      display: none;
+    }
+
+    /* Analyze button */
+    .analyze-btn {
+      width: 100%;
+      padding: 1rem 2rem;
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #6c63ff, #8b44ff);
+      color: white;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.3s forwards;
+    }
+
+    .analyze-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), transparent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .analyze-btn:hover:not(:disabled)::after {
+      opacity: 1;
+    }
+
+    .analyze-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(108, 99, 255, 0.4);
+    }
+
+    .analyze-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .error-msg {
+      background: rgba(255, 101, 132, 0.08);
+      border: 1px solid rgba(255, 101, 132, 0.2);
+      color: #ff6584;
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      margin-top: 1rem;
+      display: none;
+    }
+
+    /* Processing state */
+    .processing-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      display: none;
+    }
+
+    .processing-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(108, 99, 255, 0.2), rgba(255, 101, 132, 0.2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-size: 2rem;
+      animation: pulse 2s ease infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(108, 99, 255, 0.3);
+      }
+
+      50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 20px rgba(108, 99, 255, 0);
+      }
+    }
+
+    .processing-state h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .processing-state p {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .big-spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid rgba(108, 99, 255, 0.3);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 1.5rem auto 0;
+    }
+
+    /* Results */
+    .results {
+      display: none;
+      margin-top: 3rem;
+      animation: fadeUp 0.5s ease;
+    }
+
+    .results-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .results-header h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      flex: 1;
+    }
+
+    .verdict-pill {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.4rem 1.2rem;
+      border-radius: 30px;
+      white-space: nowrap;
+    }
+
+    .verdict-entrevistar {
+      background: rgba(67, 233, 123, 0.15);
+      color: #43e97b;
+      border: 1px solid rgba(67, 233, 123, 0.3);
+    }
+
+    .verdict-banco {
+      background: rgba(255, 184, 0, 0.15);
+      color: #ffb800;
+      border: 1px solid rgba(255, 184, 0, 0.3);
+    }
+
+    .verdict-descartar {
+      background: rgba(255, 101, 132, 0.15);
+      color: #ff6584;
+      border: 1px solid rgba(255, 101, 132, 0.3);
+    }
+
+    .verdict-avaliar {
+      background: rgba(108, 99, 255, 0.15);
+      color: #6c63ff;
+      border: 1px solid rgba(108, 99, 255, 0.3);
+    }
+
+    .reset-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 0.5rem 1.2rem;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      transition: all 0.2s;
+      font-family: 'DM Sans', sans-serif;
+      white-space: nowrap;
+    }
+
+    .reset-btn:hover {
+      border-color: var(--text);
+      color: var(--text);
+    }
+
+    /* Export bar */
+    .export-bar {
+      display: flex;
+      gap: 0.6rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .export-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.55rem 1.1rem;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    .export-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .export-btn.txt {
+      border-color: rgba(67, 233, 123, 0.4);
+      color: #43e97b;
+      background: rgba(67, 233, 123, 0.07);
+    }
+
+    .export-btn.txt:hover {
+      background: rgba(67, 233, 123, 0.13);
+      box-shadow: 0 4px 16px rgba(67, 233, 123, 0.2);
+    }
+
+    /* Score row */
+    .score-row {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .score-card {
+      flex: 1;
+      min-width: 130px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.2rem 1.4rem;
+    }
+
+    .score-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    .score-value {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .score-high {
+      color: var(--accent3);
+    }
+
+    .score-mid {
+      color: #ffb800;
+    }
+
+    .score-low {
+      color: var(--accent2);
+    }
+
+    .score-bar {
+      height: 4px;
+      background: var(--border);
+      border-radius: 4px;
+      margin-top: 0.6rem;
+      overflow: hidden;
+    }
+
+    .score-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 1.2s ease;
+    }
+
+    /* Sections */
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .section.pref {
+      border: 1.5px solid rgba(108, 99, 255, 0.35);
+      background: rgba(108, 99, 255, 0.04);
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section.pref .section-title {
+      color: #a89cff;
+    }
+
+    .pref-badge {
+      margin-left: auto;
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(108, 99, 255, 0.15);
+      color: #a89cff;
+      border: 1px solid rgba(108, 99, 255, 0.3);
+      padding: 0.15rem 0.6rem;
+      border-radius: 20px;
+    }
+
+    .section-content p {
+      font-size: 0.88rem;
+      line-height: 1.75;
+      color: var(--text);
+      font-weight: 300;
+      padding-top: 0.15rem;
+    }
+
+    .section-content .arrow-line {
+      padding-left: 1rem;
+    }
+
+    .section-content .arrow-line::before {
+      content: '→ ';
+      color: var(--accent);
+    }
+
+    .section-content .impact {
+      padding-top: 0.8rem;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    .pref-row {
+      display: flex;
+      gap: 0.6rem;
+      align-items: flex-start;
+      padding: 0.5rem 0.8rem;
+      margin-bottom: 0.35rem;
+      border-radius: 8px;
+    }
+
+    .pref-row p {
+      font-size: 0.87rem;
+      line-height: 1.6;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+      animation: fadeUp 0.2s ease;
+    }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 680px;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .modal-header {
+      padding: 1.2rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .modal-header h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      flex: 1;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .modal-close:hover {
+      border-color: var(--text);
+      color: var(--text);
+    }
+
+    .modal-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.2rem 1.5rem;
+    }
+
+    .modal-textarea {
+      width: 100%;
+      height: 340px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      font-size: 0.78rem;
+      line-height: 1.7;
+      color: var(--text);
+      font-family: 'Courier New', monospace;
+      font-weight: 400;
+      resize: none;
+      outline: none;
+    }
+
+    .modal-textarea:focus {
+      border-color: var(--accent);
+    }
+
+    .modal-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 0.6rem;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-hint {
+      font-size: 0.76rem;
+      color: var(--muted);
+    }
+
+    .modal-copy-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.6rem 1.4rem;
+      background: linear-gradient(135deg, #6c63ff, #8b44ff);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .modal-copy-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(108, 99, 255, 0.4);
+    }
+
+    .report-raw {
+      background: var(--surface2);
+      border-radius: 12px;
+      padding: 1.2rem;
+      font-size: 0.82rem;
+      line-height: 1.8;
+      color: var(--text);
+      font-weight: 300;
+      white-space: pre-wrap;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <header>
+      <div class="logo">talent<span class="logo-dot">.</span>ai</div>
+      <div class="badge">Beta</div>
+    </header>
+
+    <main>
+      <!-- Upload screen -->
+      <div id="uploadScreen">
+        <div class="hero">
+          <h1>Análise Inteligente<br>de <span>Currículos</span></h1>
+          <p>Upload de PDF da vaga e do currículo. IA avalia a aderência e recomenda a ação ideal.</p>
+        </div>
+
+        <div class="upload-grid">
+          <div class="upload-card spec" id="cardSpec" onclick="document.getElementById('inputSpec').click()">
+            <div class="upload-icon" id="iconSpec">📋</div>
+            <h3>Especificação da Vaga</h3>
+            <p id="hintSpec">Arraste ou clique para enviar o PDF com os requisitos da vaga</p>
+            <div class="file-name" id="nameSpec" style="display:none"></div>
+            <input type="file" id="inputSpec" accept=".pdf" />
+          </div>
+
+          <div class="upload-card resume" id="cardResume" onclick="document.getElementById('inputResume').click()">
+            <div class="upload-icon" id="iconResume">👤</div>
+            <h3>Currículo do Candidato</h3>
+            <p id="hintResume">Arraste ou clique para enviar o PDF do currículo</p>
+            <div class="file-name" id="nameResume" style="display:none"></div>
+            <input type="file" id="inputResume" accept=".pdf" />
+          </div>
+        </div>
+
+        <button class="analyze-btn" id="analyzeBtn" onclick="analyze()" disabled>
+          <span id="btnText">Faça upload dos dois arquivos para analisar</span>
+          <div class="spinner" id="btnSpinner"></div>
+        </button>
+
+        <div class="error-msg" id="errorMsg"></div>
+      </div>
+
+      <!-- Processing -->
+      <div class="processing-state" id="processingState">
+        <div class="processing-icon">🔍</div>
+        <h3>Analisando com IA...</h3>
+        <p>Processando os documentos e gerando o relatório de aderência</p>
+        <div class="big-spinner"></div>
+      </div>
+
+      <!-- Results -->
+      <div class="results" id="results">
+        <div class="results-header">
+          <h2>Relatório de Aderência</h2>
+          <div class="verdict-pill" id="verdictPill"></div>
+          <button class="reset-btn" onclick="reset()">← Nova análise</button>
+        </div>
+
+        <div class="export-bar">
+          <button class="export-btn txt" onclick="openModal()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="16" y1="13" x2="8" y2="13" />
+              <line x1="16" y1="17" x2="8" y2="17" />
+            </svg>
+            Ver / Copiar Relatório TXT
+          </button>
+        </div>
+
+        <div class="score-row" id="scoreRow"></div>
+        <div id="sectionsContainer"></div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal TXT -->
+  <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>📄 Relatório em Texto</h3>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <textarea class="modal-textarea" id="modalTextarea" readonly></textarea>
+      </div>
+      <div class="modal-footer">
+        <span class="modal-hint">Ctrl+A para selecionar tudo</span>
+        <button class="modal-copy-btn" id="copyBtn" onclick="copyModal()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" />
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+          </svg>
+          Copiar tudo
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── Config ──────────────────────────────────────────────────────────
+    const API_URL = '/matchcv/proxy.php';
+
+
+    // ── State ────────────────────────────────────────────────────────────
+    let specFile = null;
+    let resumeFile = null;
+    let currentReport = null;
+
+    // ── File upload ──────────────────────────────────────────────────────
+    function setupCard(cardId, inputId, iconId, hintId, nameId, type) {
+      const card = document.getElementById(cardId);
+      const input = document.getElementById(inputId);
+
+      input.addEventListener('change', e => setFile(e.target.files[0], type));
+
+      card.addEventListener('dragover', e => { e.preventDefault(); card.classList.add('drag-over'); });
+      card.addEventListener('dragleave', () => card.classList.remove('drag-over'));
+      card.addEventListener('drop', e => {
+        e.preventDefault();
+        card.classList.remove('drag-over');
+        const f = e.dataTransfer.files[0];
+        if (f && f.type === 'application/pdf') setFile(f, type);
+      });
+    }
+
+    function setFile(file, type) {
+      if (!file) return;
+      if (type === 'spec') {
+        specFile = file;
+        document.getElementById('cardSpec').classList.add('has-file');
+        document.getElementById('iconSpec').textContent = '✓';
+        document.getElementById('hintSpec').textContent = 'Arquivo carregado com sucesso';
+        const n = document.getElementById('nameSpec');
+        n.textContent = '📄 ' + file.name;
+        n.style.display = 'inline-block';
+      } else {
+        resumeFile = file;
+        document.getElementById('cardResume').classList.add('has-file');
+        document.getElementById('iconResume').textContent = '✓';
+        document.getElementById('hintResume').textContent = 'Arquivo carregado com sucesso';
+        const n = document.getElementById('nameResume');
+        n.textContent = '📄 ' + file.name;
+        n.style.display = 'inline-block';
+      }
+      updateBtn();
+    }
+
+    function updateBtn() {
+      const btn = document.getElementById('analyzeBtn');
+      const text = document.getElementById('btnText');
+      if (specFile && resumeFile) {
+        btn.disabled = false;
+        text.textContent = '✦ Analisar Aderência com IA';
+      } else {
+        btn.disabled = true;
+        text.textContent = 'Faça upload dos dois arquivos para analisar';
+      }
+    }
+
+    setupCard('cardSpec', 'inputSpec', 'iconSpec', 'hintSpec', 'nameSpec', 'spec');
+    setupCard('cardResume', 'inputResume', 'iconResume', 'hintResume', 'nameResume', 'resume');
+
+    // ── getPdfText ──────────────────────────────────────────────────────
+    async function getPdfText(file) {
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      let fullText = "";
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const textContent = await page.getTextContent();
+        const pageText = textContent.items.map(item => item.str).join(" ");
+        fullText += pageText + "\n";
+      }
+      return fullText;
+    }
+
+    // ── Analyze ──────────────────────────────────────────────────────────
+    async function analyze() {
+      if (!specFile || !resumeFile) return;
+
+      document.getElementById('uploadScreen').style.display = 'none';
+      document.getElementById('processingState').style.display = 'block';
+      document.getElementById('errorMsg').style.display = 'none';
+
+      try {
+        const [specText, resumeText] = await Promise.all([getPdfText(specFile), getPdfText(resumeFile)]);
+
+        const year = new Date().getFullYear();
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: 'gpt-4o',
+            max_tokens: 4096,
+            messages: [
+              {
+                role: 'system',
+                content: 'Você é um especialista em recrutamento e seleção de alto nível.'
+              },
+              {
+                role: 'user',
+                content: `Analise o currículo do candidato comparado à especificação da vaga e gere um relatório completo em português.
+
+DADOS DA VAGA:
+${specText}
+
+DADOS DO CURRÍCULO:
+${resumeText}
+
+CRITÉRIOS PREFERENCIAIS DO PROCESSO SELETIVO (avaliar e pontuar separadamente):
+1. Residência: candidato deve preferencialmente residir na Região Metropolitana do Rio de Janeiro (RJ). Se não houver informação de localização, indicar como "não informado".
+2. Idade: candidato deve ter preferencialmente até 35 anos. Calcule ou estime a idade com base em dados do currículo (ex: ano de formação, início de carreira). Se não for possível determinar, indicar como "não informado". Ano atual de referência: ${year}.
+3. Setor de atuação: candidato deve ter experiência em empresas do setor de Tecnologia da Informação (TI). Verifique se as empresas onde trabalhou são do setor de TI.
+
+Cada critério preferencial deve ser avaliado como: ✓ Atende / ✗ Não atende / ⚠ Não informado / ~ Parcialmente atende.
+Esses critérios NÃO são eliminatórios, mas influenciam a recomendação final.
+
+O relatório deve conter EXATAMENTE as seguintes seções (use os títulos exatos):
+
+**RESUMO EXECUTIVO**
+[Breve resumo em 2-3 frases sobre o perfil do candidato vs. a vaga]
+
+**ADERÊNCIA GERAL**
+Score: [0-100]%
+[Justificativa do score]
+
+**CRITÉRIOS PREFERENCIAIS**
+- Localização (Região Metropolitana RJ): [✓/✗/⚠/~] [breve justificativa]
+- Faixa etária (até 35 anos): [✓/✗/⚠/~] [idade estimada ou "não informado"]
+- Setor de TI: [✓/✗/⚠/~] [empresas de TI identificadas no currículo]
+Impacto na recomendação: [descreva como esses critérios pesaram na decisão final]
+
+**PONTUAÇÃO POR DIMENSÃO**
+- Competências Técnicas: [0-100]
+- Experiência Profissional: [0-100]
+- Formação Acadêmica: [0-100]
+- Soft Skills: [0-100]
+
+**PONTOS FORTES**
+[Lista de pontos fortes relevantes para a vaga]
+
+**LACUNAS E PONTOS FRACOS**
+[Lista de requisitos da vaga não atendidos ou parcialmente atendidos]
+
+**COMPETÊNCIAS MAPEADAS**
+- Atende: [lista de skills que o candidato tem]
+- Ausente: [lista de skills requeridas mas ausentes]
+- Parcial: [lista de skills parcialmente atendidas]
+
+**RECOMENDAÇÃO FINAL**
+[Uma das opções: ENTREVISTAR / BANCO DE TALENTOS / DESCARTAR]
+Justificativa: [explicação detalhada da recomendação, levando em conta os critérios preferenciais]
+
+**PRÓXIMOS PASSOS SUGERIDOS**
+[Ações concretas recomendadas]
+
+Seja objetivo, preciso e conciso. Baseie-se exclusivamente nos documentos. Prefira bullets curtos. Certifique-se de COMPLETAR todas as seções até PRÓXIMOS PASSOS SUGERIDOS antes de encerrar.`
+              }
+            ]
+          })
+        });
+
+        if (!response.ok) {
+          const err = await response.json().catch(() => ({}));
+          throw new Error(err.error?.message || `Erro ${response.status}`);
+        }
+
+        const data = await response.json();
+        const text = data.choices?.[0]?.message?.content || '';
+        currentReport = parseReport(text);
+        renderResults(currentReport);
+
+      } catch (e) {
+        console.error(e);
+        document.getElementById('processingState').style.display = 'none';
+        document.getElementById('uploadScreen').style.display = 'block';
+        const em = document.getElementById('errorMsg');
+        em.textContent = '⚠ ' + (e.message || 'Erro ao processar a análise.');
+        em.style.display = 'block';
+      }
+    }
+
+    // ── Parse ─────────────────────────────────────────────────────────────
+    function parseReport(raw) {
+      const r = { verdict: 'avaliar', overallScore: null, technicalScore: null, experienceScore: null, raw };
+
+      if (/entrevistar/i.test(raw)) r.verdict = 'entrevistar';
+      else if (/descartar/i.test(raw)) r.verdict = 'descartar';
+      else if (/banco de talentos/i.test(raw)) r.verdict = 'banco';
+
+      const dimSection = raw.match(/PONTU[AÇ].*?DIMENS[AÃ]O([\s\S]*?)(?=\n\*\*|\n#{1,3}\s|$)/i)?.[1] || raw;
+
+      const s1 = raw.match(/Score:\s*(\d+)\s*%/i) || raw.match(/ader[eê]ncia\s+geral[^:]*:\s*(\d+)/i);
+      if (s1) r.overallScore = Math.min(100, parseInt(s1[1]));
+
+      const s2 = dimSection.match(/Compet[eê]ncias?\s+T[eé]cnicas?[^:\n]*:\s*(\d+)/i);
+      if (s2) r.technicalScore = Math.min(100, parseInt(s2[1]));
+
+      const s3 = dimSection.match(/Experi[eê]ncia\s+Profissional[^:\n]*:\s*(\d+)/i);
+      if (s3) r.experienceScore = Math.min(100, parseInt(s3[1]));
+
+      return r;
+    }
+
+    // ── Render results ────────────────────────────────────────────────────
+    const VERDICT_MAP = {
+      entrevistar: { label: '✓ Entrevistar', cls: 'verdict-entrevistar' },
+      banco: { label: '⟳ Banco de Talentos', cls: 'verdict-banco' },
+      descartar: { label: '✕ Descartar', cls: 'verdict-descartar' },
+      avaliar: { label: '◎ Avaliar', cls: 'verdict-avaliar' },
+    };
+
+    function renderResults(report) {
+      document.getElementById('processingState').style.display = 'none';
+      const res = document.getElementById('results');
+      res.style.display = 'block';
+
+      // Verdict
+      const vm = VERDICT_MAP[report.verdict];
+      const vp = document.getElementById('verdictPill');
+      vp.textContent = vm.label;
+      vp.className = 'verdict-pill ' + vm.cls;
+
+      // Scores
+      const scoreRow = document.getElementById('scoreRow');
+      scoreRow.innerHTML = '';
+      const scores = [
+        { label: 'Aderência Geral', value: report.overallScore },
+        { label: 'Competências Técnicas', value: report.technicalScore },
+        { label: 'Experiência Profissional', value: report.experienceScore },
+      ];
+      scores.forEach(({ label, value }) => {
+        if (value === null) return;
+        const pct = Math.min(100, value);
+        const cls = pct >= 70 ? 'score-high' : pct >= 45 ? 'score-mid' : 'score-low';
+        const bar = pct >= 70 ? 'linear-gradient(90deg,#43e97b,#38f9d7)' : pct >= 45 ? 'linear-gradient(90deg,#f093fb,#f5576c)' : 'linear-gradient(90deg,#ff6584,#ff6b6b)';
+        const card = document.createElement('div');
+        card.className = 'score-card';
+        card.innerHTML = `
+        <div class="score-label">${label}</div>
+        <div class="score-value ${cls}">${value}<span style="font-size:1rem;font-weight:400">%</span></div>
+        <div class="score-bar"><div class="score-fill" style="width:0%;background:${bar}" data-pct="${pct}"></div></div>`;
+        scoreRow.appendChild(card);
+      });
+      // Animate bars
+      setTimeout(() => {
+        document.querySelectorAll('.score-fill').forEach(el => {
+          el.style.width = el.dataset.pct + '%';
+        });
+      }, 100);
+
+      // Sections
+      const container = document.getElementById('sectionsContainer');
+      container.innerHTML = '';
+      const sections = parseSections(report.raw);
+
+      if (sections.length === 0) {
+        container.innerHTML = `<div class="section"><div class="section-title"><span>◆</span> Relatório Completo</div><pre class="report-raw">${escHtml(report.raw)}</pre></div>`;
+        return;
+      }
+
+      sections.forEach(({ title, content }) => {
+        const isPref = title.toLowerCase().includes('preferencial');
+        const div = document.createElement('div');
+        div.className = 'section' + (isPref ? ' pref' : '');
+
+        const titleHtml = `
+        <div class="section-title">
+          <span>${isPref ? '★' : '◆'}</span>
+          ${escHtml(title)}
+          ${isPref ? '<span class="pref-badge">Critérios da Empresa</span>' : ''}
+        </div>`;
+
+        const lines = content.split('\n').filter(l => l.trim());
+        const contentHtml = lines.map(line => {
+          if (isPref && line.startsWith('- ')) {
+            const ok = line.includes('✓');
+            const no = line.includes('✗');
+            const warn = line.includes('⚠') || line.includes('~');
+            const color = ok ? '#43e97b' : no ? '#ff6584' : warn ? '#ffb800' : 'var(--text)';
+            const bg = ok ? 'rgba(67,233,123,0.08)' : no ? 'rgba(255,101,132,0.08)' : warn ? 'rgba(255,184,0,0.08)' : 'transparent';
+            return `<div class="pref-row" style="background:${bg};border-left:3px solid ${color}"><p style="color:${color}">${escHtml(line.slice(2))}</p></div>`;
+          }
+          if (line.startsWith('- ')) return `<div class="section-content"><p class="arrow-line">${escHtml(line.slice(2))}</p></div>`;
+          const isImpact = line.startsWith('Impacto');
+          return `<div class="section-content"><p ${isImpact ? 'class="impact"' : ''}>${escHtml(line)}</p></div>`;
+        }).join('');
+
+        div.innerHTML = titleHtml + contentHtml;
+        container.appendChild(div);
+      });
+    }
+
+    function parseSections(raw) {
+      const re = /^(?:\*\*([^*\n]+)\*\*|#{1,3}\s+(.+))$/gm;
+      const out = [];
+      let lastIdx = 0, lastTitle = null, m;
+      while ((m = re.exec(raw)) !== null) {
+        if (lastTitle !== null) {
+          const c = raw.slice(lastIdx, m.index).trim();
+          if (c) out.push({ title: lastTitle, content: c });
+        }
+        lastTitle = (m[1] || m[2]).trim();
+        lastIdx = m.index + m[0].length;
+      }
+      if (lastTitle !== null) {
+        const c = raw.slice(lastIdx).trim();
+        if (c) out.push({ title: lastTitle, content: c });
+      }
+      return out;
+    }
+
+    function escHtml(str) {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    // ── Reset ─────────────────────────────────────────────────────────────
+    function reset() {
+      specFile = null; resumeFile = null; currentReport = null;
+      ['cardSpec', 'cardResume'].forEach(id => document.getElementById(id).classList.remove('has-file'));
+      document.getElementById('iconSpec').textContent = '📋';
+      document.getElementById('iconResume').textContent = '👤';
+      document.getElementById('hintSpec').textContent = 'Arraste ou clique para enviar o PDF com os requisitos da vaga';
+      document.getElementById('hintResume').textContent = 'Arraste ou clique para enviar o PDF do currículo';
+      ['nameSpec', 'nameResume'].forEach(id => { document.getElementById(id).style.display = 'none'; });
+      document.getElementById('inputSpec').value = '';
+      document.getElementById('inputResume').value = '';
+      document.getElementById('results').style.display = 'none';
+      document.getElementById('processingState').style.display = 'none';
+      document.getElementById('uploadScreen').style.display = 'block';
+      document.getElementById('errorMsg').style.display = 'none';
+      updateBtn();
+    }
+
+    // ── Build text report ─────────────────────────────────────────────────
+    function buildText(r) {
+      const vm = VERDICT_MAP[r.verdict];
+      const sep = '='.repeat(60);
+      const lines = [
+        sep,
+        '  TALENT.AI — RELATÓRIO DE ADERÊNCIA',
+        `  Gerado em: ${new Date().toLocaleString('pt-BR')}`,
+        sep, '',
+      ];
+      if (r.overallScore !== null) lines.push(`  Aderência Geral:          ${r.overallScore}%`);
+      if (r.technicalScore !== null) lines.push(`  Competências Técnicas:    ${r.technicalScore}`);
+      if (r.experienceScore !== null) lines.push(`  Experiência Profissional: ${r.experienceScore}`);
+      lines.push(`  Recomendação: ${vm?.label || r.verdict}`, '', sep, '', r.raw, '', sep);
+      lines.push('  talent.ai — Análise gerada por IA (OpenAI GPT-4o)', sep);
+      return lines.join('\n');
+    }
+
+    // ── Modal ─────────────────────────────────────────────────────────────
+    function openModal() {
+      if (!currentReport) return;
+      document.getElementById('modalTextarea').value = buildText(currentReport);
+      document.getElementById('modalOverlay').classList.add('open');
+    }
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('open');
+      document.getElementById('copyBtn').textContent = '';
+      document.getElementById('copyBtn').innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copiar tudo';
+    }
+    async function copyModal() {
+      const ta = document.getElementById('modalTextarea');
+      const btn = document.getElementById('copyBtn');
+      try {
+        await navigator.clipboard.writeText(ta.value);
+      } catch {
+        ta.select();
+        document.execCommand('copy');
+      }
+      btn.innerHTML = '✓ Copiado!';
+      setTimeout(() => {
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copiar tudo';
+      }, 2200);
+    }
+  </script>
+</body>
+
+</html>
