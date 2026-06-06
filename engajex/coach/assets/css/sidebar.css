@@ -1,0 +1,99 @@
+/* Sidebar styles */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+    position: relative;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: white;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 1000;
+    padding: 20px 0;
+    top: 0;
+    left: 0;
+}
+
+.content {
+    flex: 1;
+    margin-left: 250px;
+    padding: 20px;
+    background-color: var(--background-color);
+    min-height: 100vh;
+    width: calc(100% - 250px);
+}
+
+.user-info {
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 20px;
+}
+
+.user-info h3 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 16px;
+}
+
+.user-info p {
+    margin: 5px 0 0;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu li {
+    margin: 5px 0;
+}
+
+.menu a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.menu a:hover {
+    background-color: rgba(52,152,219,0.1);
+    color: var(--primary-color);
+}
+
+.menu a.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.menu i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+    
+    .content {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    .dashboard-container {
+        flex-direction: column;
+    }
+}
