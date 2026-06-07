@@ -1,0 +1,5 @@
+[31-Mar-2025 12:43:52 America/Sao_Paulo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'texto' in 'field list' in /home4/efsantos/public_html/clima/public/survey.php:50
+Stack trace:
+#0 /home4/efsantos/public_html/clima/public/survey.php(50): PDO->prepare('\n    SELECT id_...')
+#1 {main}
+  thrown in /home4/efsantos/public_html/clima/public/survey.php on line 50

@@ -1,0 +1,108 @@
+[31-Mar-2025 13:32:07 America/Sao_Paulo] Query das últimas respostas: 
+    SELECT 
+        r.data_resposta,
+        re.codigo,
+        re.area,
+        p.texto_pergunta,
+        CASE
+            WHEN p.tipo_resposta = 'multipla_escolha' THEN 
+                (SELECT texto_opcao FROM opcoes_resposta WHERE id = CAST(r.resposta AS UNSIGNED))
+            ELSE r.resposta
+        END as resposta_exibir
+    FROM respostas r
+    JOIN respondentes re ON r.id_respondente = re.id
+    JOIN perguntas p ON r.id_pergunta = p.id
+    ORDER BY r.data_resposta DESC
+    LIMIT 10
+
+[31-Mar-2025 13:32:07 America/Sao_Paulo] Número de respostas encontradas: 0
+[19-Sep-2025 15:19:17 America/Sao_Paulo] Query das últimas respostas: 
+    SELECT 
+        r.data_resposta,
+        re.codigo,
+        re.area,
+        p.texto_pergunta,
+        CASE
+            WHEN p.tipo_resposta = 'multipla_escolha' THEN 
+                (SELECT texto_opcao FROM opcoes_resposta WHERE id = CAST(r.resposta AS UNSIGNED))
+            ELSE r.resposta
+        END as resposta_exibir
+    FROM respostas r
+    JOIN respondentes re ON r.id_respondente = re.id
+    JOIN perguntas p ON r.id_pergunta = p.id
+    ORDER BY r.data_resposta DESC
+    LIMIT 10
+
+[19-Sep-2025 15:19:17 America/Sao_Paulo] Número de respostas encontradas: 0
+[19-Sep-2025 15:20:29 America/Sao_Paulo] Query das últimas respostas: 
+    SELECT 
+        r.data_resposta,
+        re.codigo,
+        re.area,
+        p.texto_pergunta,
+        CASE
+            WHEN p.tipo_resposta = 'multipla_escolha' THEN 
+                (SELECT texto_opcao FROM opcoes_resposta WHERE id = CAST(r.resposta AS UNSIGNED))
+            ELSE r.resposta
+        END as resposta_exibir
+    FROM respostas r
+    JOIN respondentes re ON r.id_respondente = re.id
+    JOIN perguntas p ON r.id_pergunta = p.id
+    ORDER BY r.data_resposta DESC
+    LIMIT 10
+
+[19-Sep-2025 15:20:29 America/Sao_Paulo] Número de respostas encontradas: 0
+[19-Sep-2025 15:22:11 America/Sao_Paulo] Query das últimas respostas: 
+    SELECT 
+        r.data_resposta,
+        re.codigo,
+        re.area,
+        p.texto_pergunta,
+        CASE
+            WHEN p.tipo_resposta = 'multipla_escolha' THEN 
+                (SELECT texto_opcao FROM opcoes_resposta WHERE id = CAST(r.resposta AS UNSIGNED))
+            ELSE r.resposta
+        END as resposta_exibir
+    FROM respostas r
+    JOIN respondentes re ON r.id_respondente = re.id
+    JOIN perguntas p ON r.id_pergunta = p.id
+    ORDER BY r.data_resposta DESC
+    LIMIT 10
+
+[19-Sep-2025 15:22:11 America/Sao_Paulo] Número de respostas encontradas: 0
+[12-Jan-2026 10:31:02 America/Sao_Paulo] Query das últimas respostas: 
+    SELECT 
+        r.data_resposta,
+        re.codigo,
+        re.area,
+        p.texto_pergunta,
+        CASE
+            WHEN p.tipo_resposta = 'multipla_escolha' THEN 
+                (SELECT texto_opcao FROM opcoes_resposta WHERE id = CAST(r.resposta AS UNSIGNED))
+            ELSE r.resposta
+        END as resposta_exibir
+    FROM respostas r
+    JOIN respondentes re ON r.id_respondente = re.id
+    JOIN perguntas p ON r.id_pergunta = p.id
+    ORDER BY r.data_resposta DESC
+    LIMIT 10
+
+[12-Jan-2026 10:31:02 America/Sao_Paulo] Número de respostas encontradas: 0
+[12-Jan-2026 10:31:24 America/Sao_Paulo] Query das últimas respostas: 
+    SELECT 
+        r.data_resposta,
+        re.codigo,
+        re.area,
+        p.texto_pergunta,
+        CASE
+            WHEN p.tipo_resposta = 'multipla_escolha' THEN 
+                (SELECT texto_opcao FROM opcoes_resposta WHERE id = CAST(r.resposta AS UNSIGNED))
+            ELSE r.resposta
+        END as resposta_exibir
+    FROM respostas r
+    JOIN respondentes re ON r.id_respondente = re.id
+    JOIN perguntas p ON r.id_pergunta = p.id
+    ORDER BY r.data_resposta DESC
+    LIMIT 10
+
+[12-Jan-2026 10:31:24 America/Sao_Paulo] Número de respostas encontradas: 0
