@@ -1,0 +1,41 @@
+id,questao,dimensao,inverso
+1,"Gosto de explorar ideias novas e diferentes.",Abertura,0
+2,"Tenho uma imaginação ativa e criativa.",Abertura,0
+3,"Gosto de aprender sobre tópicos variados.",Abertura,0
+4,"Prefiro a novidade em vez de rotinas previsíveis.",Abertura,0
+5,"Sou curioso(a) sobre muitas coisas.",Abertura,0
+6,"Sou aberto(a) a mudanças e experiências diferentes.",Abertura,0
+7,"Gosto de arte, música ou literatura que me faz pensar.",Abertura,0
+8,"Prefiro seguir tradições e evitar mudanças.",Abertura,1
+9,"Planejo minhas tarefas com antecedência.",Conscienciosidade,0
+10,"Costumo cumprir prazos e responsabilidades.",Conscienciosidade,0
+11,"Sou organizado(a) e mantenho as coisas em ordem.",Conscienciosidade,0
+12,"Prefiro concluir as tarefas antes de relaxar.",Conscienciosidade,0
+13,"Costumo agir de forma impulsiva, sem pensar nas consequências.",Conscienciosidade,1
+14,"Tenho facilidade em cumprir metas e objetivos.",Conscienciosidade,0
+15,"Sou persistente, mesmo quando encontro dificuldades.",Conscienciosidade,0
+16,"Evito me preocupar com detalhes.",Conscienciosidade,1
+17,"Sinto-me confortável em situações sociais.",Extroversao,0
+18,"Sou energético(a) e gosto de interagir com os outros.",Extroversao,0
+19,"Prefiro atividades em grupo a atividades solitárias.",Extroversao,0
+20,"Costumo iniciar conversas com facilidade.",Extroversao,0
+21,"Gosto de ser o(a) centro das atenções.",Extroversao,0
+22,"Prefiro ficar sozinho(a) do que em grupos grandes.",Extroversao,1
+23,"Falo com entusiasmo sobre coisas que me interessam.",Extroversao,0
+24,"Costumo evitar reuniões sociais.",Extroversao,1
+25,"Gosto de ajudar as pessoas sempre que posso.",Amabilidade,0
+26,"Sou uma pessoa empática e compreendo os sentimentos dos outros.",Amabilidade,0
+27,"Trabalho bem em equipe e valorizo a cooperação.",Amabilidade,0
+28,"Costumo confiar nas intenções das pessoas.",Amabilidade,0
+29,"Sou gentil e educado(a) com os outros.",Amabilidade,0
+30,"Evito conflitos, mesmo quando tenho razão.",Amabilidade,0
+31,"Sou competitivo(a) e foco em vencer.",Amabilidade,1
+32,"Sou crítico(a) com os erros dos outros.",Amabilidade,1
+33,"Sinto-me ansioso(a) em situações novas.",Neuroticismo,0
+34,"Preocupo-me frequentemente com coisas pequenas.",Neuroticismo,0
+35,"Tenho dificuldade em lidar com situações estressantes.",Neuroticismo,0
+36,"Fico irritado(a) com facilidade.",Neuroticismo,0
+37,"Costumo me sentir inseguro(a) em relação às minhas decisões.",Neuroticismo,0
+38,"Sou calmo(a) e raramente fico chateado(a)",Neuroticismo,1
+39,"Consigo me recuperar rapidamente de eventos negativos.",Neuroticismo,1
+40,"Minhas emoções frequentemente interferem no meu trabalho ou estudos.",Neuroticismo,0

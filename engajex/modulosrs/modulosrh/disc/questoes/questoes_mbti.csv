@@ -1,0 +1,89 @@
+id,questao,opcao_a,opcao_b
+1,"Em uma festa, você geralmente...",Interage com muitas pessoas diferentes,Interage com poucas pessoas que conhece bem
+2,"Você se considera mais...",Realista e prático,Imaginativo e inovador
+3,"É pior ser...",Injusto com os outros,Impiedoso nas decisões
+4,"Você costuma ser mais...",Imparcial e objetivo,Compreensivo e pessoal
+5,"Em um grupo, você tende a...",Iniciar conversas,Esperar ser abordado
+6,"Você prefere...",Eventos planejados com antecedência,Eventos espontâneos e flexíveis
+7,"Ao tomar decisões importantes, você se baseia mais em...",Lógica e fatos concretos,Valores e sentimentos pessoais
+8,"Em relação a compromissos, você é mais...",Pontual e organizado,Relaxado e flexível com horários
+9,"Em reuniões, você prefere...",Participar ativamente e expressar opiniões,Observar e escutar os outros
+10,"Você se interessa mais por...",Realidade presente e experiências concretas,Possibilidades futuras e ideias abstratas
+11,"Ao julgar outros, você é mais...",Objetivo e impessoal,Compreensivo e empático
+12,"Ao trabalhar em projetos, você prefere...",Seguir um cronograma definido,Ser flexível com prazos
+13,"Em conversas telefônicas, você...",Inicia a maioria das ligações,Espera os outros ligarem
+14,"O que mais te atrai...",Fatos precisos e dados concretos,Teorias e conceitos abstratos
+15,"Ao ajudar alguém, você tende a...",Sugerir soluções práticas e diretas,Oferecer apoio emocional e compreensão
+16,"Você prefere que as coisas sejam...",Bem organizadas e estruturadas,Flexíveis e adaptáveis
+17,"Em grupos sociais, você geralmente...",Apresenta pessoas umas às outras,Espera ser apresentado
+18,"Você se considera mais...",Prático e orientado a resultados,Conceitual e orientado a ideias
+19,"Ao tomar decisões, você tende a ser mais...",Justo e lógico,Compreensivo e empático
+20,"Seu estilo de trabalho é mais...",Estruturado e metódico,Flexível e adaptativo
+21,"Em situações novas, você prefere...",Mergulhar direto na experiência,Observar e analisar primeiro
+22,"Ao ler, você prefere...",Livros que descrevem situações reais,Livros que exploram ideias abstratas
+23,"Em um conflito, você tende a...",Buscar uma solução lógica e justa,Considerar os sentimentos envolvidos
+24,"No trabalho, você prefere...",Seguir procedimentos estabelecidos,Criar novos métodos
+25,"Em conversas, você geralmente...",Fala mais que escuta,Escuta mais que fala
+26,"Você se sente mais confortável com...",Rotinas e padrões definidos,Mudanças e variedade
+27,"Na resolução de problemas, você confia mais em...",Experiência prática e dados,Intuição e impressões
+28,"Você prefere...",Ter um plano definido,Deixar as coisas acontecerem
+29,"Em eventos sociais, você tende a...",Conhecer novas pessoas,Conversar com conhecidos
+30,"Você valoriza mais...",O que é real e tangível,O que é possível e imaginativo
+31,"Ao avaliar situações, você prioriza...",Fatos e evidências objetivas,Impacto nas pessoas envolvidas
+32,"Na organização do dia a dia, você...",Segue uma programação,Improvisa conforme necessário
+33,"Você se energiza mais...",Estando com outras pessoas,Tendo tempo sozinho
+34,"Você prefere trabalhar com...",Informações concretas e específicas,Conceitos e possibilidades
+35,"Ao tomar decisões em grupo, você enfatiza...",Análise lógica e objetiva,Harmonia e consenso
+36,"Você se sente melhor quando...",Tudo está planejado,Há espaço para improvisação
+37,"Em uma festa, você geralmente...",Fica até tarde, ganhando energia,Sai cedo, sentindo-se cansado
+38,"Você é mais...",Prático e realista,Imaginativo e inovador
+39,"É mais importante ser...",Lógico e racional,Compassivo e compreensivo
+40,"Você prefere situações...",Controladas e previsíveis,Espontâneas e variadas
+41,"Em grupo, você tende a...",Compartilhar pensamentos facilmente,Manter pensamentos para si
+42,"Você confia mais em...",Experiência direta e observável,Impressões e possibilidades
+43,"Ao resolver conflitos, você busca...",Soluções baseadas em fatos,Soluções que agradem a todos
+44,"No trabalho, você prefere...",Projetos com etapas claras,Projetos flexíveis e adaptáveis
+45,"Você se sente mais energizado quando...",Interage com muitas pessoas,Passa tempo sozinho
+46,"Você é mais interessado em...",O que é atual e real,O que pode ser possível
+47,"Ao julgar, você tende a ser mais...",Imparcial e objetivo,Pessoal e subjetivo
+48,"Você prefere...",Rotinas estabelecidas,Flexibilidade nas atividades
+49,"Em conversas, você...",Inicia facilmente,Prefere escutar
+50,"Você é mais...",Factual e específico,Conceitual e abstrato
+51,"Ao ajudar outros, você oferece...",Soluções práticas,Suporte emocional
+52,"Você se sente melhor com...",Planos definidos,Opções em aberto
+53,"Socialmente, você é mais...",Expressivo e envolvido,Reservado e observador
+54,"Você valoriza mais...",Experiências concretas,Ideias inovadoras
+55,"Em decisões, você prioriza...",Verdades objetivas,Considerações pessoais
+56,"Você prefere...",Decisões finais claras,Opções em aberto
+57,"Você ganha energia...",Estando com outros,Estando sozinho
+58,"Você tende a focar em...",Detalhes e fatos,Padrões e possibilidades
+59,"Você é mais guiado por...",Pensamento lógico,Valores pessoais
+60,"Você prefere...",Ambientes estruturados,Ambientes flexíveis
+61,"Em grupos, você tende a ser...",Sociável e participativo,Quieto e reflexivo
+62,"Você confia mais em...",Observações diretas,Impressões intuitivas
+63,"Ao resolver problemas, você é mais...",Objetivo e racional,Subjetivo e empático
+64,"Você prefere quando as coisas são...",Decididas e finalizadas,Abertas a mudanças
+65,"Em eventos sociais, você...",Interage com muitos,Interage com poucos
+66,"Você é mais interessado no...",Presente concreto,Futuro possível
+67,"Ao avaliar, você considera mais...",Critérios objetivos,Impacto nas pessoas
+68,"Você prefere...",Planejamento detalhado,Adaptação no momento
+69,"Você tende a ser mais...",Extrovertido e expressivo,Introvertido e reservado
+70,"Você valoriza mais...",Dados concretos,Insights intuitivos
+71,"Em conflitos, você busca...",Verdade objetiva,Harmonia pessoal
+72,"Você se sente melhor quando...",Tudo está decidido,As opções estão abertas
+73,"Em grupos, você prefere...",Liderar discussões,Observar interações
+74,"Você confia mais em...",Experiência direta,Intuição e impressão
+75,"Ao tomar decisões, você é mais...",Analítico,Empático
+76,"Você prefere...",Atividades programadas,Atividades espontâneas
+77,"Você se energiza mais...",Em grupos grandes,Em momentos sozinho
+78,"Você tende a ser mais...",Literal e específico,Figurativo e geral
+79,"É mais importante ser...",Justo e verdadeiro,Harmonioso e compreensivo
+80,"Você prefere quando as coisas são...",Estabelecidas e claras,Tentativas e modificáveis
+81,"Em situações sociais, você...",Busca iniciar interações,Espera ser abordado
+82,"Você é mais...",Prático e realista,Imaginativo e original
+83,"Ao julgar situações, você é mais...",Imparcial e lógico,Pessoal e valorativo
+84,"Você prefere...",Rotinas estabelecidas,Mudanças frequentes
+85,"Em conversas, você tende a...",Falar mais,Ouvir mais
+86,"Você se concentra mais em...",Fatos presentes,Possibilidades futuras
+87,"Ao resolver problemas, você usa mais...",Análise lógica,Valores pessoais
+88,"Você se sente melhor quando...",Tudo está planejado,Há espaço para mudanças

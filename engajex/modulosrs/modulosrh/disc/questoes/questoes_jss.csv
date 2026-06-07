@@ -1,0 +1,22 @@
+id,texto,categoria
+1,"Cumprir prazos muito curtos para entrega de trabalhos","Pressão Temporal"
+2,"Receber cobranças excessivas por resultados","Pressão por Desempenho"
+3,"Lidar com sobrecarga de trabalho e múltiplas demandas","Sobrecarga"
+4,"Ter pouco controle ou autonomia sobre as tarefas","Controle"
+5,"Enfrentar conflitos com colegas ou superiores","Relacionamento"
+6,"Realizar horas extras frequentemente","Demanda"
+7,"Receber atribuições sem clareza ou instruções adequadas","Clareza"
+8,"Trabalhar sem apoio adequado da chefia","Suporte"
+9,"Receber críticas injustas ou excessivas","Feedback"
+10,"Ter seu trabalho ou esforço pouco reconhecido","Reconhecimento"
+11,"Trabalhar com recursos inadequados, como sistemas lentos ou falta de materiais.","Recursos Operacionais"
+12,"Receber feedbacks vagos ou inexistentes sobre seu desempenho.","Gestão de Pessoas"
+13,"Sentir-se excluído das decisões que afetam diretamente seu trabalho.","Cultura Organizacional"
+14,"Lidar com mudanças frequentes sem tempo para adaptação.","Gestão de Mudança"
+15,"Sentir medo de perder o emprego ou insegurança quanto ao futuro.","Comunicação Estratégica"
+16,"Perceber injustiças no tratamento entre colaboradores na empresa.",Equidade
+17,"Ser obrigado a assumir tarefas fora do seu escopo, sem treinamento.","Gestão de Competências"
+18,"Trabalhar sob supervisão rígida ou controladora, sem autonomia.","Estilo de Liderança"
+19,"Ser exposto a um ambiente com ruído, calor, ou iluminação inadequada.","Ambiente Físico de Trabalho"
+20,"Ter dificuldade de conciliar a vida pessoal e profissional devido à rotina.
+","Qualidade de Vida"
