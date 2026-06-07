@@ -1,0 +1,11 @@
+[19-Dec-2025 09:22:57 America/Fortaleza] PHP Notice:  Undefined index: role in /home4/efsantos/public_html/testprof.com.br/softskill/public/index.php on line 51
+[19-Dec-2025 09:22:57 America/Fortaleza] PHP Notice:  Undefined index: role in /home4/efsantos/public_html/testprof.com.br/softskill/public/index.php on line 53
+[19-Dec-2025 09:22:57 America/Fortaleza] PHP Notice:  Undefined index: role in /home4/efsantos/public_html/testprof.com.br/softskill/public/index.php on line 55
+[19-Dec-2025 09:23:23 America/Fortaleza] PHP Notice:  Undefined index: role in /home4/efsantos/public_html/testprof.com.br/softskill/public/index.php on line 51
+[19-Dec-2025 09:23:23 America/Fortaleza] PHP Notice:  Undefined index: role in /home4/efsantos/public_html/testprof.com.br/softskill/public/index.php on line 53
+[19-Dec-2025 09:23:23 America/Fortaleza] PHP Notice:  Undefined index: role in /home4/efsantos/public_html/testprof.com.br/softskill/public/index.php on line 55
+[19-Dec-2025 09:23:37 America/Fortaleza] PHP Notice:  Undefined index: role in /home4/efsantos/public_html/testprof.com.br/softskill/public/index.php on line 51
+[19-Dec-2025 09:23:37 America/Fortaleza] PHP Notice:  Undefined index: role in /home4/efsantos/public_html/testprof.com.br/softskill/public/index.php on line 53
+[19-Dec-2025 09:23:37 America/Fortaleza] PHP Notice:  Undefined index: role in /home4/efsantos/public_html/testprof.com.br/softskill/public/index.php on line 55
+[19-Dec-2025 11:18:45 America/Fortaleza] PHP Warning:  require_once(../views/recruiter/dashboard.php): failed to open stream: No such file or directory in /home4/efsantos/public_html/testprof.com.br/softskill/views/layouts/layout.php on line 46
+[19-Dec-2025 11:18:45 America/Fortaleza] PHP Fatal error:  require_once(): Failed opening required '../views/recruiter/dashboard.php' (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home4/efsantos/public_html/testprof.com.br/softskill/views/layouts/layout.php on line 46
