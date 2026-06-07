@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora DISC</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+```
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+
+    .header {
+        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        color: white;
+        padding: 30px;
+        text-align: center;
+    }
+
+    .header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .header p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+    }
+
+    .content {
+        padding: 40px;
+    }
+
+    .upload-section {
+        background: #f8fafc;
+        border: 2px dashed #cbd5e1;
+        border-radius: 15px;
+        padding: 40px;
+        text-align: center;
+        margin-bottom: 30px;
+        transition: all 0.3s ease;
+    }
+
+    .upload-section:hover {
+        border-color: #4f46e5;
+        background: #f1f5f9;
+    }
+
+    .upload-section.dragover {
+        border-color: #4f46e5;
+        background: #eef2ff;
+        transform: scale(1.02);
+    }
+
+    .upload-icon {
+        font-size: 3rem;
+        color: #64748b;
+        margin-bottom: 20px;
+    }
+
+    .file-input {
+        display: none;
+    }
+
+    .upload-btn {
+        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 10px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+    }
+
+    .upload-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+    }
+
+    .results-section {
+        display: none;
+        margin-top: 30px;
+    }
+
+    .results-grid {
+        display: grid;
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .person-card {
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+    }
+
+    .person-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .person-name {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 15px;
+    }
+
+    .disc-profiles {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .profile-item {
+        text-align: center;
+        padding: 15px;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .profile-d { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; }
+    .profile-i { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; }
+    .profile-s { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; }
+    .profile-c { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; }
+
+    .profile-letter {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .profile-score {
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .dominant-profile {
+        background: linear-gradient(135deg, #1e293b 0%, #374151 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+
+    .export-section {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .export-btn {
+        background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        color: white;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin: 0 10px;
+        transition: all 0.3s ease;
+    }
+
+    .export-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3);
+    }
+
+    .stats-section {
+        background: #f8fafc;
+        padding: 25px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+
+    .stat-item {
+        text-align: center;
+        padding: 20px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .stat-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #4f46e5;
+        margin-bottom: 5px;
+    }
+
+    .stat-label {
+        color: #64748b;
+        font-weight: 600;
+    }
+
+    .loading {
+        display: none;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .spinner {
+        border: 4px solid #f3f4f6;
+        border-top: 4px solid #4f46e5;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 15px;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .error-message {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #dc2626;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+        display: none;
+    }
+
+    .success-message {
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        color: #166534;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+        display: none;
+    }
+
+    @media (max-width: 768px) {
+        .content {
+            padding: 20px;
+        }
+        
+        .disc-profiles {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+        }
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Calculadora DISC</h1>
+            <p>Análise de perfil comportamental com upload de planilha Excel</p>
+        </div>
+
+```
+    <div class="content">
+        <div class="upload-section" id="uploadSection">
+            <div class="upload-icon">📄</div>
+            <h3>Faça upload da sua planilha Excel</h3>
+            <p style="margin: 15px 0; color: #64748b;">
+                A planilha deve conter: ID, Nome e 28 colunas com valores de 1 a 5<br>
+                <small>(7 questões para cada perfil: D, I, S, C)</small>
+            </p>
+            <input type="file" id="fileInput" class="file-input" accept=".xlsx,.xls" />
+            <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                Selecionar Arquivo
+            </button>
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+        <div class="success-message" id="successMessage"></div>
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Processando dados...</p>
+        </div>
+
+        <div class="results-section" id="resultsSection">
+            <div class="stats-section">
+                <h3 style="margin-bottom: 20px; color: #1e293b;">📈 Estatísticas Gerais</h3>
+                <div class="stats-grid" id="statsGrid"></div>
+            </div>
+
+            <div class="export-section">
+                <button class="export-btn" onclick="exportToExcel()">📊 Exportar Excel</button>
+                <button class="export-btn" onclick="exportToPDF()">📄 Exportar PDF</button>
+            </div>
+
+            <h3 style="margin-bottom: 20px; color: #1e293b;">👥 Resultados Individuais</h3>
+            <div class="results-grid" id="resultsGrid"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let processedData = [];
+    let originalData = [];
+
+    // Configuração do drag and drop
+    const uploadSection = document.getElementById('uploadSection');
+    const fileInput = document.getElementById('fileInput');
+
+    uploadSection.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadSection.classList.add('dragover');
+    });
+
+    uploadSection.addEventListener('dragleave', () => {
+        uploadSection.classList.remove('dragover');
+    });
+
+    uploadSection.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadSection.classList.remove('dragover');
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            handleFile(files[0]);
+        }
+    });
+
+    fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+            handleFile(e.target.files[0]);
+        }
+    });
+
+    function showMessage(message, type) {
+        const errorMsg = document.getElementById('errorMessage');
+        const successMsg = document.getElementById('successMessage');
+        
+        if (type === 'error') {
+            errorMsg.textContent = message;
+            errorMsg.style.display = 'block';
+            successMsg.style.display = 'none';
+        } else {
+            successMsg.textContent = message;
+            successMsg.style.display = 'block';
+            errorMsg.style.display = 'none';
+        }
+    }
+
+    function hideMessages() {
+        document.getElementById('errorMessage').style.display = 'none';
+        document.getElementById('successMessage').style.display = 'none';
+    }
+
+    function showLoading() {
+        document.getElementById('loading').style.display = 'block';
+    }
+
+    function hideLoading() {
+        document.getElementById('loading').style.display = 'none';
+    }
+
+    async function handleFile(file) {
+        if (!file.name.match(/\.(xlsx|xls)$/)) {
+            showMessage('Por favor, selecione um arquivo Excel (.xlsx ou .xls)', 'error');
+            return;
+        }
+
+        hideMessages();
+        showLoading();
+
+        try {
+            const data = await readExcelFile(file);
+            originalData = data;
+            processedData = calculateDISC(data);
+            displayResults();
+            showMessage(`Arquivo processado com sucesso! ${processedData.length} pessoas analisadas.`, 'success');
+        } catch (error) {
+            showMessage('Erro ao processar arquivo: ' + error.message, 'error');
+            console.error('Erro:', error);
+        } finally {
+            hideLoading();
+        }
+    }
+
+    function readExcelFile(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheetName];
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet);
+                    
+                    validateData(jsonData);
+                    resolve(jsonData);
+                } catch (error) {
+                    reject(error);
+                }
+            };
+            reader.onerror = () => reject(new Error('Erro ao ler o arquivo'));
+            reader.readAsArrayBuffer(file);
+        });
+    }
+
+    function validateData(data) {
+        if (!data || data.length === 0) {
+            throw new Error('Planilha vazia ou sem dados');
+        }
+
+        const firstRow = data[0];
+        const keys = Object.keys(firstRow);
+        
+        if (keys.length < 30) {
+            throw new Error(`Planilha deve ter pelo menos 30 colunas (ID, Nome + 28 questões). Encontradas: ${keys.length}`);
+        }
+
+        // Verificar se tem colunas básicas
+        const hasId = keys.some(key => key.toLowerCase().includes('id'));
+        const hasName = keys.some(key => key.toLowerCase().includes('nome') || key.toLowerCase().includes('name'));
+        
+        if (!hasId || !hasName) {
+            throw new Error('Planilha deve conter colunas "ID" e "Nome"');
+        }
+
+        // Verificar se os valores estão no range correto
+        for (let row of data.slice(0, Math.min(5, data.length))) {
+            const values = Object.values(row).slice(2); // Pular ID e Nome
+            for (let i = 0; i < Math.min(28, values.length); i++) {
+                const val = Number(values[i]);
+                if (isNaN(val) || val < 1 || val > 5) {
+                    console.warn(`Valor fora do range (1-5) encontrado: ${values[i]} na linha ${data.indexOf(row) + 1}`);
+                }
+            }
+        }
+    }
+
+    function calculateDISC(data) {
+        return data.map(row => {
+            const keys = Object.keys(row);
+            const id = row[keys[0]];
+            const name = row[keys[1]];
+            
+            // Extrair os 28 valores (7 para cada perfil)
+            const values = [];
+            for (let i = 2; i < Math.min(30, keys.length); i++) {
+                const val = Number(row[keys[i]]);
+                values.push(isNaN(val) ? 3 : Math.max(1, Math.min(5, val))); // Default 3, clamp entre 1-5
+            }
+
+            // Preencher com valores padrão se necessário
+            while (values.length < 28) {
+                values.push(3);
+            }
+
+            // Calcular pontuações para cada perfil
+            const profiles = {
+                D: values.slice(0, 7).reduce((sum, val) => sum + val, 0),
+                I: values.slice(7, 14).reduce((sum, val) => sum + val, 0),
+                S: values.slice(14, 21).reduce((sum, val) => sum + val, 0),
+                C: values.slice(21, 28).reduce((sum, val) => sum + val, 0)
+            };
+
+            // Encontrar perfil dominante
+            const dominant = Object.keys(profiles).reduce((a, b) => profiles[a] > profiles[b] ? a : b);
+
+            // Calcular percentuais
+            const total = Object.values(profiles).reduce((sum, val) => sum + val, 0);
+            const percentages = {};
+            Object.keys(profiles).forEach(key => {
+                percentages[key] = Math.round((profiles[key] / total) * 100);
+            });
+
+            return {
+                id,
+                name,
+                profiles,
+                percentages,
+                dominant,
+                total,
+                rawValues: values
+            };
+        });
+    }
+
+    function displayResults() {
+        document.getElementById('resultsSection').style.display = 'block';
+        
+        // Mostrar estatísticas gerais
+        displayStats();
+        
+        // Mostrar resultados individuais
+        displayIndividualResults();
+    }
+
+    function displayStats() {
+        const statsGrid = document.getElementById('statsGrid');
+        const totalPeople = processedData.length;
+        
+        // Contar perfis dominantes
+        const dominantCounts = { D: 0, I: 0, S: 0, C: 0 };
+        processedData.forEach(person => {
+            dominantCounts[person.dominant]++;
+        });
+
+        // Calcular médias
+        const averages = { D: 0, I: 0, S: 0, C: 0 };
+        processedData.forEach(person => {
+            Object.keys(averages).forEach(profile => {
+                averages[profile] += person.percentages[profile];
+            });
+        });
+        Object.keys(averages).forEach(profile => {
+            averages[profile] = Math.round(averages[profile] / totalPeople);
+        });
+
+        statsGrid.innerHTML = `
+            <div class="stat-item">
+                <div class="stat-number">${totalPeople}</div>
+                <div class="stat-label">Total de Pessoas</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">${dominantCounts.D}</div>
+                <div class="stat-label">Perfil D Dominante</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">${dominantCounts.I}</div>
+                <div class="stat-label">Perfil I Dominante</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">${dominantCounts.S}</div>
+                <div class="stat-label">Perfil S Dominante</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">${dominantCounts.C}</div>
+                <div class="stat-label">Perfil C Dominante</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">${averages.D}%</div>
+                <div class="stat-label">Média Perfil D</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">${averages.I}%</div>
+                <div class="stat-label">Média Perfil I</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">${averages.S}%</div>
+                <div class="stat-label">Média Perfil S</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">${averages.C}%</div>
+                <div class="stat-label">Média Perfil C</div>
+            </div>
+        `;
+    }
+
+    function displayIndividualResults() {
+        const resultsGrid = document.getElementById('resultsGrid');
+        
+        resultsGrid.innerHTML = processedData.map(person => `
+            <div class="person-card">
+                <div class="person-name">${person.name} (ID: ${person.id})</div>
+                
+                <div class="disc-profiles">
+                    <div class="profile-item profile-d">
+                        <div class="profile-letter">D</div>
+                        <div class="profile-score">${person.percentages.D}%</div>
+                        <small>(${person.profiles.D}/35)</small>
+                    </div>
+                    <div class="profile-item profile-i">
+                        <div class="profile-letter">I</div>
+                        <div class="profile-score">${person.percentages.I}%</div>
+                        <small>(${person.profiles.I}/35)</small>
+                    </div>
+                    <div class="profile-item profile-s">
+                        <div class="profile-letter">S</div>
+                        <div class="profile-score">${person.percentages.S}%</div>
+                        <small>(${person.profiles.S}/35)</small>
+                    </div>
+                    <div class="profile-item profile-c">
+                        <div class="profile-letter">C</div>
+                        <div class="profile-score">${person.percentages.C}%</div>
+                        <small>(${person.profiles.C}/35)</small>
+                    </div>
+                </div>
+                
+                <div class="dominant-profile">
+                    🏆 Perfil Dominante: ${getProfileName(person.dominant)} (${person.percentages[person.dominant]}%)
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function getProfileName(letter) {
+        const names = {
+            'D': 'Dominância',
+            'I': 'Influência', 
+            'S': 'Estabilidade',
+            'C': 'Conformidade'
+        };
+        return names[letter] || letter;
+    }
+
+    function exportToExcel() {
+        if (processedData.length === 0) {
+            showMessage('Nenhum dado para exportar', 'error');
+            return;
+        }
+
+        const exportData = processedData.map(person => ({
+            'ID': person.id,
+            'Nome': person.name,
+            'D (%)': person.percentages.D,
+            'I (%)': person.percentages.I,
+            'S (%)': person.percentages.S,
+            'C (%)': person.percentages.C,
+            'D (Pontos)': person.profiles.D,
+            'I (Pontos)': person.profiles.I,
+            'S (Pontos)': person.profiles.S,
+            'C (Pontos)': person.profiles.C,
+            'Perfil Dominante': person.dominant,
+            'Nome Perfil Dominante': getProfileName(person.dominant),
+            'Total Pontos': person.total
+        }));
+
+        const ws = XLSX.utils.json_to_sheet(exportData);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Resultados DISC");
+        
+        const filename = `resultados_disc_${new Date().toISOString().split('T')[0]}.xlsx`;
+        XLSX.writeFile(wb, filename);
+        
+        showMessage('Arquivo Excel exportado com sucesso!', 'success');
+    }
+
+    function exportToPDF() {
+        showMessage('Função de exportação PDF será implementada em breve', 'error');
+    }
+</script>
+```
+
+</body>
+</html>

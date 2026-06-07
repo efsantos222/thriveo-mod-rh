@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora DISC</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="main-container">
+            <div class="header">
+                <h1><i class="fas fa-chart-bar me-3"></i>Calculadora DISC</h1>
+                <p>Análise de perfil comportamental com upload de planilha Excel</p>
+            </div>
+
+            <div class="content">
+                <div class="upload-section" id="uploadSection">
+                    <div class="upload-icon">
+                        <div class="icon-container">
+                            <span class="excel-emoji">📊</span>
+                        </div>
+                    </div>
+                    <h3>Faça upload da sua planilha Excel</h3>
+                    <p class="upload-description">
+                        A planilha deve conter: ID, Nome e 28 colunas com valores de 1 a 5<br>
+                        <small>(7 questões para cada perfil: D, I, S, C)</small>
+                    </p>
+                    <input type="file" id="fileInput" class="file-input" accept=".xlsx,.xls" />
+                    <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                        <i class="fas fa-upload me-2"></i>Selecionar Arquivo
+                    </button>
+                </div>
+
+                <!-- Messages -->
+                <div id="errorMessage" class="alert alert-danger d-none" role="alert"></div>
+                <div id="successMessage" class="alert alert-success d-none" role="alert"></div>
+                
+                <!-- Loading -->
+                <div id="loading" class="loading d-none">
+                    <div class="spinner"></div>
+                    <p>Processando dados...</p>
+                </div>
+
+                <!-- Results Section -->
+                <div id="resultsSection" class="results-section d-none">
+                    <!-- Statistics -->
+                    <div class="stats-section">
+                        <h3 class="mb-4"><i class="fas fa-chart-line me-2"></i>Estatísticas Gerais</h3>
+                        <div id="statsGrid" class="stats-grid"></div>
+                    </div>
+
+                    <!-- Export Buttons -->
+                    <div class="export-section text-center">
+                        <div class="row justify-content-center">
+                            <div class="col-md-8">
+                                <h5 class="mb-3">Opções de Exportação</h5>
+                                
+                                <!-- Basic Export -->
+                                <div class="export-group mb-3">
+                                    <h6 class="text-muted mb-2">Exportação Básica</h6>
+                                    <button class="export-btn btn-success me-2 mb-2" onclick="exportToExcel()">
+                                        <i class="fas fa-file-excel me-2"></i>Excel Básico
+                                    </button>
+                                    <button class="export-btn btn-danger me-2 mb-2" onclick="exportToPDF()">
+                                        <i class="fas fa-file-pdf me-2"></i>PDF Básico
+                                    </button>
+                                </div>
+                                
+                                <!-- Detailed Export -->
+                                <div class="export-group">
+                                    <h6 class="text-muted mb-2">Exportação Detalhada (com análises)</h6>
+                                    <button class="export-btn btn-primary me-2 mb-2" onclick="exportDetailed('excel')">
+                                        <i class="fas fa-chart-bar me-2"></i>Excel Detalhado
+                                    </button>
+                                    <button class="export-btn btn-secondary me-2 mb-2" onclick="exportDetailed('pdf')">
+                                        <i class="fas fa-file-chart-line me-2"></i>PDF Detalhado
+                                    </button>
+                                    <button class="export-btn btn-info mb-2" onclick="exportDetailed('csv')">
+                                        <i class="fas fa-table me-2"></i>CSV
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Individual Results -->
+                    <h3 class="mb-4"><i class="fas fa-users me-2"></i>Resultados Individuais</h3>
+                    <div id="resultsGrid" class="results-grid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
