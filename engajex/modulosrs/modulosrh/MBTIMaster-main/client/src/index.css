@@ -1,0 +1,176 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(20, 14.3%, 4.1%);
+  --muted: hsl(60, 4.8%, 95.9%);
+  --muted-foreground: hsl(25, 5.3%, 44.7%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(20, 14.3%, 4.1%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(20, 14.3%, 4.1%);
+  --border: hsl(20, 5.9%, 90%);
+  --input: hsl(20, 5.9%, 90%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(60, 4.8%, 95.9%);
+  --secondary-foreground: hsl(24, 9.8%, 10%);
+  --accent: hsl(60, 4.8%, 95.9%);
+  --accent-foreground: hsl(24, 9.8%, 10%);
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(60, 9.1%, 97.8%);
+  --ring: hsl(20, 14.3%, 4.1%);
+  --radius: 0.5rem;
+
+  /* MBTI Color Scheme */
+  --mbti-estj: hsl(0, 73%, 57%);
+  --mbti-istj: hsl(210, 18%, 25%);
+  --mbti-esfj: hsl(25, 75%, 52%);
+  --mbti-isfj: hsl(142, 71%, 45%);
+  --mbti-estp: hsl(38, 92%, 50%);
+  --mbti-istp: hsl(210, 7%, 56%);
+  --mbti-esfp: hsl(340, 82%, 52%);
+  --mbti-isfp: hsl(271, 43%, 48%);
+  --mbti-entj: hsl(0, 68%, 48%);
+  --mbti-intj: hsl(275, 39%, 37%);
+  --mbti-enfj: hsl(142, 76%, 36%);
+  --mbti-infj: hsl(174, 69%, 33%);
+  --mbti-entp: hsl(207, 69%, 34%);
+  --mbti-intp: hsl(210, 9%, 53%);
+  --mbti-enfp: hsl(52, 89%, 60%);
+  --mbti-infp: hsl(204, 70%, 53%);
+
+  /* Gradient Backgrounds */
+  --gradient-primary: linear-gradient(135deg, hsl(207, 90%, 54%) 0%, hsl(271, 43%, 48%) 100%);
+  --gradient-header: linear-gradient(135deg, hsl(210, 29%, 24%) 0%, hsl(120, 25%, 35%) 100%);
+  --gradient-export: linear-gradient(135deg, hsl(142, 71%, 45%) 0%, hsl(174, 82%, 45%) 100%);
+}
+
+.dark {
+  --background: hsl(240, 10%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 3.7%, 15.9%);
+  --muted-foreground: hsl(240, 5%, 64.9%);
+  --popover: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 3.7%, 15.9%);
+  --input: hsl(240, 3.7%, 15.9%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(240, 3.7%, 15.9%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(240, 4.9%, 83.9%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .gradient-bg {
+    background: var(--gradient-primary);
+  }
+  
+  .gradient-header {
+    background: var(--gradient-header);
+  }
+  
+  .gradient-export {
+    background: var(--gradient-export);
+  }
+
+  .mbti-estj { background: var(--mbti-estj); }
+  .mbti-istj { background: var(--mbti-istj); }
+  .mbti-esfj { background: var(--mbti-esfj); }
+  .mbti-isfj { background: var(--mbti-isfj); }
+  .mbti-estp { background: var(--mbti-estp); }
+  .mbti-istp { background: var(--mbti-istp); }
+  .mbti-esfp { background: var(--mbti-esfp); }
+  .mbti-isfp { background: var(--mbti-isfp); }
+  .mbti-entj { background: var(--mbti-entj); }
+  .mbti-intj { background: var(--mbti-intj); }
+  .mbti-enfj { background: var(--mbti-enfj); }
+  .mbti-infj { background: var(--mbti-infj); }
+  .mbti-entp { background: var(--mbti-entp); }
+  .mbti-intp { background: var(--mbti-intp); }
+  .mbti-enfp { background: var(--mbti-enfp); }
+  .mbti-infp { background: var(--mbti-infp); }
+
+  .z-positive { 
+    background: hsl(142, 52%, 96%); 
+    color: hsl(142, 87%, 20%); 
+  }
+  .z-negative { 
+    background: hsl(0, 93%, 94%); 
+    color: hsl(0, 74%, 42%); 
+  }
+  .z-neutral { 
+    background: hsl(48, 96%, 89%); 
+    color: hsl(25, 95%, 53%); 
+  }
+
+  .intensity-muito-forte { 
+    background: hsl(0, 84%, 60%); 
+    color: white; 
+  }
+  .intensity-forte { 
+    background: hsl(25, 95%, 53%); 
+    color: white; 
+  }
+  .intensity-moderada { 
+    background: hsl(52, 93%, 67%); 
+    color: black; 
+  }
+  .intensity-leve { 
+    background: hsl(174, 60%, 51%); 
+    color: white; 
+  }
+  .intensity-muito-leve { 
+    background: hsl(210, 11%, 71%); 
+    color: white; 
+  }
+}
+
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes slideUp {
+  from { 
+    transform: translateY(100px); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translateY(0); 
+    opacity: 1; 
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out;
+}

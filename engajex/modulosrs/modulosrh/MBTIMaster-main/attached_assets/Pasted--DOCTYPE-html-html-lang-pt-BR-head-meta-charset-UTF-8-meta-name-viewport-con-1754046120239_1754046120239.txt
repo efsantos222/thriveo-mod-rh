@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema MBTI Z-Score - Análise Completa</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+```
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+
+    .header {
+        background: linear-gradient(135deg, #2c3e50 0%, #4a6741 100%);
+        color: white;
+        padding: 30px;
+        text-align: center;
+    }
+
+    .header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+    }
+
+    .header p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+    }
+
+    .main-content {
+        padding: 30px;
+    }
+
+    .upload-section {
+        background: #f8f9fa;
+        border: 2px dashed #dee2e6;
+        border-radius: 10px;
+        padding: 40px;
+        text-align: center;
+        margin-bottom: 30px;
+        transition: all 0.3s ease;
+    }
+
+    .upload-section:hover {
+        border-color: #667eea;
+        background: #e8f0fe;
+    }
+
+    .upload-section.dragover {
+        border-color: #667eea;
+        background: #e8f0fe;
+        transform: scale(1.02);
+    }
+
+    .file-input {
+        display: none;
+    }
+
+    .upload-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 25px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-bottom: 15px;
+    }
+
+    .upload-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin: 30px 0;
+    }
+
+    .stat-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .results-container {
+        margin-top: 30px;
+    }
+
+    .table-container {
+        overflow-x: auto;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+    }
+
+    th {
+        background: #2c3e50;
+        color: white;
+        padding: 15px 10px;
+        text-align: center;
+        font-weight: 600;
+    }
+
+    td {
+        padding: 12px 10px;
+        text-align: center;
+        border-bottom: 1px solid #eee;
+    }
+
+    tr:hover {
+        background: #f8f9fa;
+    }
+
+    .mbti-type {
+        font-weight: bold;
+        padding: 8px 12px;
+        border-radius: 20px;
+        color: white;
+        font-size: 0.9rem;
+    }
+
+    .type-ESTJ { background: #e74c3c; }
+    .type-ISTJ { background: #34495e; }
+    .type-ESFJ { background: #e67e22; }
+    .type-ISFJ { background: #2ecc71; }
+    .type-ESTP { background: #f39c12; }
+    .type-ISTP { background: #95a5a6; }
+    .type-ESFP { background: #e91e63; }
+    .type-ISFP { background: #9b59b6; }
+    .type-ENTJ { background: #c0392b; }
+    .type-INTJ { background: #8e44ad; }
+    .type-ENFJ { background: #27ae60; }
+    .type-INFJ { background: #16a085; }
+    .type-ENTP { background: #2980b9; }
+    .type-INTP { background: #7f8c8d; }
+    .type-ENFP { background: #f1c40f; }
+    .type-INFP { background: #3498db; }
+
+    .z-score {
+        font-weight: bold;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+    }
+
+    .z-positive { background: #d4edda; color: #155724; }
+    .z-negative { background: #f8d7da; color: #721c24; }
+    .z-neutral { background: #fff3cd; color: #856404; }
+
+    .intensity {
+        font-size: 0.8rem;
+        padding: 4px 8px;
+        border-radius: 15px;
+        font-weight: 500;
+    }
+
+    .int-muito-forte { background: #dc3545; color: white; }
+    .int-forte { background: #fd7e14; color: white; }
+    .int-moderada { background: #ffc107; color: black; }
+    .int-leve { background: #20c997; color: white; }
+    .int-muito-leve { background: #6c757d; color: white; }
+
+    .export-section {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .export-btn {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 20px;
+        font-size: 1rem;
+        cursor: pointer;
+        margin: 0 10px;
+        transition: all 0.3s ease;
+    }
+
+    .export-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+
+    .analysis-summary {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+    }
+
+    .type-distribution {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    .type-count {
+        background: white;
+        padding: 10px;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .loading {
+        display: none;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .spinner {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #667eea;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 15px;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .error-message {
+        background: #f8d7da;
+        color: #721c24;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+        border-left: 4px solid #dc3545;
+    }
+
+    .success-message {
+        background: #d4edda;
+        color: #155724;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+        border-left: 4px solid #28a745;
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 Sistema MBTI Z-Score</h1>
+            <p>Análise Completa de Personalidade com Importação de Excel</p>
+        </div>
+
+```
+    <div class="main-content">
+        <div class="upload-section" id="uploadSection">
+            <h3>📁 Importar Planilha Excel</h3>
+            <p>Arraste e solte seu arquivo Excel aqui ou clique para selecionar</p>
+            <input type="file" id="fileInput" class="file-input" accept=".xlsx,.xls">
+            <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                Selecionar Arquivo Excel
+            </button>
+            <div class="file-info">
+                <small>
+                    <strong>Formato esperado:</strong><br>
+                    Coluna A: ID | Coluna B: Nome | Colunas C-BR: 60 respostas (1-5)<br>
+                    • E/I: Colunas C-Q (15 perguntas)<br>
+                    • S/N: Colunas R-AF (15 perguntas)<br>
+                    • T/F: Colunas AG-AU (15 perguntas)<br>
+                    • J/P: Colunas AV-BJ (15 perguntas)
+                </small>
+            </div>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Processando dados e calculando Z-Scores...</p>
+        </div>
+
+        <div id="errorContainer"></div>
+
+        <div class="results-container" id="resultsContainer" style="display: none;">
+            <div class="stats-grid" id="statsGrid"></div>
+            
+            <div class="analysis-summary" id="analysisSummary"></div>
+
+            <div class="table-container">
+                <table id="resultsTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>E/I</th>
+                            <th>S/N</th>
+                            <th>T/F</th>
+                            <th>J/P</th>
+                            <th>Z-E</th>
+                            <th>Z-S</th>
+                            <th>Z-T</th>
+                            <th>Z-J</th>
+                            <th>Tipo MBTI</th>
+                            <th>Int. E/I</th>
+                            <th>Int. S/N</th>
+                            <th>Int. T/F</th>
+                            <th>Int. J/P</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsTableBody"></tbody>
+                </table>
+            </div>
+
+            <div class="export-section">
+                <h3>📊 Exportar Resultados</h3>
+                <button class="export-btn" onclick="exportToExcel()">📋 Exportar para Excel</button>
+                <button class="export-btn" onclick="exportToCSV()">📄 Exportar para CSV</button>
+                <button class="export-btn" onclick="generateReport()">📈 Gerar Relatório</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let processedData = [];
+    let originalData = [];
+
+    // Configuração do drag and drop
+    const uploadSection = document.getElementById('uploadSection');
+    const fileInput = document.getElementById('fileInput');
+
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        uploadSection.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+        uploadSection.addEventListener(eventName, highlight, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        uploadSection.addEventListener(eventName, unhighlight, false);
+    });
+
+    function highlight(e) {
+        uploadSection.classList.add('dragover');
+    }
+
+    function unhighlight(e) {
+        uploadSection.classList.remove('dragover');
+    }
+
+    uploadSection.addEventListener('drop', handleDrop, false);
+
+    function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        handleFiles(files);
+    }
+
+    fileInput.addEventListener('change', function(e) {
+        handleFiles(e.target.files);
+    });
+
+    function handleFiles(files) {
+        if (files.length > 0) {
+            const file = files[0];
+            if (file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || 
+                file.type === 'application/vnd.ms-excel') {
+                readExcelFile(file);
+            } else {
+                showError('Por favor, selecione um arquivo Excel (.xlsx ou .xls)');
+            }
+        }
+    }
+
+    function readExcelFile(file) {
+        showLoading();
+        clearError();
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, {type: 'array'});
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+                const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+                
+                processExcelData(jsonData);
+            } catch (error) {
+                hideLoading();
+                showError('Erro ao ler o arquivo Excel: ' + error.message);
+            }
+        };
+        reader.readAsArrayBuffer(file);
+    }
+
+    function processExcelData(data) {
+        try {
+            // Remover linha de cabeçalho se existir
+            const dataRows = data.slice(1).filter(row => row.length > 2);
+            
+            if (dataRows.length === 0) {
+                throw new Error('Nenhum dado encontrado na planilha');
+            }
+
+            // Validar estrutura dos dados
+            const expectedColumns = 62; // ID + Nome + 60 respostas
+            const validRows = dataRows.filter(row => row.length >= expectedColumns);
+            
+            if (validRows.length === 0) {
+                throw new Error(`Formato inválido. Esperado ${expectedColumns} colunas (ID + Nome + 60 respostas)`);
+            }
+
+            originalData = validRows.map(row => {
+                const id = row[0];
+                const nome = row[1] || `Pessoa ${id}`;
+                const respostas = row.slice(2, 62).map(r => parseInt(r) || 0);
+                
+                // Validar respostas (devem estar entre 1 e 5)
+                const respostasValidas = respostas.every(r => r >= 1 && r <= 5);
+                if (!respostasValidas) {
+                    console.warn(`Linha ${id}: Algumas respostas fora do range 1-5`);
+                }
+
+                return {
+                    id: id,
+                    nome: nome,
+                    respostas: respostas,
+                    E: respostas.slice(0, 15).reduce((a, b) => a + b, 0),
+                    S: respostas.slice(15, 30).reduce((a, b) => a + b, 0),
+                    T: respostas.slice(30, 45).reduce((a, b) => a + b, 0),
+                    J: respostas.slice(45, 60).reduce((a, b) => a + b, 0)
+                };
+            });
+
+            calculateZScores();
+            displayResults();
+            hideLoading();
+            showSuccess(`✅ Arquivo processado com sucesso! ${originalData.length} registros analisados.`);
+            
+        } catch (error) {
+            hideLoading();
+            showError('Erro ao processar dados: ' + error.message);
+        }
+    }
+
+    function calculateZScores() {
+        // Calcular estatísticas do grupo
+        const stats = {
+            E: calculateStats(originalData.map(d => d.E)),
+            S: calculateStats(originalData.map(d => d.S)),
+            T: calculateStats(originalData.map(d => d.T)),
+            J: calculateStats(originalData.map(d => d.J))
+        };
+
+        // Calcular Z-Scores e tipos MBTI
+        processedData = originalData.map(person => {
+            const zE = (person.E - stats.E.mean) / stats.E.std;
+            const zS = (person.S - stats.S.mean) / stats.S.std;
+            const zT = (person.T - stats.T.mean) / stats.T.std;
+            const zJ = (person.J - stats.J.mean) / stats.J.std;
+
+            const tipo = (zE > 0 ? 'E' : 'I') + 
+                       (zS > 0 ? 'S' : 'N') + 
+                       (zT > 0 ? 'T' : 'F') + 
+                       (zJ > 0 ? 'J' : 'P');
+
+            return {
+                ...person,
+                zE: zE,
+                zS: zS,
+                zT: zT,
+                zJ: zJ,
+                tipo: tipo,
+                intensidades: {
+                    E: getIntensity(zE),
+                    S: getIntensity(zS),
+                    T: getIntensity(zT),
+                    J: getIntensity(zJ)
+                }
+            };
+        });
+    }
+
+    function calculateStats(values) {
+        const mean = values.reduce((a, b) => a + b, 0) / values.length;
+        const variance = values.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / values.length;
+        const std = Math.sqrt(variance);
+        return { mean, std, min: Math.min(...values), max: Math.max(...values) };
+    }
+
+    function getIntensity(zScore) {
+        const abs = Math.abs(zScore);
+        if (abs >= 2.0) return 'Muito Forte';
+        if (abs >= 1.5) return 'Forte';
+        if (abs >= 1.0) return 'Moderada';
+        if (abs >= 0.5) return 'Leve';
+        return 'Muito Leve';
+    }
+
+    function displayResults() {
+        const resultsContainer = document.getElementById('resultsContainer');
+        resultsContainer.style.display = 'block';
+
+        displayStats();
+        displayAnalysisSummary();
+        displayTable();
+    }
+
+    function displayStats() {
+        const statsGrid = document.getElementById('statsGrid');
+        const totalPessoas = processedData.length;
+        const tiposUnicos = [...new Set(processedData.map(p => p.tipo))].length;
+        const diversidade = ((tiposUnicos / totalPessoas) * 100).toFixed(1);
+        const tipoMaisComum = getMostCommonType();
+
+        statsGrid.innerHTML = `
+            <div class="stat-card">
+                <div class="stat-number">${totalPessoas}</div>
+                <div>Total de Pessoas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">${tiposUnicos}</div>
+                <div>Tipos Únicos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">${diversidade}%</div>
+                <div>Diversidade</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">${tipoMaisComum.tipo}</div>
+                <div>Mais Comum (${tipoMaisComum.count})</div>
+            </div>
+        `;
+    }
+
+    function displayAnalysisSummary() {
+        const summary = document.getElementById('analysisSummary');
+        const typeDistribution = getTypeDistribution();
+        
+        let distributionHTML = '';
+        Object.entries(typeDistribution).forEach(([tipo, count]) => {
+            const percentage = ((count / processedData.length) * 100).toFixed(1);
+            distributionHTML += `
+                <div class="type-count">
+                    <div class="mbti-type type-${tipo}">${tipo}</div>
+                    <div>${count} (${percentage}%)</div>
+                </div>
+            `;
+        });
+
+        summary.innerHTML = `
+            <h3>📊 Resumo da Análise</h3>
+            <p><strong>Método utilizado:</strong> Z-Score com base na distribuição do grupo</p>
+            <p><strong>Vantagem:</strong> Análise estatisticamente mais precisa que pontos de corte fixos</p>
+            
+            <h4>Distribuição de Tipos MBTI:</h4>
+            <div class="type-distribution">
+                ${distributionHTML}
+            </div>
+        `;
+    }
+
+    function displayTable() {
+        const tableBody = document.getElementById('resultsTableBody');
+        
+        tableBody.innerHTML = processedData.map(person => `
+            <tr>
+                <td>${person.id}</td>
+                <td>${person.nome}</td>
+                <td>${person.E}/75</td>
+                <td>${person.S}/75</td>
+                <td>${person.T}/75</td>
+                <td>${person.J}/75</td>
+                <td><span class="z-score ${person.zE > 0 ? 'z-positive' : person.zE < -0.5 ? 'z-negative' : 'z-neutral'}">${person.zE.toFixed(2)}</span></td>
+                <td><span class="z-score ${person.zS > 0 ? 'z-positive' : person.zS < -0.5 ? 'z-negative' : 'z-neutral'}">${person.zS.toFixed(2)}</span></td>
+                <td><span class="z-score ${person.zT > 0 ? 'z-positive' : person.zT < -0.5 ? 'z-negative' : 'z-neutral'}">${person.zT.toFixed(2)}</span></td>
+                <td><span class="z-score ${person.zJ > 0 ? 'z-positive' : person.zJ < -0.5 ? 'z-negative' : 'z-neutral'}">${person.zJ.toFixed(2)}</span></td>
+                <td><span class="mbti-type type-${person.tipo}">${person.tipo}</span></td>
+                <td><span class="intensity int-${person.intensidades.E.toLowerCase().replace(' ', '-')}">${person.intensidades.E} ${person.zE > 0 ? 'E' : 'I'}</span></td>
+                <td><span class="intensity int-${person.intensidades.S.toLowerCase().replace(' ', '-')}">${person.intensidades.S} ${person.zS > 0 ? 'S' : 'N'}</span></td>
+                <td><span class="intensity int-${person.intensidades.T.toLowerCase().replace(' ', '-')}">${person.intensidades.T} ${person.zT > 0 ? 'T' : 'F'}</span></td>
+                <td><span class="intensity int-${person.intensidades.J.toLowerCase().replace(' ', '-')}">${person.intensidades.J} ${person.zJ > 0 ? 'J' : 'P'}</span></td>
+            </tr>
+        `).join('');
+    }
+
+    function getMostCommonType() {
+        const distribution = getTypeDistribution();
+        const mostCommon = Object.entries(distribution).reduce((a, b) => a[1] > b[1] ? a : b);
+        return { tipo: mostCommon[0], count: mostCommon[1] };
+    }
+
+    function getTypeDistribution() {
+        return processedData.reduce((acc, person) => {
+            acc[person.tipo] = (acc[person.tipo] || 0) + 1;
+            return acc;
+        }, {});
+    }
+
+    function exportToExcel() {
+        const exportData = processedData.map(person => ({
+            'ID': person.id,
+            'Nome': person.nome,
+            'E/I_Pontuacao': person.E,
+            'S/N_Pontuacao': person.S,
+            'T/F_Pontuacao': person.T,
+            'J/P_Pontuacao': person.J,
+            'Z_Score_E': person.zE.toFixed(3),
+            'Z_Score_S': person.zS.toFixed(3),
+            'Z_Score_T': person.zT.toFixed(3),
+            'Z_Score_J': person.zJ.toFixed(3),
+            'Tipo_MBTI': person.tipo,
+            'Intensidade_E/I': `${person.intensidades.E} ${person.zE > 0 ? 'E' : 'I'}`,
+            'Intensidade_S/N': `${person.intensidades.S} ${person.zS > 0 ? 'S' : 'N'}`,
+            'Intensidade_T/F': `${person.intensidades.T} ${person.zT > 0 ? 'T' : 'F'}`,
+            'Intensidade_J/P': `${person.intensidades.J} ${person.zJ > 0 ? 'J' : 'P'}`
+        }));
+
+        const ws = XLSX.utils.json_to_sheet(exportData);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Resultados_MBTI");
+        XLSX.writeFile(wb, "Analise_MBTI_ZScore.xlsx");
+    }
+
+    function exportToCSV() {
+        const headers = ['ID', 'Nome', 'E/I', 'S/N', 'T/F', 'J/P', 'Z_E', 'Z_S', 'Z_T', 'Z_J', 'Tipo_MBTI', 'Int_E/I', 'Int_S/N', 'Int_T/F', 'Int_J/P'];
+        const csvContent = [
+            headers.join(','),
+            ...processedData.map(person => [
+                person.id,
+                `"${person.nome}"`,
+                person.E,
+                person.S,
+                person.T,
+                person.J,
+                person.zE.toFixed(3),
+                person.zS.toFixed(3),
+                person.zT.toFixed(3),
+                person.zJ.toFixed(3),
+                person.tipo,
+                `"${person.intensidades.E} ${person.zE > 0 ? 'E' : 'I'}"`,
+                `"${person.intensidades.S} ${person.zS > 0 ? 'S' : 'N'}"`,
+                `"${person.intensidades.T} ${person.zT > 0 ? 'T' : 'F'}"`,
+                `"${person.intensidades.J} ${person.zJ > 0 ? 'J' : 'P'}"`
+            ].join(','))
+        ].join('\n');
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'Analise_MBTI_ZScore.csv';
+        link.click();
+    }
+
+    function generateReport() {
+        const reportWindow = window.open('', '_blank');
+        const typeDistribution = getTypeDistribution();
+        
+        reportWindow.document.write(`
+            <html>
+            <head>
+                <title>Relatório MBTI Z-Score</title>
+                <style>
+                    body { font-family: Arial, sans-serif; margin: 20px; }
+                    .header { background: #2c3e50; color: white; padding: 20px; text-align: center; }
+                    .section { margin: 20px 0; }
+                    .type-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 20px 0; }
+                    .type-card { padding: 10px; background: #f8f9fa; border-radius: 5px; text-align: center; }
+                    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+                    th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+                    th { background: #f2f2f2; }
+                    @media print { body { margin: 0; } }
+```
