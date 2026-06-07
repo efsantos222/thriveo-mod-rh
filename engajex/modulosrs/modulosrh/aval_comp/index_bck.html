@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Avaliação Comportamental</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        #cadastroRespondente, #questionario, #resultado {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 300px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="cadastroRespondente">
+        <h2>Cadastro de Respondente</h2>
+        <input type="text" id="nomeRespondente" placeholder="Nome do Respondente">
+        <button onclick="iniciarQuestionario()">Iniciar Questionário</button>
+    </div>
+
+    <div id="questionario" style="display:none;">
+        <!-- As questões serão inseridas aqui pelo JavaScript -->
+    </div>
+
+    <div id="resultado" style="display:none;">
+        <canvas id="graficoResultado"></canvas>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const questoes = [
+                { pergunta: "Eu sou...", alternativas: ["Idealista, criativo e visionário", "Divertido, espiritual e benéfico", "Confiável, meticuloso e previsível", "Focado, determinado e persistente"], respostas: ["I", "C", "O", "A"] },
+                { pergunta: "Eu gosto de...", alternativas: ["Ser piloto", "Conversar com os passageiros", "Planejar a viagem", "Explorar novas rotas"], respostas: ["A", "C", "O", "I"] }
+                // Adicione mais questões aqui
+            ];
+
+            window.iniciarQuestionario = function() {
+                const nomeRespondente = document.getElementById('nomeRespondente').value;
+                if (!nomeRespondente) {
+                    alert("Por favor, insira o nome do respondente.");
+                    return;
+                }
+
+                document.getElementById('cadastroRespondente').style.display = 'none';
+                const containerQuestionario = document.getElementById('questionario');
+                containerQuestionario.style.display = 'block';
+
+                questoes.forEach((questao, index) => {
+                    const divQuestao = document.createElement('div');
+                    divQuestao.innerHTML = `
+                        <p>${questao.pergunta}</p>
+                        ${questao.alternativas.map((alt, i) => 
+                            `<label>
+                                <input type="radio" name="questao${index}" value="${questao.respostas[i]}"> ${alt}
+                            </label>`
+                        ).join('<br>')}
+                    `;
+                    containerQuestionario.appendChild(divQuestao);
+                });
+
+                const btnSubmeter = document.createElement('button');
+                btnSubmeter.textContent = 'Submeter Respostas';
+                btnSubmeter.onclick = processarRespostas;
+                containerQuestionario.appendChild(btnSubmeter);
+            };
+
+            function processarRespostas() {
+                const respostas = {};
+                questoes.forEach((_, index) => {
+                    const respostaSelecionada = document.querySelector(`input[name="questao${index}"]:checked`);
+                    if (respostaSelecionada) {
+                        respostas[respostaSelecionada.value] = (respostas[respostaSelecionada.value] || 0) + 1;
+                    }
+                });
+
+                enviarDadosServidor(gerarCSV(respostas), document.getElementById('nomeRespondente').value);
+                exibirResultados(respostas);
+            }
+
+            function gerarCSV(respostas) {
+                let dadosCSV = 'Pergunta,Resposta\n';
+                questoes.forEach((questao, index) => {
+                    const respostaSelecionada = document.querySelector(`input[name="questao${index}"]:checked`);
+                    if (respostaSelecionada) {
+                        dadosCSV += `"${questao.pergunta}","${respostaSelecionada.value}"\n`;
+                    } else {
+                        dadosCSV += `"${questao.pergunta}",""\n`;
+                    }
+                });
+                return dadosCSV;
+            }
+
+            function enviarDadosServidor(dadosCSV, nomeRespondente) {
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "salvar_csv.php", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function() {
+                    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                        alert("Arquivo salvo com sucesso!");
+                    }
+                }
+                xhr.send("dados=" + encodeURIComponent(dadosCSV) + "&nome=" + encodeURIComponent(nomeRespondente));
+            }
+
+            function exibirResultados(respostas) {
+                document.getElementById('questionario').style.display = 'none';
+                document.getElementById('resultado').style.display = 'block';
+
+                const ctx = document.getElementById('graficoResultado').getContext('2d');
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Águia (I)', 'Gato (C)', 'Lobo (O)', 'Tubarão (A)'],
+                        datasets: [{
+                            data: [respostas['I'], respostas['C'], respostas['O'], respostas['A']],
+                            backgroundColor: ['#ff6384', '#36a2eb', '#cc65fe', '#ffce56']
+                        }]
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
