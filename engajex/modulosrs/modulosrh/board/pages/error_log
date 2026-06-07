@@ -1,0 +1,4 @@
+[27-Dec-2025 12:29:04 America/Fortaleza] PHP Warning:  require_once(config/config.php): failed to open stream: No such file or directory in /home4/efsantos/public_html/testprof.com.br/board/pages/setup.php on line 2
+[27-Dec-2025 12:29:04 America/Fortaleza] PHP Fatal error:  require_once(): Failed opening required 'config/config.php' (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home4/efsantos/public_html/testprof.com.br/board/pages/setup.php on line 2
+[27-Dec-2025 12:29:25 America/Fortaleza] PHP Warning:  require_once(config/config.php): failed to open stream: No such file or directory in /home4/efsantos/public_html/testprof.com.br/board/pages/setup.php on line 2
+[27-Dec-2025 12:29:25 America/Fortaleza] PHP Fatal error:  require_once(): Failed opening required 'config/config.php' (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home4/efsantos/public_html/testprof.com.br/board/pages/setup.php on line 2
