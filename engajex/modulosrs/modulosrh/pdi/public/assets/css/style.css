@@ -1,0 +1,72 @@
+/* General styles */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* Card styles */
+.card {
+    border-radius: 10px;
+    border: none;
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+/* Form styles */
+.form-control {
+    border-radius: 5px;
+    padding: 0.75rem 1rem;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Button styles */
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+/* Navigation */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-weight: 600;
+}
+
+/* Dashboard cards */
+.dashboard-card {
+    transition: transform 0.2s;
+    cursor: pointer;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Custom colors */
+.bg-primary {
+    background-color: #0d6efd !important;
+}
+
+.text-primary {
+    color: #0d6efd !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1.5rem;
+    }
+}
