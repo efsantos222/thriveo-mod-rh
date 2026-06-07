@@ -1,0 +1,183 @@
+===================================================================
+VIRTUAL CONNECTIONS - APLICAÇÃO PHP
+Sistema de Jogos de Apresentação para Reuniões Virtuais
+===================================================================
+
+CONTEÚDO DO PACOTE:
+-------------------------------------------------------------------
+📁 php-app/
+  ├── 📄 index.php (Página inicial)
+  ├── 📄 config.php (Configurações e funções globais)
+  ├── 📄 INSTALACAO.txt (Este arquivo)
+  ├── 📁 assets/
+  │   ├── 📁 css/
+  │   │   └── style.css (Estilos globais)
+  │   └── 📁 js/ (vazio - JavaScript inline nas páginas)
+  ├── 📁 includes/
+  │   └── 📄 storage.php (Sistema de armazenamento JSON)
+  ├── 📁 storage/ (Criado automaticamente - armazena dados JSON)
+  ├── 📁 pages/
+  │   ├── 📄 create-session.php (Criar nova sessão)
+  │   ├── 📄 manage-session.php (Gerenciar sessão e participantes)
+  │   ├── 📄 admin-login.php (Login administrativo)
+  │   ├── 📄 admin-panel.php (Painel administrativo)
+  │   └── 📁 games/
+  │       ├── 📄 speed-intro.php (Jogo: Apresentação Relâmpago)
+  │       ├── 📄 emoji-intro.php (Jogo: Apresentação com Emoji)
+  │       ├── 📄 story-builder.php (Jogo: Construtor de Histórias)
+  │       └── 📄 mystery-box.php (Jogo: Caixa Misteriosa)
+
+===================================================================
+REQUISITOS DO SERVIDOR:
+-------------------------------------------------------------------
+✓ PHP 7.0 ou superior
+✓ Permissões de escrita no diretório da aplicação
+✓ Sessões PHP habilitadas (session_start)
+✓ Módulo JSON habilitado (json_encode/decode)
+
+===================================================================
+INSTRUÇÕES DE INSTALAÇÃO:
+-------------------------------------------------------------------
+
+1. FAZER UPLOAD DOS ARQUIVOS
+   - Copie toda a pasta "php-app" para o seu servidor web
+   - Você pode renomear a pasta para o nome que preferir
+   - Exemplo: www.seusite.com/virtual-connections/
+
+2. CONFIGURAR PERMISSÕES
+   - A pasta "storage/" precisa ter permissões de escrita
+   - Execute no terminal (ou via FTP/cPanel):
+     chmod 777 storage/
+   - Ou via FTP: defina permissões para 777 na pasta storage
+
+3. CONFIGURAR A APLICAÇÃO
+   - Abra o arquivo "config.php"
+   - Modifique a senha de administrador se desejar:
+     define('ADMIN_PASSWORD', 'sysmanager25');
+   - Ajuste o timezone se necessário:
+     date_default_timezone_set('America/Sao_Paulo');
+
+4. TESTAR A INSTALAÇÃO
+   - Acesse: www.seusite.com/caminho-da-pasta/index.php
+   - Você deve ver a página inicial do Virtual Connections
+
+===================================================================
+CREDENCIAIS DE ACESSO:
+-------------------------------------------------------------------
+
+ADMINISTRADOR:
+  Senha padrão: sysmanager25
+  
+  Para alterar a senha:
+  - Edite o arquivo "config.php"
+  - Modifique a linha: define('ADMIN_PASSWORD', 'sua-nova-senha');
+
+===================================================================
+FUNCIONALIDADES:
+-------------------------------------------------------------------
+
+ÁREA PÚBLICA:
+  ✓ Criar sessões de apresentação
+  ✓ Adicionar/remover participantes
+  ✓ 4 jogos interativos:
+    - Apresentação Relâmpago (com timer de 60 segundos)
+    - Apresentação com Emoji (seleção visual)
+    - Construtor de Histórias (colaborativo)
+    - Caixa Misteriosa (perguntas aleatórias)
+
+ÁREA ADMINISTRATIVA:
+  ✓ Gerenciar itens da Apresentação Relâmpago
+  ✓ Editar, reordenar e excluir itens
+  ✓ Ordenação alfabética automática
+  ✓ Drag & drop para reordenação
+  ✓ Gerenciar perguntas da Caixa Misteriosa
+  ✓ Visualizar todas as sessões criadas
+
+===================================================================
+ESTRUTURA DE DADOS:
+-------------------------------------------------------------------
+
+Os dados são armazenados em arquivos JSON na pasta "storage/":
+
+  - sessions.json: Sessões criadas e participantes
+  - game_configs.json: Configurações dos jogos
+  - presentations.json: Histórico de apresentações
+
+BACKUP:
+  Para fazer backup, copie toda a pasta "storage/"
+  Para restaurar, substitua a pasta "storage/" pelo backup
+
+===================================================================
+SOLUÇÃO DE PROBLEMAS:
+-------------------------------------------------------------------
+
+PROBLEMA: Erro "Permission denied" ao criar sessão
+SOLUÇÃO: Verifique permissões da pasta storage/ (deve ser 777)
+
+PROBLEMA: Página em branco
+SOLUÇÃO: Ative a exibição de erros do PHP:
+         Adicione no início do config.php:
+         error_reporting(E_ALL);
+         ini_set('display_errors', 1);
+
+PROBLEMA: Sessões não funcionam
+SOLUÇÃO: Verifique se o PHP tem permissão para criar sessões
+         Verifique a diretiva session.save_path no php.ini
+
+PROBLEMA: JSON não salva
+SOLUÇÃO: Verifique permissões de escrita
+         Verifique se o módulo JSON está habilitado
+
+===================================================================
+PERSONALIZAÇÃO:
+-------------------------------------------------------------------
+
+ALTERAR CORES:
+  - Edite: assets/css/style.css
+  - Modifique os gradientes CSS nas classes:
+    .btn-primary, .glass-effect, body, etc.
+
+ADICIONAR MAIS ITENS/PERGUNTAS:
+  - Acesse o Painel Administrativo
+  - Use os botões "+ Adicionar Item" ou "+ Adicionar Pergunta"
+
+ALTERAR TEMPO DO TIMER:
+  - Edite: pages/games/speed-intro.php
+  - Modifique a linha: const TIME_LIMIT = 60;
+
+===================================================================
+SEGURANÇA:
+-------------------------------------------------------------------
+
+RECOMENDAÇÕES:
+  ✓ Altere a senha de administrador padrão
+  ✓ Use HTTPS no seu site
+  ✓ Faça backups regulares da pasta storage/
+  ✓ Monitore o tamanho dos arquivos JSON
+  ✓ Limite o acesso à pasta storage/ via .htaccess
+
+EXEMPLO .htaccess para proteger storage/:
+  Crie um arquivo .htaccess dentro da pasta storage/ com:
+  
+  deny from all
+
+===================================================================
+SUPORTE E INFORMAÇÕES:
+-------------------------------------------------------------------
+
+COMPATIBILIDADE:
+  ✓ Navegadores modernos (Chrome, Firefox, Safari, Edge)
+  ✓ Dispositivos móveis (design responsivo)
+  ✓ PHP 7.0+ em Linux, Windows, Mac
+
+TECNOLOGIAS UTILIZADAS:
+  - PHP puro (sem frameworks)
+  - HTML5
+  - CSS3 (com backdrop-filter para efeito glass)
+  - JavaScript vanilla (sem bibliotecas externas)
+  - Armazenamento em JSON (sem banco de dados)
+
+===================================================================
+VERSÃO: 1.0
+DATA: Janeiro 2025
+===================================================================

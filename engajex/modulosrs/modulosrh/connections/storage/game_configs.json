@@ -1,0 +1,59 @@
+{
+    "speedIntro": {
+        "items": [
+            "Um hobby que voc\u00ea adora",
+            "Sua maior conquista profissional",
+            "Seu filme favorito e por qu\u00ea",
+            "Uma habilidade que poucos conhecem",
+            "Seu destino de viagem dos sonhos",
+            "Uma comida que voc\u00ea n\u00e3o vive sem",
+            "Seu animal de estima\u00e7\u00e3o ou favorito",
+            "Uma pessoa que te inspira"
+        ]
+    },
+    "emojiIntro": {
+        "emojis": [
+            "\ud83d\ude00",
+            "\ud83c\udf89",
+            "\ud83d\ude80",
+            "\ud83d\udca1",
+            "\ud83c\udfaf",
+            "\ud83c\udf1f",
+            "\ud83d\udd25",
+            "\ud83d\udcaa",
+            "\ud83c\udfa8",
+            "\ud83c\udfb5",
+            "\ud83d\udcda",
+            "\u2615",
+            "\ud83c\udf08",
+            "\u26a1",
+            "\ud83c\udfad",
+            "\ud83c\udfc6",
+            "\ud83c\udf0d",
+            "\ud83d\udcbc",
+            "\ud83c\udfae",
+            "\ud83c\udf55"
+        ]
+    },
+    "storyBuilder": {
+        "starters": [
+            "Era uma vez uma equipe incr\u00edvel que...",
+            "Em um dia normal de trabalho, algo extraordin\u00e1rio aconteceu...",
+            "Ningu\u00e9m esperava que aquela reuni\u00e3o...",
+            "A jornada come\u00e7ou quando...",
+            "Dizem que o imposs\u00edvel n\u00e3o existe, mas..."
+        ]
+    },
+    "mysteryBox": {
+        "questions": [
+            "Se voc\u00ea pudesse ter um superpoder no trabalho, qual seria?",
+            "Qual foi o momento mais engra\u00e7ado que voc\u00ea viveu em uma reuni\u00e3o?",
+            "Se sua vida fosse um filme, qual seria o t\u00edtulo?",
+            "Qual conselho voc\u00ea daria para voc\u00ea de 5 anos atr\u00e1s?",
+            "Se voc\u00ea pudesse jantar com qualquer pessoa, viva ou morta, quem seria?",
+            "Qual \u00e9 a coisa mais estranha no seu hist\u00f3rico de busca?",
+            "Se voc\u00ea ganhasse na loteria amanh\u00e3, o que faria?",
+            "Qual habilidade voc\u00ea gostaria de aprender da noite para o dia?"
+        ]
+    }
+}

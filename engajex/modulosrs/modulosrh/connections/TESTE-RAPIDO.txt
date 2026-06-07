@@ -1,0 +1,159 @@
+===================================================================
+GUIA DE TESTE RÁPIDO - VIRTUAL CONNECTIONS
+===================================================================
+
+Siga estes passos para verificar se a instalação está funcionando:
+
+1. TESTE DA PÁGINA INICIAL
+   ✓ Acesse: www.seusite.com/caminho/index.php
+   ✓ Deve aparecer: "Virtual Connections" com 4 cards de jogos
+   ✓ Deve ter 2 botões: "Criar Nova Sessão" e "Área Administrativa"
+
+2. TESTE DE CRIAÇÃO DE SESSÃO
+   ✓ Clique em "Criar Nova Sessão"
+   ✓ Preencha: Nome da Sessão: "Teste 01"
+   ✓ Adicione participantes (um por linha):
+     João Silva
+     Maria Santos
+     Pedro Costa
+   ✓ Clique em "Criar Sessão"
+   ✓ Deve redirecionar para página de gerenciamento
+
+3. TESTE DE GERENCIAMENTO
+   ✓ Verifique se os 3 participantes aparecem na lista
+   ✓ Adicione um novo participante: "Ana Lima"
+   ✓ Teste remover um participante (clique no X)
+   ✓ Verifique se há 4 cards de jogos disponíveis
+
+4. TESTE DO JOGO - APRESENTAÇÃO RELÂMPAGO
+   ✓ Clique em "Apresentação Relâmpago"
+   ✓ Deve mostrar o primeiro participante e um desafio
+   ✓ Clique em "Iniciar" - o timer deve começar em 60
+   ✓ Aguarde o timer chegar a 0 - deve tocar um beep
+   ✓ Clique em "Próximo" - deve mostrar outro desafio
+   ✓ Teste o botão "Reiniciar"
+
+5. TESTE DO JOGO - EMOJI INTRODUCTION
+   ✓ Volte e clique em "Apresentação com Emoji"
+   ✓ Clique em alguns emojis - devem aparecer destacados
+   ✓ Os emojis selecionados devem aparecer na área superior
+   ✓ Clique em "Limpar Seleção" - deve limpar tudo
+   ✓ Clique em "Próximo Participante" - deve mudar o nome
+
+6. TESTE DO JOGO - STORY BUILDER
+   ✓ Clique em "Construtor de Histórias"
+   ✓ Deve mostrar um início de história aleatório
+   ✓ Digite uma continuação no campo de texto
+   ✓ Clique em "Adicionar e Próximo"
+   ✓ A contribuição deve aparecer na história
+   ✓ O próximo participante deve ser mostrado
+   ✓ Teste "Nova História" - deve gerar novo início
+
+7. TESTE DO JOGO - MYSTERY BOX
+   ✓ Clique em "Caixa Misteriosa"
+   ✓ Deve mostrar um ícone de presente 🎁
+   ✓ Clique em "Abrir Caixa" ou no presente
+   ✓ Deve mostrar uma pergunta aleatória
+   ✓ Clique em "Próximo Participante"
+   ✓ A caixa deve fechar novamente
+
+8. TESTE DO LOGIN ADMINISTRATIVO
+   ✓ Volte à página inicial (index.php)
+   ✓ Clique em "Área Administrativa"
+   ✓ Digite a senha: sysmanager25
+   ✓ Clique em "Entrar"
+   ✓ Deve redirecionar para o painel administrativo
+
+9. TESTE DO PAINEL ADMINISTRATIVO
+   ✓ Verifique se há 3 seções:
+     - Apresentação Relâmpago - Gerenciar Itens
+     - Caixa Misteriosa - Gerenciar Perguntas
+     - Sessões Criadas
+   ✓ Na seção "Sessões Criadas", deve aparecer "Teste 01"
+
+10. TESTE DE EDIÇÃO DE ITENS
+    ✓ Na seção "Apresentação Relâmpago":
+    ✓ Clique em um campo de item e altere o texto
+    ✓ Clique nos botões ▲ ▼ para mover itens
+    ✓ Teste arrastar e soltar um item (drag & drop)
+    ✓ Clique em "Ordenar Alfabeticamente"
+    ✓ Clique no X vermelho para remover um item
+    ✓ Clique em "+ Adicionar Item"
+    ✓ Digite um novo item
+    ✓ Clique em "Salvar Alterações"
+    ✓ Deve aparecer mensagem: "Itens atualizados com sucesso!"
+
+11. TESTE DE PERGUNTAS
+    ✓ Na seção "Caixa Misteriosa":
+    ✓ Clique em "+ Adicionar Pergunta"
+    ✓ Digite uma nova pergunta
+    ✓ Clique em "Salvar Alterações"
+    ✓ Deve aparecer mensagem de sucesso
+
+12. VERIFICAR PERSISTÊNCIA DOS DADOS
+    ✓ Volte ao jogo "Apresentação Relâmpago"
+    ✓ Os itens devem estar na ordem que você configurou
+    ✓ Os novos itens adicionados devem aparecer
+    ✓ Se você voltar ao painel admin, as alterações devem estar lá
+
+13. TESTE DE LOGOUT
+    ✓ No painel administrativo, clique em "Sair"
+    ✓ Deve voltar para a página de login
+    ✓ Tente acessar admin-panel.php diretamente
+    ✓ Deve redirecionar para o login (sessão expirada)
+
+14. VERIFICAR ARQUIVOS DE ARMAZENAMENTO
+    ✓ Acesse a pasta storage/ via FTP/gerenciador
+    ✓ Deve conter arquivos .json:
+      - sessions.json
+      - game_configs.json
+      - presentations.json (se alguma apresentação foi criada)
+    ✓ Abra sessions.json - deve ter a sessão "Teste 01"
+    ✓ Abra game_configs.json - deve ter suas alterações
+
+===================================================================
+CHECKLIST DE PROBLEMAS COMUNS:
+===================================================================
+
+❌ ERRO: Página em branco
+   ✓ Ative exibição de erros no config.php
+   ✓ Verifique logs de erro do PHP no servidor
+
+❌ ERRO: "Permission denied" ao criar sessão
+   ✓ Configure permissões 777 na pasta storage/
+   ✓ Verifique se o usuário do PHP tem acesso de escrita
+
+❌ ERRO: Sessão de admin não funciona
+   ✓ Verifique se sessões PHP estão habilitadas
+   ✓ Verifique session.save_path no php.ini
+
+❌ ERRO: JSON não salva
+   ✓ Verifique permissões da pasta storage/
+   ✓ Verifique se o módulo JSON está habilitado no PHP
+
+❌ Timer não funciona
+   ✓ Verifique se JavaScript está habilitado no navegador
+   ✓ Abra o console do navegador (F12) e veja se há erros
+
+❌ Drag & drop não funciona
+   ✓ Use navegador moderno (Chrome, Firefox, Edge)
+   ✓ Verifique console do navegador
+
+❌ Itens não aparecem em ordem configurada
+   ✓ Certifique-se de clicar em "Salvar Alterações"
+   ✓ Limpe o cache do navegador (Ctrl+F5)
+   ✓ Verifique o arquivo game_configs.json
+
+===================================================================
+TESTE BEM-SUCEDIDO!
+===================================================================
+
+Se todos os testes passaram, sua instalação está funcionando
+perfeitamente! Você pode agora:
+
+1. Alterar a senha de admin no config.php
+2. Personalizar cores no style.css
+3. Adicionar seus próprios itens e perguntas
+4. Compartilhar o link com sua equipe
+
+===================================================================
