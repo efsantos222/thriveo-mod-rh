@@ -89,7 +89,7 @@ cd disc && pip install -r requirements.txt && python web_app.py
 ---
 
 #### `matchcv` — Matching de Currículos
-Cruzamento inteligente de currículos com requisitos de vagas.
+Cruzamento inteligente de currículos com requisitos de vagas. Usa `proxy.php` para proteger a chave de API no server-side.
 
 **Stack:** PHP, OpenAI API
 
@@ -119,7 +119,7 @@ Definição de identidade organizacional (Missão, Visão, Valores) e análise d
 ---
 
 #### `connections` — Jogos Virtuais de Integração
-Dinâmicas de integração de equipes: icebreakers, apresentações relâmpago, storytelling com emojis, mystery box. Armazenamento em JSON (sem banco de dados).
+Dinâmicas de integração de equipes: icebreakers, apresentações relâmpago, storytelling com emojis, mystery box. **Único módulo sem banco de dados** — armazena estado em JSON em `storage/`.
 
 **Stack:** PHP 7.0+, JSON
 
@@ -128,7 +128,7 @@ Dinâmicas de integração de equipes: icebreakers, apresentações relâmpago, 
 ### Desenvolvimento & Performance
 
 #### `pdi` — Plano de Desenvolvimento Individual
-Gestão de PDIs com acompanhamento de cursos, metas e notificações.
+Gestão de PDIs com acompanhamento de cursos, metas e notificações. Módulo mais sofisticado do repositório, com roteamento robusto compatível com Hostgator.
 
 **Stack:** PHP 8.0+, MySQL
 
@@ -149,7 +149,7 @@ Gestão de sessões de coaching, feedback 360°, metas SMART e hierarquia de mas
 ---
 
 #### `mlpt` — Liderança & Gestão de Times
-Avaliações de liderança e ferramentas de gestão de equipes.
+Avaliações de liderança, pulse surveys e análise de sentimento de equipes.
 
 **Stack:** PHP 7.4+, MySQL
 
@@ -199,9 +199,9 @@ Análise e benchmarking competitivo com processamento de CSV.
 ### Ferramentas Especializadas
 
 #### `PromptMaster-main` — Gestão de Prompts de IA
-Interface React para criação, teste e gerenciamento de prompts de IA com integração ao Google Gemini.
+Interface React para criação, teste e gerenciamento de prompts de IA com controle de acesso via pagamento Pix e integração ao Google Gemini.
 
-**Stack:** React 19, Vite 6, Google Gemini API, Firebase
+**Stack:** React 19, Vite 6, TypeScript, Google Gemini API, Firebase
 
 ```bash
 cd PromptMaster-main
@@ -213,9 +213,16 @@ npm run dev
 ---
 
 #### `agentes` — Agentes Corporativos de IA
-Sistema multi-agente para fluxos de trabalho corporativos usando a API da Anthropic Claude.
+Sistema multi-agente para fluxos de trabalho corporativos usando Anthropic Claude Sonnet 4.
 
-**Stack:** PHP, Anthropic Claude API
+**Stack:** PHP, Anthropic Claude API (`claude-sonnet-4-20250514`)
+
+---
+
+#### `unia` — LMS / Treinamentos
+Plataforma de aprendizagem completa com cursos, módulos, eventos, inscrições e emissão de certificados.
+
+**Stack:** PHP, MySQL
 
 ---
 
@@ -223,6 +230,13 @@ Sistema multi-agente para fluxos de trabalho corporativos usando a API da Anthro
 Gestão e entrega de cursos internos.
 
 **Stack:** PHP
+
+---
+
+#### `pcs` — Gestão de Cargos e Salários
+Estruturação e administração de cargos e tabelas salariais.
+
+**Stack:** PHP, MySQL (`efsantos_gestaocargos`)
 
 ---
 
@@ -249,26 +263,26 @@ Ferramenta de planejamento estratégico orientada para o futuro.
 | MySQL 5.7+ / 8.0+ | Banco de dados relacional |
 | Python 3.7+ | Módulos DISC e IC |
 | FastAPI + Uvicorn | Backend do módulo IC |
-| Apache + mod_rewrite | Servidor web / roteamento |
+| Apache (Hostgator) | Servidor web — roteamento via `?r=` (sem mod_rewrite) |
 
 ### Frontend
 | Tecnologia | Uso |
 |---|---|
 | HTML5 / CSS3 / Vanilla JS | Base de todos os módulos |
 | CSS Variables + Glassmorphism | Design System unificado |
-| React 19 + Vite 6 | PromptMaster |
+| React 19 + Vite 6 + TypeScript | PromptMaster |
 | Google Fonts (Inter, Outfit) | Tipografia |
 
 ### Integrações Externas
 | API / Serviço | Módulos |
 |---|---|
-| OpenAI GPT-4o | entrev, hardskill, softskill, cult, board, ic |
-| Anthropic Claude | agentes |
+| OpenAI GPT-4o | entrev, hardskill, softskill, cult, board, matchcv, ic |
+| Anthropic Claude Sonnet 4 | agentes |
 | Google Gemini | PromptMaster |
 | GitHub OAuth | entrev (autenticação de candidatos) |
 | LinkedIn OAuth | entrev (autenticação de candidatos) |
 | Mercado Pago | Cobrança / assinaturas |
-| Meta WhatsApp API | Chatbot (integração referenciada) |
+| Meta WhatsApp API | Chatbot (em desenvolvimento) |
 
 ---
 
@@ -276,7 +290,7 @@ Ferramenta de planejamento estratégico orientada para o futuro.
 
 ```
 thriveo-mod-rh/
-├── index.php               # Landing page principal
+├── index.php               # Landing page principal (Brilhamente)
 ├── login.html              # Autenticação de usuários
 ├── oauth.php               # Handler OAuth (GitHub / LinkedIn)
 ├── assets/
@@ -289,16 +303,19 @@ thriveo-mod-rh/
 ├── board/                  # Onboarding cultural
 ├── clima/                  # Pesquisa de clima
 ├── cult/                   # Cultura organizacional
-├── connections/            # Jogos de integração
+├── connections/            # Jogos de integração (JSON, sem DB)
 ├── pdi/                    # Desenvolvimento individual
 ├── perform/                # Performance
 ├── coach/                  # Coaching & mentoria
+├── mlpt/                   # Liderança & times
 ├── ic/                     # Inteligência competitiva
-│   └── backend/            # FastAPI (Python)
-├── PromptMaster-main/      # Gestão de prompts (React)
-├── agentes/                # Agentes de IA
+│   └── backend/            # FastAPI (Python, porta 8000)
+├── PromptMaster-main/      # Gestão de prompts (React + Vite)
+├── agentes/                # Agentes de IA (Anthropic)
 ├── 5w2h/                   # Plano de ação
 ├── matchcv/                # Matching de currículos
+├── unia/                   # LMS / Treinamentos
+├── pcs/                    # Gestão de cargos
 ├── lc/                     # Cursos
 ├── engajex/                # Engajamento
 └── fvit/                   # Visão de futuro
@@ -306,9 +323,11 @@ thriveo-mod-rh/
 
 **Fluxo de autenticação:**
 1. Usuário autentica via OAuth ou formulário
-2. JWT armazenado em `localStorage` + sessão PHP
-3. Controllers validam `company_id` para isolamento multi-tenant
-4. Chamadas à IA passam pelo AI Handler centralizado
+2. JWT armazenado em `localStorage` + sessão PHP (dual auth)
+3. Toda query valida `company_id` para isolamento multi-tenant
+4. Chamadas à IA passam por `proxy.php` ou handler server-side
+
+> Ver `arquitetura.md` para diagramas detalhados de fluxo de dados e multi-tenancy.
 
 ---
 
@@ -316,7 +335,7 @@ thriveo-mod-rh/
 
 ### Pré-requisitos
 
-- Apache com `mod_rewrite` habilitado
+- Apache com `mod_rewrite` habilitado (ou usar roteamento `?r=`)
 - PHP 8.0+ (mínimo 7.4)
 - MySQL 5.7+ ou 8.0+
 - Node.js 18+ (apenas para PromptMaster)
@@ -324,7 +343,7 @@ thriveo-mod-rh/
 
 ### Hospedagem Compartilhada (Hostgator)
 
-1. **Criar banco de dados** via CPanel (prefixo `efsantos_`, ex: `efsantos_board`)
+1. **Criar banco de dados** via CPanel (padrão: `efsantos_[modulo]`)
 2. **Upload dos arquivos** via FTP para `public_html/` ou subdiretório
 3. **Executar o instalador** de cada módulo:
    ```
@@ -357,12 +376,11 @@ python main.py
 
 ### Configuração por Módulo
 
-Cada módulo possui um arquivo de configuração no padrão:
+Cada módulo possui arquivos de configuração no padrão:
 
 ```
 [modulo]/config/db.php       # Credenciais do banco
 [modulo]/config/config.php   # Chaves de API, URLs
-[modulo]/.htaccess           # RewriteBase
 ```
 
 ---
@@ -371,7 +389,7 @@ Cada módulo possui um arquivo de configuração no padrão:
 
 | Variável | Onde configurar | Descrição |
 |---|---|---|
-| `OPENAI_API_KEY` | Painel admin ou `config.php` | Chave GPT-4o |
+| `OPENAI_API_KEY` | `config.php` de cada módulo | Chave GPT-4o |
 | `ANTHROPIC_API_KEY` | `agentes/config.php` | Chave Claude API |
 | `GEMINI_API_KEY` | `PromptMaster-main/.env.local` | Chave Google Gemini |
 | `DB_HOST` / `DB_NAME` / `DB_USER` / `DB_PASS` | `config/db.php` de cada módulo | Credenciais MySQL |
@@ -396,9 +414,10 @@ E-mail: ezequiel.santos@gmail.com
 
 ## Segurança
 
-- Senhas armazenadas com hash (bcrypt)
+- Senhas armazenadas com hash (`password_hash` bcrypt)
 - Validação de sessão em todas as rotas protegidas
-- Sanitização de inputs para prevenção de SQL Injection e XSS
+- PDO com prepared statements em todas as queries
+- Sanitização de outputs com `htmlspecialchars()` para prevenir XSS
 - Isolamento multi-tenant via `company_id` em todas as queries
 - Conformidade com **LGPD**
 - Instale e delete os arquivos `install.php` / `setup.php` após uso
@@ -416,14 +435,18 @@ E-mail: ezequiel.santos@gmail.com
 | `board` — Onboarding cultural | ✅ Ativo |
 | `clima` — Pesquisa de clima | ✅ Ativo |
 | `cult` — Cultura organizacional | ✅ Ativo |
-| `pdi` — Desenvolvimento individual | 🗺️ Roadmap |
 | `coach` — Coaching & mentoria | ✅ Ativo |
 | `ic` — Inteligência competitiva | ✅ Ativo |
+| `mlpt` — Liderança & times | ✅ Ativo |
 | `PromptMaster` — Gestão de prompts | ✅ Ativo |
 | `agentes` — Agentes corporativos de IA | ✅ Ativo |
+| `unia` — LMS / Treinamentos | ✅ Ativo |
+| `pdi` — Desenvolvimento individual | 🔄 Em desenvolvimento |
 | `zbb` — Gestão orçamentária | 🗺️ Roadmap |
 | Integração WhatsApp (Meta API) | 🔄 Em desenvolvimento |
 
 ---
+
+> Documentação técnica detalhada: [`arquitetura.md`](./arquitetura.md) | [`memory.md`](./memory.md) | [`CLAUDE.md`](./CLAUDE.md)
 
 © 2026 Thriveo — Inteligência em Gestão de Pessoas.
